@@ -89,6 +89,564 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-images/process-memory-layout.png" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2025/06/04/images/process-memory-layout.png/" class="article-date">
+  <time class="dt-published" datetime="2025-06-04T11:31:02.740Z" itemprop="datePublished">2025-06-04</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2025/06/04/images/process-memory-layout.png/" data-id="cmd5bsn9i001ooxonewbh11qj" data-title="" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-Programming/CPP/compile" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2025/05/23/Programming/CPP/compile/" class="article-date">
+  <time class="dt-published" datetime="2025-05-23T08:15:37.559Z" itemprop="datePublished">2025-05-23</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>我来帮你整理一个完整的编译原理和优化技术总结。</p>
+<h1 id="编译原理与优化技术总结"><a href="#编译原理与优化技术总结" class="headerlink" title="编译原理与优化技术总结"></a>编译原理与优化技术总结</h1><h2 id="一、编译原理基础概念"><a href="#一、编译原理基础概念" class="headerlink" title="一、编译原理基础概念"></a>一、编译原理基础概念</h2><h3 id="1-基本块-Basic-Block"><a href="#1-基本块-Basic-Block" class="headerlink" title="1. 基本块 (Basic Block)"></a>1. 基本块 (Basic Block)</h3><ul>
+<li><strong>定义</strong>：一个顺序执行的指令序列，只有一个入口点（第一条指令）和一个出口点（最后一条指令）</li>
+<li><strong>特点</strong>：<ul>
+<li>只能从第一条指令进入</li>
+<li>只能从最后一条指令退出</li>
+<li>内部没有跳转指令</li>
+</ul>
+</li>
+<li><strong>划分方法</strong>：<ul>
+<li>第一条指令作为基本块的入口</li>
+<li>跳转指令的目标地址作为基本块的入口</li>
+<li>跳转指令后的指令作为新基本块的入口</li>
+</ul>
+</li>
+</ul>
+<h3 id="2-控制流图-Control-Flow-Graph-CFG"><a href="#2-控制流图-Control-Flow-Graph-CFG" class="headerlink" title="2. 控制流图 (Control Flow Graph, CFG)"></a>2. 控制流图 (Control Flow Graph, CFG)</h3><ul>
+<li><strong>定义</strong>：表示程序控制流的有向图</li>
+<li><strong>组成</strong>：<ul>
+<li>节点：基本块</li>
+<li>边：基本块之间的控制转移</li>
+</ul>
+</li>
+<li><strong>构建方法</strong>：<ul>
+<li>每个基本块作为图中的一个节点</li>
+<li>如果基本块A可能跳转到基本块B，则添加从A到B的边</li>
+</ul>
+</li>
+<li><strong>用途</strong>：<ul>
+<li>程序分析</li>
+<li>优化</li>
+<li>代码生成</li>
+</ul>
+</li>
+</ul>
+<h3 id="3-数据流图-Data-Flow-Graph"><a href="#3-数据流图-Data-Flow-Graph" class="headerlink" title="3. 数据流图 (Data Flow Graph)"></a>3. 数据流图 (Data Flow Graph)</h3><ul>
+<li><strong>定义</strong>：表示程序中数据依赖关系的有向图</li>
+<li><strong>组成</strong>：<ul>
+<li>节点：操作或变量</li>
+<li>边：数据依赖关系</li>
+</ul>
+</li>
+<li><strong>类型</strong>：<ul>
+<li>定义-使用链</li>
+<li>使用-定义链</li>
+</ul>
+</li>
+<li><strong>用途</strong>：<ul>
+<li>变量分析</li>
+<li>优化</li>
+<li>并行化</li>
+</ul>
+</li>
+</ul>
+<h2 id="二、编译器优化技术"><a href="#二、编译器优化技术" class="headerlink" title="二、编译器优化技术"></a>二、编译器优化技术</h2><h3 id="1-局部优化"><a href="#1-局部优化" class="headerlink" title="1. 局部优化"></a>1. 局部优化</h3><h4 id="1-1-常量折叠-Constant-Folding"><a href="#1-1-常量折叠-Constant-Folding" class="headerlink" title="1.1 常量折叠 (Constant Folding)"></a>1.1 常量折叠 (Constant Folding)</h4><ul>
+<li><strong>原理</strong>：<ul>
+<li>在编译时计算常量表达式</li>
+<li>将常量表达式替换为其计算结果</li>
+</ul>
+</li>
+<li><strong>实现方法</strong>：<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 示例：将 2 + 3 替换为 5</span></span><br><span class="line"><span class="keyword">if</span> (<span class="built_in">isConstant</span>(expr1) &amp;&amp; <span class="built_in">isConstant</span>(expr2)) &#123;</span><br><span class="line">    result = <span class="built_in">evaluateConstant</span>(expr1, expr2);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h4 id="1-2-常量传播-Constant-Propagation"><a href="#1-2-常量传播-Constant-Propagation" class="headerlink" title="1.2 常量传播 (Constant Propagation)"></a>1.2 常量传播 (Constant Propagation)</h4><ul>
+<li><strong>原理</strong>：<ul>
+<li>将变量的常量值传播到使用点</li>
+<li>替换变量引用为常量值</li>
+</ul>
+</li>
+<li><strong>实现方法</strong>：<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 示例：将 x = 5; y = x + 1; 优化为 y = 6;</span></span><br><span class="line"><span class="keyword">if</span> (<span class="built_in">isConstant</span>(var)) &#123;</span><br><span class="line">    <span class="built_in">replaceUse</span>(var, <span class="built_in">getConstantValue</span>(var));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h4 id="1-3-代数简化-Algebraic-Simplification"><a href="#1-3-代数简化-Algebraic-Simplification" class="headerlink" title="1.3 代数简化 (Algebraic Simplification)"></a>1.3 代数简化 (Algebraic Simplification)</h4><ul>
+<li><strong>原理</strong>：<ul>
+<li>应用代数规则简化表达式</li>
+<li>消除冗余计算</li>
+</ul>
+</li>
+<li><strong>示例</strong>：<ul>
+<li>x + 0 → x</li>
+<li>x * 1 → x</li>
+<li>x * 0 → 0</li>
+</ul>
+</li>
+</ul>
+<h3 id="2-全局优化"><a href="#2-全局优化" class="headerlink" title="2. 全局优化"></a>2. 全局优化</h3><h4 id="2-1-全局值编号-Global-Value-Numbering"><a href="#2-1-全局值编号-Global-Value-Numbering" class="headerlink" title="2.1 全局值编号 (Global Value Numbering)"></a>2.1 全局值编号 (Global Value Numbering)</h4><ul>
+<li><strong>原理</strong>：<ul>
+<li>为每个计算分配唯一编号</li>
+<li>识别并重用相同计算</li>
+</ul>
+</li>
+<li><strong>实现步骤</strong>：<ol>
+<li>构建值依赖图</li>
+<li>为每个计算分配编号</li>
+<li>识别相同计算</li>
+<li>替换重复计算</li>
+</ol>
+</li>
+</ul>
+<h4 id="2-2-全局公共子表达式消除-Global-Common-Subexpression-Elimination"><a href="#2-2-全局公共子表达式消除-Global-Common-Subexpression-Elimination" class="headerlink" title="2.2 全局公共子表达式消除 (Global Common Subexpression Elimination)"></a>2.2 全局公共子表达式消除 (Global Common Subexpression Elimination)</h4><ul>
+<li><strong>原理</strong>：<ul>
+<li>识别跨基本块的重复计算</li>
+<li>重用计算结果</li>
+</ul>
+</li>
+<li><strong>实现方法</strong>：<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 使用哈希表记录表达式</span></span><br><span class="line">map&lt;Expression, Variable&gt; exprMap;</span><br><span class="line"><span class="keyword">if</span> (exprMap.<span class="built_in">contains</span>(expr)) &#123;</span><br><span class="line">    <span class="built_in">replace</span>(expr, exprMap[expr]);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="3-循环优化"><a href="#3-循环优化" class="headerlink" title="3. 循环优化"></a>3. 循环优化</h3><h4 id="3-1-循环展开-Loop-Unrolling"><a href="#3-1-循环展开-Loop-Unrolling" class="headerlink" title="3.1 循环展开 (Loop Unrolling)"></a>3.1 循环展开 (Loop Unrolling)</h4><ul>
+<li><strong>原理</strong>：<ul>
+<li>将循环体复制多次</li>
+<li>减少循环次数</li>
+</ul>
+</li>
+<li><strong>实现方法</strong>：<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 原始循环</span></span><br><span class="line"><span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; n; i++) &#123;</span><br><span class="line">    body;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 展开后</span></span><br><span class="line"><span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; n; i += <span class="number">4</span>) &#123;</span><br><span class="line">    body;</span><br><span class="line">    body;</span><br><span class="line">    body;</span><br><span class="line">    body;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h4 id="3-2-循环不变代码外提-Loop-Invariant-Code-Motion"><a href="#3-2-循环不变代码外提-Loop-Invariant-Code-Motion" class="headerlink" title="3.2 循环不变代码外提 (Loop Invariant Code Motion)"></a>3.2 循环不变代码外提 (Loop Invariant Code Motion)</h4><ul>
+<li><strong>原理</strong>：<ul>
+<li>将循环中不随迭代变化的计算移到循环外</li>
+</ul>
+</li>
+<li><strong>实现步骤</strong>：<ol>
+<li>识别循环不变表达式</li>
+<li>检查移动的安全性</li>
+<li>将代码移到循环外</li>
+</ol>
+</li>
+</ul>
+<h4 id="3-3-循环向量化-Loop-Vectorization"><a href="#3-3-循环向量化-Loop-Vectorization" class="headerlink" title="3.3 循环向量化 (Loop Vectorization)"></a>3.3 循环向量化 (Loop Vectorization)</h4><ul>
+<li><strong>原理</strong>：<ul>
+<li>将循环中的标量运算转换为向量运算</li>
+<li>利用SIMD指令提高性能</li>
+</ul>
+</li>
+<li><strong>实现条件</strong>：<ul>
+<li>循环迭代间无依赖</li>
+<li>数据对齐</li>
+<li>目标架构支持向量运算</li>
+</ul>
+</li>
+</ul>
+<h3 id="4-函数级优化"><a href="#4-函数级优化" class="headerlink" title="4. 函数级优化"></a>4. 函数级优化</h3><h4 id="4-1-函数内联-Function-Inlining"><a href="#4-1-函数内联-Function-Inlining" class="headerlink" title="4.1 函数内联 (Function Inlining)"></a>4.1 函数内联 (Function Inlining)</h4><ul>
+<li><strong>原理</strong>：<ul>
+<li>将函数调用替换为函数体</li>
+<li>消除函数调用开销</li>
+</ul>
+</li>
+<li><strong>实现方法</strong>：<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 原始代码</span></span><br><span class="line">result = <span class="built_in">func</span>(a, b);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 内联后</span></span><br><span class="line">result = a + b;  <span class="comment">// 假设func的实现是a + b</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<h4 id="4-2-尾递归优化-Tail-Recursion-Optimization"><a href="#4-2-尾递归优化-Tail-Recursion-Optimization" class="headerlink" title="4.2 尾递归优化 (Tail Recursion Optimization)"></a>4.2 尾递归优化 (Tail Recursion Optimization)</h4><ul>
+<li><strong>原理</strong>：<ul>
+<li>将尾递归转换为循环</li>
+<li>消除递归调用开销</li>
+</ul>
+</li>
+<li><strong>实现条件</strong>：<ul>
+<li>递归调用是函数的最后操作</li>
+<li>递归调用的返回值直接返回</li>
+</ul>
+</li>
+</ul>
+<h3 id="5-指令级优化"><a href="#5-指令级优化" class="headerlink" title="5. 指令级优化"></a>5. 指令级优化</h3><h4 id="5-1-指令调度-Instruction-Scheduling"><a href="#5-1-指令调度-Instruction-Scheduling" class="headerlink" title="5.1 指令调度 (Instruction Scheduling)"></a>5.1 指令调度 (Instruction Scheduling)</h4><ul>
+<li><strong>原理</strong>：<ul>
+<li>重排指令顺序</li>
+<li>充分利用CPU流水线</li>
+</ul>
+</li>
+<li><strong>实现方法</strong>：<ul>
+<li>构建依赖图</li>
+<li>使用启发式算法重排指令</li>
+</ul>
+</li>
+</ul>
+<h4 id="5-2-寄存器分配-Register-Allocation"><a href="#5-2-寄存器分配-Register-Allocation" class="headerlink" title="5.2 寄存器分配 (Register Allocation)"></a>5.2 寄存器分配 (Register Allocation)</h4><ul>
+<li><strong>原理</strong>：<ul>
+<li>将变量映射到寄存器</li>
+<li>最小化内存访问</li>
+</ul>
+</li>
+<li><strong>实现算法</strong>：<ul>
+<li>图着色算法</li>
+<li>线性扫描算法</li>
+</ul>
+</li>
+</ul>
+<h2 id="三、数据流分析"><a href="#三、数据流分析" class="headerlink" title="三、数据流分析"></a>三、数据流分析</h2><h3 id="1-活跃变量分析-Live-Variable-Analysis"><a href="#1-活跃变量分析-Live-Variable-Analysis" class="headerlink" title="1. 活跃变量分析 (Live Variable Analysis)"></a>1. 活跃变量分析 (Live Variable Analysis)</h3><ul>
+<li><strong>定义</strong>：确定变量在程序点是否可能被使用</li>
+<li><strong>用途</strong>：<ul>
+<li>死代码消除</li>
+<li>寄存器分配</li>
+</ul>
+</li>
+<li><strong>实现方法</strong>：<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 计算变量的活跃性</span></span><br><span class="line"><span class="keyword">for</span> (each block in reverse order) &#123;</span><br><span class="line">    liveOut = <span class="keyword">union</span> of liveIn of successors;</span><br><span class="line">    liveIn = use <span class="built_in">union</span> (liveOut - def);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="2-到达定义分析-Reaching-Definition-Analysis"><a href="#2-到达定义分析-Reaching-Definition-Analysis" class="headerlink" title="2. 到达定义分析 (Reaching Definition Analysis)"></a>2. 到达定义分析 (Reaching Definition Analysis)</h3><ul>
+<li><strong>定义</strong>：确定定义点是否可能到达使用点</li>
+<li><strong>用途</strong>：<ul>
+<li>常量传播</li>
+<li>死代码消除</li>
+</ul>
+</li>
+<li><strong>实现方法</strong>：<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 计算到达定义</span></span><br><span class="line"><span class="keyword">for</span> (each block) &#123;</span><br><span class="line">    gen = definitions in block;</span><br><span class="line">    kill = definitions killed by block;</span><br><span class="line">    out = gen <span class="built_in">union</span> (in - kill);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="3-可用表达式分析-Available-Expression-Analysis"><a href="#3-可用表达式分析-Available-Expression-Analysis" class="headerlink" title="3. 可用表达式分析 (Available Expression Analysis)"></a>3. 可用表达式分析 (Available Expression Analysis)</h3><ul>
+<li><strong>定义</strong>：确定表达式在程序点是否可用</li>
+<li><strong>用途</strong>：<ul>
+<li>公共子表达式消除</li>
+<li>代码移动</li>
+</ul>
+</li>
+<li><strong>实现方法</strong>：<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 计算可用表达式</span></span><br><span class="line"><span class="keyword">for</span> (each block) &#123;</span><br><span class="line">    gen = expressions computed in block;</span><br><span class="line">    kill = expressions killed in block;</span><br><span class="line">    out = gen <span class="built_in">union</span> (in - kill);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="四、优化效果评估"><a href="#四、优化效果评估" class="headerlink" title="四、优化效果评估"></a>四、优化效果评估</h2><h3 id="1-性能指标"><a href="#1-性能指标" class="headerlink" title="1. 性能指标"></a>1. 性能指标</h3><ul>
+<li>执行时间</li>
+<li>代码大小</li>
+<li>内存使用</li>
+<li>编译时间</li>
+</ul>
+<h3 id="2-优化策略选择"><a href="#2-优化策略选择" class="headerlink" title="2. 优化策略选择"></a>2. 优化策略选择</h3><ul>
+<li>根据目标平台特性</li>
+<li>考虑编译时间开销</li>
+<li>权衡优化效果</li>
+</ul>
+<h3 id="3-调试和验证"><a href="#3-调试和验证" class="headerlink" title="3. 调试和验证"></a>3. 调试和验证</h3><ul>
+<li>正确性验证</li>
+<li>性能测试</li>
+<li>回归测试</li>
+</ul>
+<p>这个总结涵盖了编译原理和优化技术的主要概念，可以帮助你准备面试。建议你重点掌握：</p>
+<ol>
+<li>基本概念的定义和关系</li>
+<li>各种优化技术的原理和实现方法</li>
+<li>数据流分析的基本算法</li>
+<li>优化效果评估的方法</li>
+</ol>
+<p>在面试中，可以结合你的项目经验，详细解释这些概念和技术的实现细节。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2025/05/23/Programming/CPP/compile/" data-id="cmd5bsn9n0023oxonc72i25x3" data-title="" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-Programming/CPP/C++ on Linux" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2025/04/21/Programming/CPP/C++%20on%20Linux/" class="article-date">
+  <time class="dt-published" datetime="2025-04-21T06:54:47.013Z" itemprop="datePublished">2025-04-21</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>C++ linux开发</p>
+<h2 id="linux-vitual-memery-layout"><a href="#linux-vitual-memery-layout" class="headerlink" title="linux vitual memery layout"></a>linux vitual memery layout</h2><p>4GB的那个图：</p>
+<p>kernel space: 1gb，用户代码不能写否则段错误</p>
+<p>stack (向下增长)</p>
+<p>Memory Mapping Segment 映射*.so </p>
+<p>Heap”</p>
+<p>BSS segment: 未初始化的变量(static char* userName);</p>
+<p>Data segment: 初始化的static variables: example： static char* str &#x3D; “ABC”;</p>
+<p>Text Segment: 二进制image</p>
+<p><img src="/images/process-memory-layout.png" alt="Process Memory Layout"></p>
+<h2 id="dynamic-memory-management"><a href="#dynamic-memory-management" class="headerlink" title="dynamic memory management:"></a>dynamic memory management:</h2><h3 id="malloc"><a href="#malloc" class="headerlink" title="malloc"></a>malloc</h3><p>在 Linux 中，内存分配涉及以下系统调用：</p>
+<ul>
+<li><strong>brk&#x2F;sbrk</strong>：<ul>
+<li>调整数据段（heap）的顶部地址。</li>
+<li>用于小块内存分配的扩展堆。</li>
+</ul>
+</li>
+<li><strong>mmap&#x2F;munmap</strong>：<ul>
+<li>用于分配大块内存。</li>
+<li>分配的内存独立于堆，不受 <code>brk/sbrk</code> 控制。</li>
+</ul>
+</li>
+</ul>
+<h5 id="内存分配的结构"><a href="#内存分配的结构" class="headerlink" title="内存分配的结构"></a>内存分配的结构</h5><ul>
+<li><p>当你调用 <code>malloc</code> 时，比如：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">c</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">CopyEdit</span><br><span class="line">int* arr = (int*)malloc(10 * sizeof(int));</span><br></pre></td></tr></table></figure>
+
+<p>内存管理器实际上分配的内存比请求的要多：</p>
+<ul>
+<li>用户请求的大小：<code>10 * sizeof(int)</code>。</li>
+<li>额外的元数据空间，用于存储分配信息，如分配块的大小。</li>
+</ul>
+<p>一个典型的内存布局如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">css</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">CopyEdit</span><br><span class="line">[元数据][用户数据区域]</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>元数据</strong>：记录内存块的大小、状态（已分配&#x2F;空闲）等。</li>
+<li><strong>用户数据区域</strong>：返回给用户的指针地址。</li>
+</ul>
+<p><code>malloc</code> 返回的指针是指向用户数据区域的起始位置，而元数据存储在这块内存的前面，用户无法直接访问。</p>
+</li>
+</ul>
+<h3 id="free"><a href="#free" class="headerlink" title="free"></a>free</h3><h5 id="free-传入参数是一个地址是怎么做到free一整个内存块的"><a href="#free-传入参数是一个地址是怎么做到free一整个内存块的" class="headerlink" title="free 传入参数是一个地址是怎么做到free一整个内存块的"></a>free 传入参数是一个地址是怎么做到free一整个内存块的</h5><ul>
+<li><strong>free</strong> 通过内存块前的元数据知道需要释放的整个内存块大小。</li>
+<li><strong>连续性保证</strong>：<code>malloc</code> 保证了分配内存块的连续性，<code>free</code> 只需释放记录的整块内存。</li>
+<li>对于复杂数据结构（如多维数组），需要按块分别释放，因为每次分配的内存块都有独立的元数据记录。</li>
+</ul>
+<h4 id="多维数组的free"><a href="#多维数组的free" class="headerlink" title="多维数组的free"></a>多维数组的free</h4><p>如果数组是动态分配的多维数组，或者使用的是指针数组，例如：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">int** arr = (int**)malloc(10 * sizeof(int*));</span><br><span class="line">for (int i = 0; i &lt; 10; i++) &#123;</span><br><span class="line">    arr[i] = (int*)malloc(5 * sizeof(int));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在这种情况下，释放内存需要用户手动释放每个子数组：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">for (int i = 0; i &lt; 10; i++) &#123;</span><br><span class="line">    free(arr[i]); // 释放每个子数组</span><br><span class="line">&#125;</span><br><span class="line">free(arr); // 释放指针数组</span><br></pre></td></tr></table></figure>
+
+<p>这是因为每个子数组是单独分配的，元数据仅记录单块内存的大小。</p>
+<h4 id="管理策略："><a href="#管理策略：" class="headerlink" title="管理策略："></a>管理策略：</h4><ul>
+<li><strong>分割（Splitting）</strong>：大块内存可能被分割为更小的块以满足分配需求。</li>
+<li><strong>合并（Coalescing）</strong>：相邻的空闲块可能会被合并为更大的块。</li>
+<li><strong>碎片化</strong>：频繁分配和释放可能导致内存碎片化，降低内存利用率。</li>
+</ul>
+<p><strong>内存池（Memory Pool）</strong>：减少频繁的 <code>malloc</code>&#x2F;<code>free</code> 开销，这一点可以细致的了解一下.</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2025/04/21/Programming/CPP/C++%20on%20Linux/" data-id="cmd5bsn9m001zoxon4q5q91qf" data-title="" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-复盘" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2025/04/20/%E5%A4%8D%E7%9B%98/" class="article-date">
+  <time class="dt-published" datetime="2025-04-20T11:40:28.550Z" itemprop="datePublished">2025-04-20</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="MindIE-Benchmark"><a href="#MindIE-Benchmark" class="headerlink" title="MindIE Benchmark"></a>MindIE Benchmark</h2><ol>
+<li><p>client 开发</p>
+</li>
+<li><p>profiler使用</p>
+</li>
+<li><p>常用metrics :</p>
+</li>
+<li><p>多进程发送请求</p>
+</li>
+</ol>
+<h2 id="PD-Disaggregation"><a href="#PD-Disaggregation" class="headerlink" title="PD Disaggregation"></a>PD Disaggregation</h2><ol>
+<li><p>prefill decode分离</p>
+<p>kv-cache传输: 建链，传输，Release</p>
+</li>
+<li><p>调度</p>
+</li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2025/04/20/%E5%A4%8D%E7%9B%98/" data-id="cmd5bsn8y0009oxon2t0v6ldo" data-title="" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-模拟" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2025/04/20/%E6%A8%A1%E6%8B%9F/" class="article-date">
+  <time class="dt-published" datetime="2025-04-20T11:40:16.992Z" itemprop="datePublished">2025-04-20</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>作者：阿biu</p>
+<ul>
+<li>自我介绍</li>
+<li>研究生的研究方向</li>
+<li>做过什么后端开发相关的项目</li>
+<li><a target="_blank" rel="noopener" href="https://zhida.zhihu.com/search?content_id=567938776&content_type=Answer&match_order=1&q=webserver&zhida_source=entity">webserver</a>是你独立写的还是参考别人</li>
+<li>三个项目都是什么类型？</li>
+<li>C++的<a target="_blank" rel="noopener" href="https://zhida.zhihu.com/search?content_id=567938776&content_type=Answer&match_order=1&q=%E5%86%85%E5%AD%98%E7%BB%93%E6%9E%84&zhida_source=entity">内存结构</a></li>
+<li>堆区和栈区的区别</li>
+<li>什么情况下使用堆区什么情况使用栈区</li>
+<li>数组和链表的区别</li>
+<li>进程和线程的区别</li>
+<li>i &#x3D; i + 1大概执行多久</li>
+<li>进程间的通信方式有哪些</li>
+<li>了解中断吗</li>
+<li>键盘上敲一个字母是什么中断</li>
+<li>Linux系统熟悉吗</li>
+<li>查找一个字符串是否在文件中</li>
+<li>查找本机一个端口号的状态</li>
+<li>几十个G的文件中查找一个字符串是否存在</li>
+<li>如何判断远程服务的端口有没有开启</li>
+<li>平时在Linux上都用什么命令</li>
+<li>介绍一下<a target="_blank" rel="noopener" href="https://zhida.zhihu.com/search?content_id=567938776&content_type=Answer&match_order=1&q=OSI%E4%B8%83%E5%B1%82%E5%8D%8F%E8%AE%AE&zhida_source=entity">OSI七层协议</a>，各层协议都有哪些</li>
+<li>百度搜索<a href="https://link.zhihu.com/?target=http://www.baidu.com">http://www.baidu.com</a>到页面出现百度，这中间发生了什么</li>
+<li><a href="https://link.zhihu.com/?target=http://baidu.com">http://baidu.com</a>默认用什么端口</li>
+<li><a target="_blank" rel="noopener" href="https://zhida.zhihu.com/search?content_id=567938776&content_type=Answer&match_order=1&q=%E4%B8%89%E6%AC%A1%E6%8F%A1%E6%89%8B&zhida_source=entity">三次握手</a></li>
+<li>两次握手可以吗</li>
+<li>如果网络情况非常好百分百不会发生拥塞，不会重传<a target="_blank" rel="noopener" href="https://zhida.zhihu.com/search?content_id=567938776&content_type=Answer&match_order=1&q=SYN&zhida_source=entity">SYN</a>，不会有历史连接的问题，可以两次握手吗？</li>
+<li>什么时候用<a target="_blank" rel="noopener" href="https://zhida.zhihu.com/search?content_id=567938776&content_type=Answer&match_order=1&q=tcp&zhida_source=entity">tcp</a>什么时候用<a target="_blank" rel="noopener" href="https://zhida.zhihu.com/search?content_id=567938776&content_type=Answer&match_order=1&q=udp&zhida_source=entity">udp</a></li>
+<li>此时此刻的视频面试用的udp还是tcp</li>
+<li>udp丢包会有什么现象？</li>
+<li>http和https的区别</li>
+<li>证书是绿色的是什么意思？</li>
+<li>自己随便编一个证书可以吗？需要去什么地方注册</li>
+<li>平常查什么网站？代码、文献、debug习惯</li>
+<li>手撕代码Leetcode模式easy题</li>
+</ul>
+<p><strong>二面1h</strong></p>
+<ul>
+<li>proactor和<a target="_blank" rel="noopener" href="https://zhida.zhihu.com/search?content_id=567938776&content_type=Answer&match_order=1&q=reactor%E6%A8%A1%E5%BC%8F&zhida_source=entity">reactor模式</a></li>
+<li>从数据流的角度描述一下<a target="_blank" rel="noopener" href="https://zhida.zhihu.com/search?content_id=567938776&content_type=Answer&match_order=1&q=proactor%E6%A8%A1%E5%BC%8F&zhida_source=entity">proactor模式</a></li>
+<li>五种IO模型</li>
+<li><a target="_blank" rel="noopener" href="https://zhida.zhihu.com/search?content_id=567938776&content_type=Answer&match_order=1&q=epoll&zhida_source=entity">epoll</a>是同步还是异步的？这个争议很大</li>
+<li>为什么不用异步</li>
+<li>如何用同步IO模拟proactor模式</li>
+<li>一些场景题，都有很好的引导。高并发情况下的性能提升方法</li>
+<li>Linux如何切换目录、查看端口绑定情况、查看cpu利用率命令</li>
+<li>什么是<a target="_blank" rel="noopener" href="https://zhida.zhihu.com/search?content_id=567938776&content_type=Answer&match_order=1&q=qps&zhida_source=entity">qps</a>和tps，如何计算</li>
+<li><a target="_blank" rel="noopener" href="https://zhida.zhihu.com/search?content_id=567938776&content_type=Answer&match_order=1&q=%E7%BA%BF%E7%A8%8B%E6%B1%A0%E6%95%B0%E9%87%8F&zhida_source=entity">线程池数量</a>如何确定</li>
+<li>线程池和任务队列有没有做分离</li>
+<li>线程池中怎么利用的<a target="_blank" rel="noopener" href="https://zhida.zhihu.com/search?content_id=567938776&content_type=Answer&match_order=1&q=%E4%BF%A1%E5%8F%B7%E9%87%8F%E6%9C%BA%E5%88%B6&zhida_source=entity">信号量机制</a></li>
+<li>CPU利用率拉满的时候在线程池中增加线程是否能提高qps</li>
+<li>引导我如何根据CPU利用率动态设计，优化这个线程池</li>
+<li>http解析主从状态机</li>
+<li>http的5类状态码</li>
+<li>是否使用过lib库，动态链接库静态链接库特点、区别</li>
+<li>进程线程区别、通信方式</li>
+<li>协程</li>
+<li>接下来C++八股</li>
+<li>static加在全局变量上</li>
+<li>加在局部变量上</li>
+<li>加在类成员函数上</li>
+<li>如何使用类中的static成员函数</li>
+<li>static数据成员如何修改</li>
+<li>const加在不同位置的效果，和static问法差不多</li>
+<li>全局变量的默认关键字</li>
+<li>面向对象三大特性</li>
+<li>虚函数表在什么时候创建的、存在什么位置</li>
+<li>虚函数存在什么位置</li>
+<li>虚函数指针在什么时候创建</li>
+<li>虚函数为什么能实现多态</li>
+<li>函数调用的过程中堆栈的变化情况</li>
+<li>什么是内存泄漏、如何防止</li>
+<li>既然提到<a target="_blank" rel="noopener" href="https://zhida.zhihu.com/search?content_id=567938776&content_type=Answer&match_order=1&q=%E6%99%BA%E8%83%BD%E6%8C%87%E9%92%88&zhida_source=entity">智能指针</a>，说几个常见的，哪个比较熟</li>
+<li>你提到<a target="_blank" rel="noopener" href="https://zhida.zhihu.com/search?content_id=567938776&content_type=Answer&match_order=1&q=RAII&zhida_source=entity">RAII</a>，什么是RAII、智能指针为什么能防止内存泄漏</li>
+<li>shared_ptr的内部结构</li>
+<li>如果一个传给shared_ptr一个引用，那么引用计数会不会+1</li>
+<li>宏定义，有无类型检查，在什么阶段生效</li>
+<li>设计模型</li>
+<li>远不止这些、自从挖完项目之后、我俩快问快答问了非常多的八股</li>
+<li>手撕代码acm模式一道二叉树medium题。</li>
+</ul>
+<p><strong>三面46min</strong></p>
+<ul>
+<li>实习的工作意向</li>
+<li>有没有实习经历</li>
+<li>和导师做过什么项目</li>
+<li>C++接触多长时间了</li>
+<li>做导师的项目是自己选择还是他分配的</li>
+<li>项目来源</li>
+<li>这两个项目哪个印象比较深刻，如果想聊我们聊哪个</li>
+<li>项目是自己完成还是团体参与，独立完成的时候有没有和其他同学讨论交流过</li>
+<li>在选择任务的技术路线时如何佐证你的方案是可行的</li>
+<li>组会讨论是什么形式，你期望的是什么样的反馈</li>
+<li>如果你的想法和大家的反馈有冲突怎么办</li>
+<li>当你的任务有做偏了的情况在哪一步去进行挽回</li>
+<li>别人给你的反馈不一定是正确的，你觉得自己的思路更好，这种情况怎么处理</li>
+<li>对于更具有权威性的人提出的建议你是怎么考虑的</li>
+<li>合作的项目彼此之间进度不一的情况怎么处理</li>
+<li>研究生规划</li>
+<li>你觉得自己是偏技术钻研方向还是偏向业务（社交、组织协调）</li>
+<li>工作城市的选择</li>
+<li>实习时间</li>
+<li>优势和不足的点</li>
+<li>项目大概做了多长时间</li>
+<li>对这个项目的时间周期满意吗</li>
+<li>反问环节</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2025/04/20/%E6%A8%A1%E6%8B%9F/" data-id="cmd5bsn93000joxon1oqg5ghc" data-title="" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-春风吹-方大同" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2025/03/05/%E6%98%A5%E9%A3%8E%E5%90%B9-%E6%96%B9%E5%A4%A7%E5%90%8C/" class="article-date">
@@ -109,7 +667,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2025/03/05/%E6%98%A5%E9%A3%8E%E5%90%B9-%E6%96%B9%E5%A4%A7%E5%90%8C/" data-id="cmd2paco1000h5non2ela8ihb" data-title="" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2025/03/05/%E6%98%A5%E9%A3%8E%E5%90%B9-%E6%96%B9%E5%A4%A7%E5%90%8C/" data-id="cmd5bsn92000ioxon2zelbcea" data-title="" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -144,7 +702,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2025/03/05/%E6%8E%A8%E7%90%86%E6%9C%8D%E5%8A%A1%E5%8C%96-Essentials/" data-id="cmd2pacnx000a5nonhqbyd0pa" data-title="" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2025/03/05/%E6%8E%A8%E7%90%86%E6%9C%8D%E5%8A%A1%E5%8C%96-Essentials/" data-id="cmd5bsn8z000aoxon0dwm80kn" data-title="" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -184,7 +742,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2025/03/05/hello-world/" data-id="cmd2pacnp00025non0cgj1ym6" data-title="Hello World" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2025/03/05/hello-world/" data-id="cmd5bsn8p0002oxon75te1r41" data-title="Hello World" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -260,7 +818,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2025/03/05/%E4%B8%93%E5%AE%B6%E5%B9%B6%E8%A1%8C-LLM-Basics/" data-id="cmd2pacnw00095non2jr48v21" data-title="专家并行 - LLM 基础" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2025/03/05/%E4%B8%93%E5%AE%B6%E5%B9%B6%E8%A1%8C-LLM-Basics/" data-id="cmd5bsn8w0007oxonc3zy2o7t" data-title="专家并行 - LLM 基础" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -346,338 +904,11 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2025/03/05/%E6%95%B0%E6%8D%AE%E5%B9%B6%E8%A1%8C-LLM-Basics/" data-id="cmd2pacnz000c5non51fj4wq5" data-title="数据并行 - LLM 基础" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2025/03/05/%E6%95%B0%E6%8D%AE%E5%B9%B6%E8%A1%8C-LLM-Basics/" data-id="cmd5bsn90000coxoncbslazl1" data-title="数据并行 - LLM 基础" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/data-parallelism/" rel="tag">data-parallelism</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/distributed-systems/" rel="tag">distributed-systems</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/llm/" rel="tag">llm</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-Music/Blues/blues-chord-connection" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2025/03/05/Music/Blues/blues-chord-connection/" class="article-date">
-  <time class="dt-published" datetime="2025-03-04T16:00:00.000Z" itemprop="datePublished">2025-03-05</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2025/03/05/Music/Blues/blues-chord-connection/">布鲁斯和弦连接</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h1 id="布鲁斯和弦连接"><a href="#布鲁斯和弦连接" class="headerlink" title="布鲁斯和弦连接"></a>布鲁斯和弦连接</h1><p>以C调12小节布鲁斯为例</p>
-<h5 id="和弦进行"><a href="#和弦进行" class="headerlink" title="和弦进行"></a>和弦进行</h5><h4 id="和弦分析"><a href="#和弦分析" class="headerlink" title="和弦分析"></a>和弦分析</h4><h4 id="和弦连接"><a href="#和弦连接" class="headerlink" title="和弦连接"></a>和弦连接</h4>
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2025/03/05/Music/Blues/blues-chord-connection/" data-id="cmd2pacop001j5nonfr3m1cqr" data-title="布鲁斯和弦连接" class="article-share-link"><span class="fa fa-share">Share</span></a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/blues/" rel="tag">blues</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/guitar/" rel="tag">guitar</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/harmony/" rel="tag">harmony</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-Music/Blues/blues-comping-rhythm" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2025/03/05/Music/Blues/blues-comping-rhythm/" class="article-date">
-  <time class="dt-published" datetime="2025-03-04T16:00:00.000Z" itemprop="datePublished">2025-03-05</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2025/03/05/Music/Blues/blues-comping-rhythm/">Blues Comping Rhythm</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h1 id="Blues-Comping-Rhythm"><a href="#Blues-Comping-Rhythm" class="headerlink" title="Blues Comping Rhythm"></a>Blues Comping Rhythm</h1><p>在布鲁斯音乐中，节奏伴奏（Comping）是非常重要的一部分。下面是一些基本的布鲁斯节奏模式示例：</p>
-<h2 id="基础节奏模式-1"><a href="#基础节奏模式-1" class="headerlink" title="基础节奏模式 1"></a>基础节奏模式 1</h2><p>这是一个基础的布鲁斯节奏模式：</p>
-<audio controls>
-  <source src="/audio/blues-rhythm-1.mp3" type="audio/mpeg">
-  您的浏览器不支持音频播放。
-</audio>
-
-<h2 id="摇摆节奏模式"><a href="#摇摆节奏模式" class="headerlink" title="摇摆节奏模式"></a>摇摆节奏模式</h2><p>这是一个带有摇摆感的节奏模式：</p>
-<audio controls>
-  <source src="/audio/blues-rhythm-2.mp3" type="audio/mpeg">
-  您的浏览器不支持音频播放。
-</audio>
-
-<h2 id="如何添加音频文件"><a href="#如何添加音频文件" class="headerlink" title="如何添加音频文件"></a>如何添加音频文件</h2><ol>
-<li>在博客的 <code>source</code> 目录下创建一个 <code>audio</code> 文件夹</li>
-<li>将你的音频文件（MP3格式）放入该文件夹</li>
-<li>使用上面的 HTML 代码模板来嵌入音频</li>
-</ol>
-<p>注意：确保你的音频文件大小适中，建议压缩到 1-2MB 以内，以保证网页加载速度。</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2025/03/05/Music/Blues/blues-comping-rhythm/" data-id="cmd2pacoq001m5non4xfz6sf5" data-title="Blues Comping Rhythm" class="article-share-link"><span class="fa fa-share">Share</span></a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/blues/" rel="tag">blues</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/guitar/" rel="tag">guitar</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/rhythm/" rel="tag">rhythm</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-Music/Blues/blues-licks-cliche" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2025/03/05/Music/Blues/blues-licks-cliche/" class="article-date">
-  <time class="dt-published" datetime="2025-03-04T16:00:00.000Z" itemprop="datePublished">2025-03-05</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2025/03/05/Music/Blues/blues-licks-cliche/">布鲁斯乐句 - 经典套路</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h1 id="布鲁斯乐句-经典套路"><a href="#布鲁斯乐句-经典套路" class="headerlink" title="布鲁斯乐句 - 经典套路"></a>布鲁斯乐句 - 经典套路</h1><h2 id="什么是布鲁斯乐句"><a href="#什么是布鲁斯乐句" class="headerlink" title="什么是布鲁斯乐句"></a>什么是布鲁斯乐句</h2><p>布鲁斯乐句（Blues Licks）是布鲁斯音乐中最具特色的演奏元素。本文将介绍一些经典的布鲁斯乐句套路。</p>
-<h2 id="基础乐句类型"><a href="#基础乐句类型" class="headerlink" title="基础乐句类型"></a>基础乐句类型</h2><ol>
-<li>上行乐句</li>
-<li>下行乐句</li>
-<li>重复音型</li>
-<li>滑音技巧</li>
-</ol>
-<h2 id="经典乐句分析"><a href="#经典乐句分析" class="headerlink" title="经典乐句分析"></a>经典乐句分析</h2><h3 id="1-小调五声音阶"><a href="#1-小调五声音阶" class="headerlink" title="1. 小调五声音阶"></a>1. 小调五声音阶</h3><ul>
-<li>基本音型</li>
-<li>变奏方式</li>
-<li>应用场景</li>
-</ul>
-<h3 id="2-蓝音运用"><a href="#2-蓝音运用" class="headerlink" title="2. 蓝音运用"></a>2. 蓝音运用</h3><ul>
-<li>蓝音位置</li>
-<li>情感表达</li>
-<li>即兴技巧</li>
-</ul>
-<h3 id="3-节奏变化"><a href="#3-节奏变化" class="headerlink" title="3. 节奏变化"></a>3. 节奏变化</h3><ul>
-<li>切分音</li>
-<li>重音移位</li>
-<li>节奏组合</li>
-</ul>
-<h2 id="实践练习"><a href="#实践练习" class="headerlink" title="实践练习"></a>实践练习</h2><h3 id="1-基础练习"><a href="#1-基础练习" class="headerlink" title="1. 基础练习"></a>1. 基础练习</h3><ul>
-<li>音阶练习</li>
-<li>节奏训练</li>
-<li>技巧组合</li>
-</ul>
-<h3 id="2-即兴演奏"><a href="#2-即兴演奏" class="headerlink" title="2. 即兴演奏"></a>2. 即兴演奏</h3><ul>
-<li>乐句连接</li>
-<li>情感表达</li>
-<li>风格融合</li>
-</ul>
-<h2 id="音频示例"><a href="#音频示例" class="headerlink" title="音频示例"></a>音频示例</h2><audio controls>
-  <source src="/audio/blues-licks-1.mp3" type="audio/mpeg">
-  您的浏览器不支持音频播放。
-</audio>
-
-<h2 id="进阶技巧"><a href="#进阶技巧" class="headerlink" title="进阶技巧"></a>进阶技巧</h2><ol>
-<li>和声进行</li>
-<li>调式转换</li>
-<li>风格融合</li>
-</ol>
-<h2 id="学习建议"><a href="#学习建议" class="headerlink" title="学习建议"></a>学习建议</h2><ol>
-<li>练习方法</li>
-<li>常见问题</li>
-<li>进阶方向</li>
-</ol>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2025/03/05/Music/Blues/blues-licks-cliche/" data-id="cmd2pacoq001n5non3sjc9548" data-title="布鲁斯乐句 - 经典套路" class="article-share-link"><span class="fa fa-share">Share</span></a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/blues/" rel="tag">blues</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/guitar/" rel="tag">guitar</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/licks/" rel="tag">licks</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-career-summary" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2024/03/21/career-summary/" class="article-date">
-  <time class="dt-published" datetime="2024-03-20T16:00:00.000Z" itemprop="datePublished">2024-03-21</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2024/03/21/career-summary/">工作经历总结</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h1 id="工作经历总结"><a href="#工作经历总结" class="headerlink" title="工作经历总结"></a>工作经历总结</h1><h2 id="Amazon-Experience"><a href="#Amazon-Experience" class="headerlink" title="Amazon Experience"></a>Amazon Experience</h2><p>分布式计算</p>
-<p>wechat qrcode business </p>
-<p>基于lambda serverless的微服务</p>
-<ol>
-<li><strong>为什么选择 Lambda？与传统服务器相比有什么优势？</strong><ul>
-<li>回答要点：按需扩展、无状态模型、低运维成本。</li>
-</ul>
-</li>
-<li><strong>如何优化冷启动问题？</strong><ul>
-<li>回答要点：配置预热并发、减小打包体积、优化初始化逻辑。</li>
-</ul>
-</li>
-<li><strong>高并发时如何处理流量限制？</strong><ul>
-<li>回答要点：API Gateway 限流、配置 Lambda 的并发限制、使用 SQS 进行队列化。</li>
-</ul>
-</li>
-<li><strong>二维码生成中的缓存如何设计？</strong><ul>
-<li>回答要点：使用 S3 和 CDN 缓存固定二维码，减少重复生成。</li>
-</ul>
-</li>
-<li><strong>Lambda 的限制有哪些？如何应对？</strong><ul>
-<li>回答要点：运行时长限制（15 分钟）、冷启动、并发限制；应对方法包括任务分解、分批处理、配置预热实例等。</li>
-</ul>
-</li>
-</ol>
-<h3 id="架构优化建议"><a href="#架构优化建议" class="headerlink" title="架构优化建议"></a>架构优化建议</h3><p>如果采用 Lambda 和 Serverless 架构，可以针对二维码生成的需求进行以下优化：</p>
-<h4 id="高并发优化"><a href="#高并发优化" class="headerlink" title="高并发优化"></a><strong>高并发优化</strong></h4><ul>
-<li>使用 <strong>API Gateway</strong> 限流，避免流量暴涨导致 Lambda 并发超额。</li>
-<li>配置 <strong>Provisioned Concurrency</strong> 保证冷启动时延降低。</li>
-</ul>
-<h4 id="静态二维码缓存："><a href="#静态二维码缓存：" class="headerlink" title="静态二维码缓存："></a><strong>静态二维码缓存</strong>：</h4><ul>
-<li>对于固定输入（如 URL、文本）生成的二维码，直接缓存结果（如存储在 S3 或 CDN 中），减少重复计算。</li>
-<li>配置 <strong>CloudFront</strong> 与 <strong>S3</strong>，将常用二维码放置到 CDN 节点，提高响应速度。</li>
-</ul>
-<h4 id="复杂任务分解："><a href="#复杂任务分解：" class="headerlink" title="复杂任务分解："></a><strong>复杂任务分解</strong>：</h4><ul>
-<li>如果需要批量生成二维码，可以拆分任务，将单个二维码生成的请求分发给多个 Lambda 实例，结合 SQS 或 Step Functions 协调任务流程。</li>
-</ul>
-<h4 id="监控与日志："><a href="#监控与日志：" class="headerlink" title="监控与日志："></a><strong>监控与日志</strong>：</h4><ul>
-<li>使用 <strong>CloudWatch</strong> 监控 Lambda 的运行时性能，及时发现冷启动问题或流量异常。</li>
-</ul>
-<h3 id="可能的问题："><a href="#可能的问题：" class="headerlink" title="可能的问题："></a>可能的问题：</h3><p>MindIE Inference Engine Develop</p>
-<ol>
-<li><p>2025.1 - 2025. 6 Develop in MindIE Prefill-Decode-Disaggregation </p>
-<p>Inference Node </p>
-<p>KV Cache Transfer: inter-node level &#x2F; management</p>
-<p>问题：节点之间是基于什么协议通信的：RDMA？</p>
-</li>
-<li><p>2024.8 - 2024. 12</p>
-<p>MindIE Benchmark Develop</p>
-<p>MindIE Server Develop</p>
-</li>
-</ol>
-<p>Think About How to cope with difference job type?</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2024/03/21/career-summary/" data-id="cmd2pacnn00015nongxxs7saz" data-title="工作经历总结" class="article-share-link"><span class="fa fa-share">Share</span></a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/career/" rel="tag">career</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/experience/" rel="tag">experience</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-raft" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2024/03/21/raft/" class="article-date">
-  <time class="dt-published" datetime="2024-03-20T16:00:00.000Z" itemprop="datePublished">2024-03-21</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2024/03/21/raft/">Raft 协议笔记</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h1 id="Raft-协议笔记"><a href="#Raft-协议笔记" class="headerlink" title="Raft 协议笔记"></a>Raft 协议笔记</h1><h2 id="Leader-Election"><a href="#Leader-Election" class="headerlink" title="Leader Election"></a>Leader Election</h2><ol>
-<li>term在什么时候递增</li>
-<li>server id 怎么表示比较方便</li>
-</ol>
-<h2 id="Log-Duplication"><a href="#Log-Duplication" class="headerlink" title="Log Duplication"></a>Log Duplication</h2><ol>
-<li>什么时候更新log[]</li>
-</ol>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2024/03/21/raft/" data-id="cmd2pacns00045nonhjhq62o9" data-title="Raft 协议笔记" class="article-share-link"><span class="fa fa-share">Share</span></a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/consensus/" rel="tag">consensus</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/distributed-systems/" rel="tag">distributed-systems</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/raft/" rel="tag">raft</a></li></ul>
 
     </footer>
   </div>
@@ -744,23 +975,23 @@
       <ul>
         
           <li>
-            <a href="/2025/07/14/System/LLM_Serving_Framework_Comparison/">(no title)</a>
+            <a href="/2025/07/16/System/vLLM_safetensors%E6%A8%A1%E5%9E%8B%E5%8A%A0%E8%BD%BD%E4%B8%8E%E8%AE%A1%E7%AE%97%E5%9B%BE%E8%BD%AC%E6%8D%A2%E8%AF%A6%E7%BB%86%E5%88%86%E6%9E%90/">(no title)</a>
           </li>
         
           <li>
-            <a href="/2025/07/14/System/LLM_KVCache_%E8%AF%A6%E7%BB%86%E5%88%86%E6%9E%90/">(no title)</a>
+            <a href="/2025/07/16/System/vLLM_PagedAttention_%E5%AE%9E%E7%8E%B0%E8%AF%A6%E7%BB%86%E5%88%86%E6%9E%90/">(no title)</a>
           </li>
         
           <li>
-            <a href="/2025/07/10/Programming/CPP/modern%20cpu/">(no title)</a>
+            <a href="/2025/07/16/System/PD%E5%88%86%E7%A6%BB%E6%9E%B6%E6%9E%84KV_Cache%E8%B7%A8%E8%8A%82%E7%82%B9%E4%BC%A0%E8%BE%93%E6%8A%80%E6%9C%AF%E5%88%86%E6%9E%90/">(no title)</a>
           </li>
         
           <li>
-            <a href="/2025/07/10/Programming/CPP/jemalloc/">(no title)</a>
+            <a href="/2025/07/16/System/KVCache%E6%B1%A0%E5%8C%96%E6%8A%80%E6%9C%AF%E6%B7%B1%E5%BA%A6%E5%88%86%E6%9E%90/">(no title)</a>
           </li>
         
           <li>
-            <a href="/2025/07/07/Programming/CPP/gRPC%20vs%20restful/">(no title)</a>
+            <a href="/2025/07/16/System/Continuous_Batching%E4%B8%8E%E8%AF%B7%E6%B1%82%E8%B0%83%E5%BA%A6%E4%BC%98%E5%8C%96%E5%88%86%E6%9E%90/">(no title)</a>
           </li>
         
       </ul>
