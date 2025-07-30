@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="KV Cache池化技术深度分析概述KV Cache池化是LLM服务框架中的核心内存管理技术，通过预分配和复用内存块来避免频繁的内存分配&#x2F;释放操作，显著提升推理性能。本文深入分析TensorRT-LLM、vLLM和SGLang三个主流框架的KV Cache池化实现。 目录 核心技术原理 TensorRT-LLM池化架构 vLLM池化架构 SGLang池化架构 技术对比分析 性能优化策略">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hexo">
+<meta property="og:url" content="http://example.com/2025/07/16/System/KVCache%E6%B1%A0%E5%8C%96%E6%8A%80%E6%9C%AF%E6%B7%B1%E5%BA%A6%E5%88%86%E6%9E%90/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="KV Cache池化技术深度分析概述KV Cache池化是LLM服务框架中的核心内存管理技术，通过预分配和复用内存块来避免频繁的内存分配&#x2F;释放操作，显著提升推理性能。本文深入分析TensorRT-LLM、vLLM和SGLang三个主流框架的KV Cache池化实现。 目录 核心技术原理 TensorRT-LLM池化架构 vLLM池化架构 SGLang池化架构 技术对比分析 性能优化策略">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2025-07-16T02:11:51.904Z">
+<meta property="article:modified_time" content="2025-07-16T09:34:06.087Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fork-awesome@1.2.0/css/fork-awesome.min.css">
+
+  
+  <!-- Mermaid -->
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.6.1/dist/mermaid.min.js"></script>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: 'default',
+      securityLevel: 'loose',
+      themeVariables: {
+        primaryColor: '#0f4c75',
+        primaryTextColor: '#fff',
+        primaryBorderColor: '#0f4c75',
+        lineColor: '#0f4c75',
+        secondaryColor: '#006ba6',
+        tertiaryColor: '#fff'
+      }
+    });
+  </script>
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/atom.xml" title="RSS Feed"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="Search"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-System/KVCache池化技术深度分析" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2025/07/16/System/KVCache%E6%B1%A0%E5%8C%96%E6%8A%80%E6%9C%AF%E6%B7%B1%E5%BA%A6%E5%88%86%E6%9E%90/" class="article-date">
+  <time class="dt-published" datetime="2025-07-16T02:11:51.904Z" itemprop="datePublished">2025-07-16</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="KV-Cache池化技术深度分析"><a href="#KV-Cache池化技术深度分析" class="headerlink" title="KV Cache池化技术深度分析"></a>KV Cache池化技术深度分析</h1><h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>KV Cache池化是LLM服务框架中的核心内存管理技术，通过预分配和复用内存块来避免频繁的内存分配&#x2F;释放操作，显著提升推理性能。本文深入分析TensorRT-LLM、vLLM和SGLang三个主流框架的KV Cache池化实现。</p>
+<h2 id="目录"><a href="#目录" class="headerlink" title="目录"></a>目录</h2><ol>
+<li><a href="#%E6%A0%B8%E5%BF%83%E6%8A%80%E6%9C%AF%E5%8E%9F%E7%90%86">核心技术原理</a></li>
+<li><a href="#tensorrt-llm%E6%B1%A0%E5%8C%96%E6%9E%B6%E6%9E%84">TensorRT-LLM池化架构</a></li>
+<li><a href="#vllm%E6%B1%A0%E5%8C%96%E6%9E%B6%E6%9E%84">vLLM池化架构</a></li>
+<li><a href="#sglang%E6%B1%A0%E5%8C%96%E6%9E%B6%E6%9E%84">SGLang池化架构</a></li>
+<li><a href="#%E6%8A%80%E6%9C%AF%E5%AF%B9%E6%AF%94%E5%88%86%E6%9E%90">技术对比分析</a></li>
+<li><a href="#%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E7%AD%96%E7%95%A5">性能优化策略</a></li>
+<li><a href="#%E5%AE%9E%E7%8E%B0%E5%BB%BA%E8%AE%AE">实现建议</a></li>
+</ol>
+<h2 id="核心技术原理"><a href="#核心技术原理" class="headerlink" title="核心技术原理"></a>核心技术原理</h2><h3 id="池化基本概念"><a href="#池化基本概念" class="headerlink" title="池化基本概念"></a>池化基本概念</h3><p>KV Cache池化基于以下核心思想：</p>
+<ul>
+<li><strong>预分配</strong>: 系统启动时预分配大块连续内存</li>
+<li><strong>块管理</strong>: 将内存划分为固定大小的块（Block&#x2F;Page）</li>
+<li><strong>复用机制</strong>: 通过引用计数和LRU策略实现块的复用</li>
+<li><strong>内存对齐</strong>: 确保内存访问的高效性</li>
+</ul>
+<h3 id="内存层次结构"><a href="#内存层次结构" class="headerlink" title="内存层次结构"></a>内存层次结构</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Application Layer</span><br><span class="line">    ↓</span><br><span class="line">Block Manager Layer    ←── 池化核心层</span><br><span class="line">    ↓</span><br><span class="line">Physical Memory Layer</span><br></pre></td></tr></table></figure>
+
+<h2 id="TensorRT-LLM池化架构"><a href="#TensorRT-LLM池化架构" class="headerlink" title="TensorRT-LLM池化架构"></a>TensorRT-LLM池化架构</h2><h3 id="整体设计"><a href="#整体设计" class="headerlink" title="整体设计"></a>整体设计</h3><p>TensorRT-LLM采用<strong>分层Block管理架构</strong>，实现了企业级的内存池化方案：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 核心类层次结构</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">WindowBlockManager</span> &#123;</span><br><span class="line">    <span class="comment">// 内存池管理</span></span><br><span class="line">    std::vector&lt;KVCacheBlockPool&gt; mPools;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// Block追踪</span></span><br><span class="line">    std::vector&lt;BlockPtr&gt; mAllBlocksById;</span><br><span class="line">    BlockMap mContextBlocksByHash;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 空闲Block管理</span></span><br><span class="line">    std::shared_ptr&lt;BaseEvictionPolicy&gt; mEvictionPolicy;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 内存统计</span></span><br><span class="line">    SizeType32 mNumPrimaryBlocks;</span><br><span class="line">    SizeType32 mNumSecondaryBlocks;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h3 id="关键特性"><a href="#关键特性" class="headerlink" title="关键特性"></a>关键特性</h3><h4 id="1-多层内存池设计"><a href="#1-多层内存池设计" class="headerlink" title="1. 多层内存池设计"></a>1. <strong>多层内存池设计</strong></h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">KVCacheBlockPool</span> &#123;</span><br><span class="line">    <span class="comment">// 快速内存池（GPU）</span></span><br><span class="line">    runtime::ITensor::SharedPtr primaryPtr;</span><br><span class="line">    <span class="comment">// 慢速内存池（CPU/NVMe）</span></span><br><span class="line">    runtime::ITensor::SharedPtr secondaryPtr;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 内存池元数据</span></span><br><span class="line">    SizeType32 numLayers;</span><br><span class="line">    SizeType32 numKvHeads;</span><br><span class="line">    SizeType32 tokensPerBlock;</span><br><span class="line">    SizeType32 blockSize;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h4 id="2-智能Block管理"><a href="#2-智能Block管理" class="headerlink" title="2. 智能Block管理"></a>2. <strong>智能Block管理</strong></h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">KVCacheBlock</span> &#123;</span><br><span class="line">    <span class="comment">// 双重引用计数</span></span><br><span class="line">    <span class="type">int32_t</span> mRefCount;                  <span class="comment">// 运行时引用计数</span></span><br><span class="line">    <span class="type">int32_t</span> mSchedulingRefCount;        <span class="comment">// 调度期引用计数</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 企业级特性</span></span><br><span class="line">    executor::RetentionPriority mPriority;    <span class="comment">// 优先级</span></span><br><span class="line">    std::chrono::milliseconds mDurationMs;    <span class="comment">// 生存时间</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 链表指针（用于LRU）</span></span><br><span class="line">    std::shared_ptr&lt;KVCacheBlock&gt; mPrevBlock;</span><br><span class="line">    NextBlockMap mNextBlocks;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h4 id="3-高级驱逐策略"><a href="#3-高级驱逐策略" class="headerlink" title="3. 高级驱逐策略"></a>3. <strong>高级驱逐策略</strong></h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">LRUEvictionPolicy</span> : <span class="keyword">public</span> BaseEvictionPolicy &#123;</span><br><span class="line">    <span class="comment">// 按优先级分层的LRU队列</span></span><br><span class="line">    std::vector&lt;std::vector&lt;FreeBlocksQueue&gt;&gt; mFreeQueues;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 分级内存管理</span></span><br><span class="line">    std::vector&lt;SizeType32&gt; mNumFreeBlocksPerLevel;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 企业级优先级支持</span></span><br><span class="line">    executor::RetentionPriority mSecondaryOffloadMinPriority;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h3 id="内存分配流程"><a href="#内存分配流程" class="headerlink" title="内存分配流程"></a>内存分配流程</h3><ol>
+<li><p><strong>初始化阶段</strong></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 预分配内存池</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">WindowBlockManager::allocatePools</span><span class="params">(<span class="type">bool</span> useUvm)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">auto</span>&amp; pool : mPools) &#123;</span><br><span class="line">        <span class="comment">// 分配主内存池</span></span><br><span class="line">        pool.primaryPtr = mBufferManager.<span class="built_in">gpuSync</span>(cacheShape, poolDtype);</span><br><span class="line">        <span class="comment">// 分配辅助内存池</span></span><br><span class="line">        <span class="keyword">if</span> (mNumSecondaryBlocks &gt; <span class="number">0</span>) &#123;</span><br><span class="line">            pool.secondaryPtr = BufferManager::<span class="built_in">pinned</span>(cacheShapeOffload, poolDtype);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>Block分配</strong></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">BlockPtr <span class="title">WindowBlockManager::allocateBlock</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 从空闲队列获取Block</span></span><br><span class="line">    <span class="keyword">auto</span> block = mEvictionPolicy-&gt;<span class="built_in">allocate</span>();</span><br><span class="line">    <span class="keyword">if</span> (block) &#123;</span><br><span class="line">        block-&gt;<span class="built_in">incRefCount</span>();</span><br><span class="line">        <span class="keyword">return</span> block;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 触发驱逐</span></span><br><span class="line">    <span class="keyword">return</span> mEvictionPolicy-&gt;<span class="built_in">evictAndAllocate</span>();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>Block释放</strong></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">WindowBlockManager::freeBlock</span><span class="params">(BlockPtr block)</span> </span>&#123;</span><br><span class="line">    block-&gt;<span class="built_in">decRefCount</span>();</span><br><span class="line">    <span class="keyword">if</span> (!block-&gt;<span class="built_in">hasRefs</span>()) &#123;</span><br><span class="line">        mEvictionPolicy-&gt;<span class="built_in">free</span>(block);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h2 id="vLLM池化架构"><a href="#vLLM池化架构" class="headerlink" title="vLLM池化架构"></a>vLLM池化架构</h2><h3 id="整体设计-1"><a href="#整体设计-1" class="headerlink" title="整体设计"></a>整体设计</h3><p>vLLM采用<strong>模块化Block池架构</strong>，注重简洁性和可扩展性：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">BlockPool</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, num_gpu_blocks: <span class="built_in">int</span>, enable_caching: <span class="built_in">bool</span></span>):</span><br><span class="line">        <span class="comment"># 预分配所有Block对象</span></span><br><span class="line">        <span class="variable language_">self</span>.blocks: <span class="built_in">list</span>[KVCacheBlock] = [</span><br><span class="line">            KVCacheBlock(idx) <span class="keyword">for</span> idx <span class="keyword">in</span> <span class="built_in">range</span>(num_gpu_blocks)</span><br><span class="line">        ]</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 双向链表管理空闲Block</span></span><br><span class="line">        <span class="variable language_">self</span>.free_block_queue = FreeKVCacheBlockQueue(<span class="variable language_">self</span>.blocks)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 缓存Block哈希映射</span></span><br><span class="line">        <span class="variable language_">self</span>.cached_block_hash_to_block: <span class="built_in">dict</span>[BlockHashWithGroupId, </span><br><span class="line">                                             <span class="built_in">dict</span>[<span class="built_in">int</span>, KVCacheBlock]] = defaultdict(<span class="built_in">dict</span>)</span><br></pre></td></tr></table></figure>
+
+<h3 id="关键特性-1"><a href="#关键特性-1" class="headerlink" title="关键特性"></a>关键特性</h3><h4 id="1-高效Block数据结构"><a href="#1-高效Block数据结构" class="headerlink" title="1. 高效Block数据结构"></a>1. <strong>高效Block数据结构</strong></h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">KVCacheBlock</span>:</span><br><span class="line">    block_id: <span class="built_in">int</span>                    <span class="comment"># 块ID</span></span><br><span class="line">    block_hash: BlockHash           <span class="comment"># 块哈希（用于prefix caching）</span></span><br><span class="line">    ref_cnt: <span class="built_in">int</span>                    <span class="comment"># 引用计数</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 双向链表指针（内嵌设计，避免额外Python对象）</span></span><br><span class="line">    prev_free_block: <span class="type">Optional</span>[<span class="string">&quot;KVCacheBlock&quot;</span>] = <span class="literal">None</span></span><br><span class="line">    next_free_block: <span class="type">Optional</span>[<span class="string">&quot;KVCacheBlock&quot;</span>] = <span class="literal">None</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 状态标志</span></span><br><span class="line">    is_null: <span class="built_in">bool</span> = <span class="literal">False</span></span><br><span class="line">    is_computed: <span class="built_in">bool</span> = <span class="literal">False</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="2-智能空闲队列管理"><a href="#2-智能空闲队列管理" class="headerlink" title="2. 智能空闲队列管理"></a>2. <strong>智能空闲队列管理</strong></h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">FreeKVCacheBlockQueue</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, blocks: <span class="built_in">list</span>[KVCacheBlock]</span>):</span><br><span class="line">        <span class="comment"># 构建双向链表</span></span><br><span class="line">        <span class="variable language_">self</span>.head = blocks[<span class="number">0</span>] <span class="keyword">if</span> blocks <span class="keyword">else</span> <span class="literal">None</span></span><br><span class="line">        <span class="variable language_">self</span>.tail = blocks[-<span class="number">1</span>] <span class="keyword">if</span> blocks <span class="keyword">else</span> <span class="literal">None</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 链接所有Block</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(blocks) - <span class="number">1</span>):</span><br><span class="line">            blocks[i].next_free_block = blocks[i + <span class="number">1</span>]</span><br><span class="line">            blocks[i + <span class="number">1</span>].prev_free_block = blocks[i]</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">popleft</span>(<span class="params">self</span>) -&gt; KVCacheBlock:</span><br><span class="line">        <span class="comment"># O(1)复杂度的Block分配</span></span><br><span class="line">        <span class="keyword">if</span> <span class="variable language_">self</span>.head:</span><br><span class="line">            block = <span class="variable language_">self</span>.head</span><br><span class="line">            <span class="variable language_">self</span>._remove_from_free_queue(block)</span><br><span class="line">            <span class="keyword">return</span> block</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">None</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">append</span>(<span class="params">self, block: KVCacheBlock</span>):</span><br><span class="line">        <span class="comment"># O(1)复杂度的Block释放</span></span><br><span class="line">        <span class="variable language_">self</span>._add_to_free_queue_tail(block)</span><br></pre></td></tr></table></figure>
+
+<h4 id="3-多级KV-Cache管理"><a href="#3-多级KV-Cache管理" class="headerlink" title="3. 多级KV Cache管理"></a>3. <strong>多级KV Cache管理</strong></h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">KVCacheManager</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, kv_cache_config: KVCacheConfig</span>):</span><br><span class="line">        <span class="comment"># 协调器管理不同类型的KV Cache</span></span><br><span class="line">        <span class="variable language_">self</span>.coordinator = get_kv_cache_coordinator(</span><br><span class="line">            kv_cache_config=kv_cache_config,</span><br><span class="line">            enable_caching=enable_caching,</span><br><span class="line">            caching_hash_fn=<span class="variable language_">self</span>.caching_hash_fn,</span><br><span class="line">        )</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 统一Block池</span></span><br><span class="line">        <span class="variable language_">self</span>.block_pool = <span class="variable language_">self</span>.coordinator.block_pool</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 请求到Block哈希的映射</span></span><br><span class="line">        <span class="variable language_">self</span>.req_to_block_hashes: defaultdict[<span class="built_in">str</span>, <span class="built_in">list</span>[BlockHash]] = defaultdict(<span class="built_in">list</span>)</span><br></pre></td></tr></table></figure>
+
+<h3 id="内存分配流程-1"><a href="#内存分配流程-1" class="headerlink" title="内存分配流程"></a>内存分配流程</h3><ol>
+<li><p><strong>Block分配</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">allocate_slots</span>(<span class="params">self, request: Request, num_tokens: <span class="built_in">int</span></span>) -&gt; <span class="type">List</span>[KVCacheBlock]:</span><br><span class="line">    blocks = []</span><br><span class="line">    num_blocks_needed = cdiv(num_tokens, <span class="variable language_">self</span>.block_size)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(num_blocks_needed):</span><br><span class="line">        <span class="comment"># 尝试从缓存中获取</span></span><br><span class="line">        block = <span class="variable language_">self</span>._try_get_cached_block(request)</span><br><span class="line">        <span class="keyword">if</span> block <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">            <span class="comment"># 从空闲队列分配</span></span><br><span class="line">            block = <span class="variable language_">self</span>.block_pool.allocate()</span><br><span class="line">            <span class="keyword">if</span> block <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">                <span class="comment"># 触发驱逐</span></span><br><span class="line">                block = <span class="variable language_">self</span>.block_pool.evict_and_allocate()</span><br><span class="line">        </span><br><span class="line">        blocks.append(block)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> blocks</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>Prefix Caching优化</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">get_computed_blocks</span>(<span class="params">self, request: Request</span>) -&gt; <span class="type">List</span>[KVCacheBlock]:</span><br><span class="line">    block_hashes = <span class="variable language_">self</span>._compute_block_hashes(request)</span><br><span class="line">    computed_blocks = []</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> block_hash <span class="keyword">in</span> block_hashes:</span><br><span class="line">        cached_block = <span class="variable language_">self</span>.block_pool.get_cached_block(block_hash)</span><br><span class="line">        <span class="keyword">if</span> cached_block:</span><br><span class="line">            computed_blocks.append(cached_block)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">break</span>  <span class="comment"># 缓存未命中，停止查找</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> computed_blocks</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h2 id="SGLang池化架构"><a href="#SGLang池化架构" class="headerlink" title="SGLang池化架构"></a>SGLang池化架构</h2><h3 id="整体设计-2"><a href="#整体设计-2" class="headerlink" title="整体设计"></a>整体设计</h3><p>SGLang采用<strong>三层内存池架构</strong>，是三个框架中最复杂的设计：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 三层架构</span></span><br><span class="line">ReqToTokenPool          <span class="comment"># 请求到Token位置的映射</span></span><br><span class="line">    ↓</span><br><span class="line">TokenToKVPoolAllocator  <span class="comment"># Token索引到KV Cache数据的分配器</span></span><br><span class="line">    ↓</span><br><span class="line">KVCache                 <span class="comment"># 物理KV Cache存储</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="关键特性-2"><a href="#关键特性-2" class="headerlink" title="关键特性"></a>关键特性</h3><h4 id="1-分层内存池设计"><a href="#1-分层内存池设计" class="headerlink" title="1. 分层内存池设计"></a>1. <strong>分层内存池设计</strong></h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">ReqToTokenPool</span>:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;第一层：请求到Token位置映射&quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, size: <span class="built_in">int</span>, max_context_len: <span class="built_in">int</span>, device: <span class="built_in">str</span></span>):</span><br><span class="line">        <span class="variable language_">self</span>.req_to_token = torch.zeros(</span><br><span class="line">            (size, max_context_len), dtype=torch.int32, device=device</span><br><span class="line">        )</span><br><span class="line">        <span class="variable language_">self</span>.free_slots = <span class="built_in">list</span>(<span class="built_in">range</span>(size))</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">alloc</span>(<span class="params">self, need_size: <span class="built_in">int</span></span>) -&gt; <span class="type">List</span>[<span class="built_in">int</span>]:</span><br><span class="line">        <span class="keyword">if</span> need_size &gt; <span class="built_in">len</span>(<span class="variable language_">self</span>.free_slots):</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">None</span></span><br><span class="line">        select_index = <span class="variable language_">self</span>.free_slots[:need_size]</span><br><span class="line">        <span class="variable language_">self</span>.free_slots = <span class="variable language_">self</span>.free_slots[need_size:]</span><br><span class="line">        <span class="keyword">return</span> select_index</span><br></pre></td></tr></table></figure>
+
+<h4 id="2-多类型KV-Cache支持"><a href="#2-多类型KV-Cache支持" class="headerlink" title="2. 多类型KV Cache支持"></a>2. <strong>多类型KV Cache支持</strong></h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">MHATokenToKVPool</span>(<span class="title class_ inherited__">KVCache</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;多头注意力KV Cache&quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, size: <span class="built_in">int</span>, head_num: <span class="built_in">int</span>, head_dim: <span class="built_in">int</span>, layer_num: <span class="built_in">int</span></span>):</span><br><span class="line">        <span class="comment"># 支持自定义内存池</span></span><br><span class="line">        <span class="variable language_">self</span>.enable_custom_mem_pool = get_bool_env_var(<span class="string">&quot;SGLANG_MOONCAKE_CUSTOM_MEM_POOL&quot;</span>)</span><br><span class="line">        <span class="keyword">if</span> <span class="variable language_">self</span>.enable_custom_mem_pool:</span><br><span class="line">            <span class="keyword">from</span> mooncake.allocator <span class="keyword">import</span> NVLinkAllocator</span><br><span class="line">            allocator = NVLinkAllocator.get_allocator(<span class="variable language_">self</span>.device)</span><br><span class="line">            <span class="variable language_">self</span>.custom_mem_pool = torch.cuda.MemPool(allocator.allocator())</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 创建K/V缓冲区</span></span><br><span class="line">        <span class="variable language_">self</span>.k_buffer = [torch.zeros((size + page_size, head_num, head_dim), </span><br><span class="line">                                    dtype=store_dtype, device=device) </span><br><span class="line">                        <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(layer_num)]</span><br><span class="line">        <span class="variable language_">self</span>.v_buffer = [torch.zeros((size + page_size, head_num, head_dim), </span><br><span class="line">                                    dtype=store_dtype, device=device) </span><br><span class="line">                        <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(layer_num)]</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">MLATokenToKVPool</span>(<span class="title class_ inherited__">KVCache</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;MLA架构KV Cache&quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, size: <span class="built_in">int</span>, kv_lora_rank: <span class="built_in">int</span>, qk_rope_head_dim: <span class="built_in">int</span></span>):</span><br><span class="line">        <span class="variable language_">self</span>.kv_buffer = [torch.zeros((size + page_size, <span class="number">1</span>, kv_lora_rank + qk_rope_head_dim),</span><br><span class="line">                                     dtype=store_dtype, device=device) </span><br><span class="line">                         <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(layer_num)]</span><br></pre></td></tr></table></figure>
+
+<h4 id="3-智能分配器"><a href="#3-智能分配器" class="headerlink" title="3. 智能分配器"></a>3. <strong>智能分配器</strong></h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">TokenToKVPoolAllocator</span>(<span class="title class_ inherited__">BaseTokenToKVPoolAllocator</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;Token级别的KV Cache分配器&quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, size: <span class="built_in">int</span>, dtype: torch.dtype, device: <span class="built_in">str</span>, kvcache: KVCache</span>):</span><br><span class="line">        <span class="built_in">super</span>().__init__(size, <span class="number">1</span>, dtype, device, kvcache)</span><br><span class="line">        <span class="variable language_">self</span>.clear()</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">alloc</span>(<span class="params">self, need_size: <span class="built_in">int</span></span>):</span><br><span class="line">        <span class="keyword">if</span> need_size &gt; <span class="built_in">len</span>(<span class="variable language_">self</span>.free_pages):</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">None</span></span><br><span class="line">        select_index = <span class="variable language_">self</span>.free_pages[:need_size]</span><br><span class="line">        <span class="variable language_">self</span>.free_pages = <span class="variable language_">self</span>.free_pages[need_size:]</span><br><span class="line">        <span class="keyword">return</span> select_index</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">free</span>(<span class="params">self, free_index: torch.Tensor</span>):</span><br><span class="line">        <span class="keyword">if</span> <span class="variable language_">self</span>.is_not_in_free_group:</span><br><span class="line">            <span class="variable language_">self</span>.free_pages = torch.cat((<span class="variable language_">self</span>.free_pages, free_index))</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="variable language_">self</span>.free_group.append(free_index)</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">PagedTokenToKVPoolAllocator</span>(<span class="title class_ inherited__">BaseTokenToKVPoolAllocator</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;页级别的KV Cache分配器&quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, size: <span class="built_in">int</span>, page_size: <span class="built_in">int</span>, dtype: torch.dtype, device: <span class="built_in">str</span></span>):</span><br><span class="line">        <span class="built_in">super</span>().__init__(size, page_size, dtype, device, kvcache)</span><br><span class="line">        <span class="variable language_">self</span>.num_pages = size // page_size</span><br><span class="line">        <span class="variable language_">self</span>.clear()</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">alloc</span>(<span class="params">self, need_size: <span class="built_in">int</span></span>):</span><br><span class="line">        <span class="comment"># 页对齐分配</span></span><br><span class="line">        num_pages = need_size // <span class="variable language_">self</span>.page_size</span><br><span class="line">        <span class="keyword">if</span> num_pages &gt; <span class="built_in">len</span>(<span class="variable language_">self</span>.free_pages):</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">None</span></span><br><span class="line">        </span><br><span class="line">        out_pages = <span class="variable language_">self</span>.free_pages[:num_pages]</span><br><span class="line">        <span class="variable language_">self</span>.free_pages = <span class="variable language_">self</span>.free_pages[num_pages:]</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 生成连续的页内索引</span></span><br><span class="line">        out_indices = (out_pages[:, <span class="literal">None</span>] * <span class="variable language_">self</span>.page_size + </span><br><span class="line">                      torch.arange(<span class="variable language_">self</span>.page_size, device=<span class="variable language_">self</span>.device)).reshape(-<span class="number">1</span>)</span><br><span class="line">        <span class="keyword">return</span> out_indices</span><br></pre></td></tr></table></figure>
+
+<h4 id="4-高级缓存策略"><a href="#4-高级缓存策略" class="headerlink" title="4. 高级缓存策略"></a>4. <strong>高级缓存策略</strong></h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">SWARadixCache</span>(<span class="title class_ inherited__">BasePrefixCache</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;滑动窗口注意力 + Radix Cache&quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, sliding_window_size: <span class="built_in">int</span>, page_size: <span class="built_in">int</span></span>):</span><br><span class="line">        <span class="variable language_">self</span>.sliding_window_size = sliding_window_size</span><br><span class="line">        <span class="variable language_">self</span>.page_size = page_size</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 双LRU列表管理</span></span><br><span class="line">        <span class="variable language_">self</span>.full_lru_list = LRUList(swa=<span class="literal">False</span>)</span><br><span class="line">        <span class="variable language_">self</span>.swa_lru_list = LRUList(swa=<span class="literal">True</span>)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 不同类型的统计计数</span></span><br><span class="line">        <span class="variable language_">self</span>.full_evictable_size_ = <span class="number">0</span></span><br><span class="line">        <span class="variable language_">self</span>.swa_evictable_size_ = <span class="number">0</span></span><br><span class="line">        <span class="variable language_">self</span>.full_protected_size_ = <span class="number">0</span></span><br><span class="line">        <span class="variable language_">self</span>.swa_protected_size_ = <span class="number">0</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">cache_req</span>(<span class="params">self, req: Req</span>) -&gt; <span class="built_in">int</span>:</span><br><span class="line">        <span class="comment"># 智能缓存决策</span></span><br><span class="line">        <span class="keyword">if</span> <span class="variable language_">self</span>.should_cache_full_attention(req):</span><br><span class="line">            <span class="keyword">return</span> <span class="variable language_">self</span>._cache_full_attention(req)</span><br><span class="line">        <span class="keyword">elif</span> <span class="variable language_">self</span>.should_cache_swa_attention(req):</span><br><span class="line">            <span class="keyword">return</span> <span class="variable language_">self</span>._cache_swa_attention(req)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="variable language_">self</span>._cache_with_eviction(req)</span><br></pre></td></tr></table></figure>
+
+<h3 id="内存分配流程-2"><a href="#内存分配流程-2" class="headerlink" title="内存分配流程"></a>内存分配流程</h3><ol>
+<li><p><strong>三层分配</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">allocate_memory_for_request</span>(<span class="params">self, request</span>):</span><br><span class="line">    <span class="comment"># 第一层：分配请求槽</span></span><br><span class="line">    req_slots = <span class="variable language_">self</span>.req_to_token_pool.alloc(<span class="number">1</span>)</span><br><span class="line">    <span class="keyword">if</span> req_slots <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">None</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 第二层：分配Token索引</span></span><br><span class="line">    token_indices = <span class="variable language_">self</span>.token_to_kv_pool_allocator.alloc(request.num_tokens)</span><br><span class="line">    <span class="keyword">if</span> token_indices <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">        <span class="variable language_">self</span>.req_to_token_pool.free(req_slots)</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">None</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 第三层：物理KV Cache已预分配</span></span><br><span class="line">    <span class="comment"># 更新映射关系</span></span><br><span class="line">    <span class="variable language_">self</span>.req_to_token_pool.write(req_slots, token_indices)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> req_slots, token_indices</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>智能驱逐</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">evict_if_needed</span>(<span class="params">self, required_size: <span class="built_in">int</span></span>):</span><br><span class="line">    <span class="keyword">while</span> <span class="variable language_">self</span>.available_size() &lt; required_size:</span><br><span class="line">        <span class="comment"># 优先驱逐SWA层的数据</span></span><br><span class="line">        <span class="keyword">if</span> <span class="variable language_">self</span>.swa_evictable_size_ &gt; <span class="number">0</span>:</span><br><span class="line">            evicted = <span class="variable language_">self</span>.swa_lru_list.evict_lru()</span><br><span class="line">            <span class="variable language_">self</span>.swa_evictable_size_ -= evicted.size</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 然后驱逐Full Attention层的数据</span></span><br><span class="line">        <span class="keyword">elif</span> <span class="variable language_">self</span>.full_evictable_size_ &gt; <span class="number">0</span>:</span><br><span class="line">            evicted = <span class="variable language_">self</span>.full_lru_list.evict_lru()</span><br><span class="line">            <span class="variable language_">self</span>.full_evictable_size_ -= evicted.size</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">raise</span> OutOfMemoryError(<span class="string">&quot;No evictable memory available&quot;</span>)</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h2 id="技术对比分析"><a href="#技术对比分析" class="headerlink" title="技术对比分析"></a>技术对比分析</h2><h3 id="架构复杂度对比"><a href="#架构复杂度对比" class="headerlink" title="架构复杂度对比"></a>架构复杂度对比</h3><table>
+<thead>
+<tr>
+<th>特性</th>
+<th>TensorRT-LLM</th>
+<th>vLLM</th>
+<th>SGLang</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>架构层数</strong></td>
+<td>2层</td>
+<td>2层</td>
+<td>3层</td>
+</tr>
+<tr>
+<td><strong>内存池类型</strong></td>
+<td>Primary&#x2F;Secondary</td>
+<td>GPU&#x2F;CPU</td>
+<td>Device&#x2F;Host&#x2F;Custom</td>
+</tr>
+<tr>
+<td><strong>Block管理</strong></td>
+<td>WindowBlockManager</td>
+<td>BlockPool</td>
+<td>多类型Allocator</td>
+</tr>
+<tr>
+<td><strong>驱逐策略</strong></td>
+<td>多级LRU + 优先级</td>
+<td>标准LRU</td>
+<td>双LRU + 滑动窗口</td>
+</tr>
+</tbody></table>
+<h3 id="性能特性对比"><a href="#性能特性对比" class="headerlink" title="性能特性对比"></a>性能特性对比</h3><table>
+<thead>
+<tr>
+<th>特性</th>
+<th>TensorRT-LLM</th>
+<th>vLLM</th>
+<th>SGLang</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>分配复杂度</strong></td>
+<td>O(1)</td>
+<td>O(1)</td>
+<td>O(1)</td>
+</tr>
+<tr>
+<td><strong>释放复杂度</strong></td>
+<td>O(1)</td>
+<td>O(1)</td>
+<td>O(1)</td>
+</tr>
+<tr>
+<td><strong>内存开销</strong></td>
+<td>低</td>
+<td>中</td>
+<td>高</td>
+</tr>
+<tr>
+<td><strong>缓存命中率</strong></td>
+<td>高</td>
+<td>中</td>
+<td>高</td>
+</tr>
+<tr>
+<td><strong>企业特性</strong></td>
+<td>✅</td>
+<td>❌</td>
+<td>✅</td>
+</tr>
+</tbody></table>
+<h3 id="适用场景对比"><a href="#适用场景对比" class="headerlink" title="适用场景对比"></a>适用场景对比</h3><table>
+<thead>
+<tr>
+<th>场景</th>
+<th>TensorRT-LLM</th>
+<th>vLLM</th>
+<th>SGLang</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>生产环境</strong></td>
+<td>优秀</td>
+<td>良好</td>
+<td>优秀</td>
+</tr>
+<tr>
+<td><strong>研究原型</strong></td>
+<td>一般</td>
+<td>优秀</td>
+<td>良好</td>
+</tr>
+<tr>
+<td><strong>多模态</strong></td>
+<td>支持</td>
+<td>支持</td>
+<td>原生支持</td>
+</tr>
+<tr>
+<td><strong>大规模部署</strong></td>
+<td>优秀</td>
+<td>良好</td>
+<td>优秀</td>
+</tr>
+<tr>
+<td><strong>内存受限</strong></td>
+<td>优秀</td>
+<td>良好</td>
+<td>优秀</td>
+</tr>
+</tbody></table>
+<h2 id="性能优化策略"><a href="#性能优化策略" class="headerlink" title="性能优化策略"></a>性能优化策略</h2><h3 id="1-内存预分配优化"><a href="#1-内存预分配优化" class="headerlink" title="1. 内存预分配优化"></a>1. <strong>内存预分配优化</strong></h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 基于历史统计的智能预分配</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">SmartPreAllocator</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, history_window=<span class="number">1000</span></span>):</span><br><span class="line">        <span class="variable language_">self</span>.request_size_history = deque(maxlen=history_window)</span><br><span class="line">        <span class="variable language_">self</span>.allocation_patterns = &#123;&#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">predict_allocation_size</span>(<span class="params">self, request_type</span>):</span><br><span class="line">        <span class="comment"># 基于历史模式预测分配大小</span></span><br><span class="line">        <span class="keyword">if</span> request_type <span class="keyword">in</span> <span class="variable language_">self</span>.allocation_patterns:</span><br><span class="line">            <span class="keyword">return</span> <span class="variable language_">self</span>.allocation_patterns[request_type].mean()</span><br><span class="line">        <span class="keyword">return</span> <span class="variable language_">self</span>.default_allocation_size</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">update_patterns</span>(<span class="params">self, request_type, actual_size</span>):</span><br><span class="line">        <span class="keyword">if</span> request_type <span class="keyword">not</span> <span class="keyword">in</span> <span class="variable language_">self</span>.allocation_patterns:</span><br><span class="line">            <span class="variable language_">self</span>.allocation_patterns[request_type] = deque(maxlen=<span class="number">100</span>)</span><br><span class="line">        <span class="variable language_">self</span>.allocation_patterns[request_type].append(actual_size)</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-多级缓存策略"><a href="#2-多级缓存策略" class="headerlink" title="2. 多级缓存策略"></a>2. <strong>多级缓存策略</strong></h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">HierarchicalCache</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="variable language_">self</span>.l1_cache = FastCache(size=<span class="number">1024</span>)      <span class="comment"># GPU内存</span></span><br><span class="line">        <span class="variable language_">self</span>.l2_cache = MediumCache(size=<span class="number">4096</span>)    <span class="comment"># CPU内存</span></span><br><span class="line">        <span class="variable language_">self</span>.l3_cache = SlowCache(size=<span class="number">16384</span>)     <span class="comment"># SSD缓存</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">get_with_promotion</span>(<span class="params">self, key</span>):</span><br><span class="line">        <span class="comment"># L1缓存命中</span></span><br><span class="line">        <span class="keyword">if</span> key <span class="keyword">in</span> <span class="variable language_">self</span>.l1_cache:</span><br><span class="line">            <span class="keyword">return</span> <span class="variable language_">self</span>.l1_cache[key]</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># L2缓存命中，提升到L1</span></span><br><span class="line">        <span class="keyword">if</span> key <span class="keyword">in</span> <span class="variable language_">self</span>.l2_cache:</span><br><span class="line">            value = <span class="variable language_">self</span>.l2_cache.pop(key)</span><br><span class="line">            <span class="variable language_">self</span>.l1_cache[key] = value</span><br><span class="line">            <span class="keyword">return</span> value</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># L3缓存命中，提升到L2</span></span><br><span class="line">        <span class="keyword">if</span> key <span class="keyword">in</span> <span class="variable language_">self</span>.l3_cache:</span><br><span class="line">            value = <span class="variable language_">self</span>.l3_cache.pop(key)</span><br><span class="line">            <span class="variable language_">self</span>.l2_cache[key] = value</span><br><span class="line">            <span class="keyword">return</span> value</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> <span class="literal">None</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="3-智能驱逐算法"><a href="#3-智能驱逐算法" class="headerlink" title="3. 智能驱逐算法"></a>3. <strong>智能驱逐算法</strong></h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">AdaptiveEvictionPolicy</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="variable language_">self</span>.access_frequency = &#123;&#125;</span><br><span class="line">        <span class="variable language_">self</span>.access_recency = &#123;&#125;</span><br><span class="line">        <span class="variable language_">self</span>.eviction_cost = &#123;&#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">calculate_eviction_score</span>(<span class="params">self, block</span>):</span><br><span class="line">        <span class="comment"># 综合考虑频率、时间、成本</span></span><br><span class="line">        frequency_score = <span class="variable language_">self</span>.access_frequency.get(block.<span class="built_in">id</span>, <span class="number">0</span>)</span><br><span class="line">        recency_score = time.time() - <span class="variable language_">self</span>.access_recency.get(block.<span class="built_in">id</span>, <span class="number">0</span>)</span><br><span class="line">        cost_score = <span class="variable language_">self</span>.eviction_cost.get(block.<span class="built_in">id</span>, <span class="number">1.0</span>)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 加权计算最终得分</span></span><br><span class="line">        <span class="keyword">return</span> (frequency_score * <span class="number">0.4</span> + </span><br><span class="line">                recency_score * <span class="number">0.3</span> + </span><br><span class="line">                cost_score * <span class="number">0.3</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">select_eviction_candidate</span>(<span class="params">self, blocks</span>):</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">min</span>(blocks, key=<span class="variable language_">self</span>.calculate_eviction_score)</span><br></pre></td></tr></table></figure>
+
+<h2 id="实现建议"><a href="#实现建议" class="headerlink" title="实现建议"></a>实现建议</h2><h3 id="1-选择合适的架构"><a href="#1-选择合适的架构" class="headerlink" title="1. 选择合适的架构"></a>1. <strong>选择合适的架构</strong></h3><ul>
+<li><strong>简单场景</strong>: 参考vLLM的简洁设计</li>
+<li><strong>复杂场景</strong>: 参考SGLang的多层架构</li>
+<li><strong>生产环境</strong>: 参考TensorRT-LLM的企业特性</li>
+</ul>
+<h3 id="2-关键设计原则"><a href="#2-关键设计原则" class="headerlink" title="2. 关键设计原则"></a>2. <strong>关键设计原则</strong></h3><ul>
+<li><strong>内存对齐</strong>: 确保内存访问效率</li>
+<li><strong>引用计数</strong>: 避免内存泄漏</li>
+<li><strong>批量操作</strong>: 减少分配&#x2F;释放开销</li>
+<li><strong>预测分配</strong>: 基于历史模式优化</li>
+</ul>
+<h3 id="3-性能监控"><a href="#3-性能监控" class="headerlink" title="3. 性能监控"></a>3. <strong>性能监控</strong></h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">PoolPerformanceMonitor</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="variable language_">self</span>.allocation_time = []</span><br><span class="line">        <span class="variable language_">self</span>.deallocation_time = []</span><br><span class="line">        <span class="variable language_">self</span>.cache_hit_rate = []</span><br><span class="line">        <span class="variable language_">self</span>.memory_utilization = []</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">record_allocation</span>(<span class="params">self, start_time, end_time, success</span>):</span><br><span class="line">        <span class="variable language_">self</span>.allocation_time.append(end_time - start_time)</span><br><span class="line">        </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">get_performance_summary</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">return</span> &#123;</span><br><span class="line">            <span class="string">&#x27;avg_allocation_time&#x27;</span>: np.mean(<span class="variable language_">self</span>.allocation_time),</span><br><span class="line">            <span class="string">&#x27;cache_hit_rate&#x27;</span>: np.mean(<span class="variable language_">self</span>.cache_hit_rate),</span><br><span class="line">            <span class="string">&#x27;memory_utilization&#x27;</span>: np.mean(<span class="variable language_">self</span>.memory_utilization),</span><br><span class="line">            <span class="string">&#x27;allocation_success_rate&#x27;</span>: <span class="variable language_">self</span>.calculate_success_rate()</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>三个框架的KV Cache池化机制各有特色：</p>
+<ul>
+<li><strong>TensorRT-LLM</strong>: 企业级特性完备，适合生产环境</li>
+<li><strong>vLLM</strong>: 设计简洁优雅，开发友好</li>
+<li><strong>SGLang</strong>: 功能最全面，支持复杂场景</li>
+</ul>
+<p>选择建议：</p>
+<ol>
+<li><strong>生产部署</strong>: TensorRT-LLM</li>
+<li><strong>快速原型</strong>: vLLM</li>
+<li><strong>复杂需求</strong>: SGLang</li>
+<li><strong>定制开发</strong>: 结合三者优势进行设计</li>
+</ol>
+<p>关键是根据具体需求选择合适的架构，并在实现时注重性能监控和优化。 </p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2025/07/16/System/KVCache%E6%B1%A0%E5%8C%96%E6%8A%80%E6%9C%AF%E6%B7%B1%E5%BA%A6%E5%88%86%E6%9E%90/" data-id="cmdpf31ad001hq0onaiw6g48q" data-title="" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2025/07/16/System/PD%E5%88%86%E7%A6%BB%E6%9E%B6%E6%9E%84KV_Cache%E8%B7%A8%E8%8A%82%E7%82%B9%E4%BC%A0%E8%BE%93%E6%8A%80%E6%9C%AF%E5%88%86%E6%9E%90/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          (no title)
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2025/07/16/System/Continuous_Batching%E4%B8%8E%E8%AF%B7%E6%B1%82%E8%B0%83%E5%BA%A6%E4%BC%98%E5%8C%96%E5%88%86%E6%9E%90/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title"></div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/System/">System</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Test/">Test</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AI/" rel="tag">AI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Attention/" rel="tag">Attention</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Communication/" rel="tag">Communication</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Compiler/" rel="tag">Compiler</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Computational-Graph/" rel="tag">Computational Graph</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/DeepSeek/" rel="tag">DeepSeek</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Distributed/" rel="tag">Distributed</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/LLM/" rel="tag">LLM</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MoE/" rel="tag">MoE</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Optimization/" rel="tag">Optimization</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Performance/" rel="tag">Performance</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SGLang/" rel="tag">SGLang</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/System/" rel="tag">System</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/blog/" rel="tag">blog</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/blues/" rel="tag">blues</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/career/" rel="tag">career</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/charts/" rel="tag">charts</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/consensus/" rel="tag">consensus</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/data-parallelism/" rel="tag">data-parallelism</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/distributed-systems/" rel="tag">distributed-systems</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/experience/" rel="tag">experience</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/expert-parallelism/" rel="tag">expert-parallelism</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/guitar/" rel="tag">guitar</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/harmony/" rel="tag">harmony</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/licks/" rel="tag">licks</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/life/" rel="tag">life</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/llm/" rel="tag">llm</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mermaid/" rel="tag">mermaid</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/raft/" rel="tag">raft</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/rhythm/" rel="tag">rhythm</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/test/" rel="tag">test</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/AI/" style="font-size: 10px;">AI</a> <a href="/tags/Attention/" style="font-size: 10px;">Attention</a> <a href="/tags/Communication/" style="font-size: 10px;">Communication</a> <a href="/tags/Compiler/" style="font-size: 10px;">Compiler</a> <a href="/tags/Computational-Graph/" style="font-size: 10px;">Computational Graph</a> <a href="/tags/DeepSeek/" style="font-size: 10px;">DeepSeek</a> <a href="/tags/Distributed/" style="font-size: 10px;">Distributed</a> <a href="/tags/LLM/" style="font-size: 10px;">LLM</a> <a href="/tags/MoE/" style="font-size: 10px;">MoE</a> <a href="/tags/Optimization/" style="font-size: 10px;">Optimization</a> <a href="/tags/Performance/" style="font-size: 10px;">Performance</a> <a href="/tags/SGLang/" style="font-size: 10px;">SGLang</a> <a href="/tags/System/" style="font-size: 15px;">System</a> <a href="/tags/blog/" style="font-size: 10px;">blog</a> <a href="/tags/blues/" style="font-size: 20px;">blues</a> <a href="/tags/career/" style="font-size: 10px;">career</a> <a href="/tags/charts/" style="font-size: 10px;">charts</a> <a href="/tags/consensus/" style="font-size: 10px;">consensus</a> <a href="/tags/data-parallelism/" style="font-size: 10px;">data-parallelism</a> <a href="/tags/distributed-systems/" style="font-size: 20px;">distributed-systems</a> <a href="/tags/experience/" style="font-size: 10px;">experience</a> <a href="/tags/expert-parallelism/" style="font-size: 10px;">expert-parallelism</a> <a href="/tags/guitar/" style="font-size: 20px;">guitar</a> <a href="/tags/harmony/" style="font-size: 10px;">harmony</a> <a href="/tags/licks/" style="font-size: 10px;">licks</a> <a href="/tags/life/" style="font-size: 10px;">life</a> <a href="/tags/llm/" style="font-size: 15px;">llm</a> <a href="/tags/mermaid/" style="font-size: 10px;">mermaid</a> <a href="/tags/raft/" style="font-size: 10px;">raft</a> <a href="/tags/rhythm/" style="font-size: 10px;">rhythm</a> <a href="/tags/test/" style="font-size: 10px;">test</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/07/">July 2025</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/06/">June 2025</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/05/">May 2025</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/04/">April 2025</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/03/">March 2025</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/01/">January 2025</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/03/">March 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/01/">January 2024</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2025/07/30/System/%E5%B9%B6%E8%A1%8C%E7%AD%96%E7%95%A5/%E5%BA%8F%E5%88%97%E5%B9%B6%E8%A1%8C/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2025/07/28/PD%E5%88%86%E7%A6%BB%E6%9E%B6%E6%9E%84KVCache%E8%B7%A8%E8%8A%82%E7%82%B9%E4%BC%A0%E8%BE%93%E5%8A%9F%E8%83%BD%E5%BC%80%E5%8F%91%EF%BC%8C%E4%BC%98%E5%8C%96KVCache%E4%BC%A0%E8%BE%93%E6%95%88%E7%8E%87/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2025/07/28/System/%E5%B9%B6%E8%A1%8C%E7%AD%96%E7%95%A5/EP/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2025/07/28/System/%E5%B9%B6%E8%A1%8C%E7%AD%96%E7%95%A5/%E9%9B%86%E5%90%88%E9%80%9A%E4%BF%A1%E5%9F%BA%E7%A1%80/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2025/07/28/System/DeepSeek/">(no title)</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2025 John Doe<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+
+<!-- Mermaid Support -->
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10.6.1/dist/mermaid.min.js"></script>
+<script>
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'default',
+    securityLevel: 'loose',
+    themeVariables: {
+      primaryColor: '#0f4c75',
+      primaryTextColor: '#fff',
+      primaryBorderColor: '#0f4c75',
+      lineColor: '#0f4c75',
+      secondaryColor: '#006ba6',
+      tertiaryColor: '#fff'
+    }
+  });
+</script>
+  </div>
+</body>
+</html>

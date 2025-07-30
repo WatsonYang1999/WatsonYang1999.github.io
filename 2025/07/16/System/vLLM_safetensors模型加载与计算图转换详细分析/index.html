@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="vLLM Safetensors 模型加载与计算图转换详细分析1. 概述vLLM 中 safetensors 模型的加载和计算图转换是一个复杂的多阶段过程，涉及模型发现、权重加载、架构实例化、权重绑定和计算图优化等多个步骤。 2. 核心组件架构2.1 模型加载器层次结构123456BaseModelLoader (抽象基类)├── DefaultModelLoader (默认实现)├── Tens">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hexo">
+<meta property="og:url" content="http://example.com/2025/07/16/System/vLLM_safetensors%E6%A8%A1%E5%9E%8B%E5%8A%A0%E8%BD%BD%E4%B8%8E%E8%AE%A1%E7%AE%97%E5%9B%BE%E8%BD%AC%E6%8D%A2%E8%AF%A6%E7%BB%86%E5%88%86%E6%9E%90/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="vLLM Safetensors 模型加载与计算图转换详细分析1. 概述vLLM 中 safetensors 模型的加载和计算图转换是一个复杂的多阶段过程，涉及模型发现、权重加载、架构实例化、权重绑定和计算图优化等多个步骤。 2. 核心组件架构2.1 模型加载器层次结构123456BaseModelLoader (抽象基类)├── DefaultModelLoader (默认实现)├── Tens">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2025-07-16T02:11:51.912Z">
+<meta property="article:modified_time" content="2025-07-16T09:34:06.107Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fork-awesome@1.2.0/css/fork-awesome.min.css">
+
+  
+  <!-- Mermaid -->
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.6.1/dist/mermaid.min.js"></script>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: 'default',
+      securityLevel: 'loose',
+      themeVariables: {
+        primaryColor: '#0f4c75',
+        primaryTextColor: '#fff',
+        primaryBorderColor: '#0f4c75',
+        lineColor: '#0f4c75',
+        secondaryColor: '#006ba6',
+        tertiaryColor: '#fff'
+      }
+    });
+  </script>
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/atom.xml" title="RSS Feed"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="Search"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-System/vLLM_safetensors模型加载与计算图转换详细分析" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2025/07/16/System/vLLM_safetensors%E6%A8%A1%E5%9E%8B%E5%8A%A0%E8%BD%BD%E4%B8%8E%E8%AE%A1%E7%AE%97%E5%9B%BE%E8%BD%AC%E6%8D%A2%E8%AF%A6%E7%BB%86%E5%88%86%E6%9E%90/" class="article-date">
+  <time class="dt-published" datetime="2025-07-16T02:11:51.912Z" itemprop="datePublished">2025-07-16</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="vLLM-Safetensors-模型加载与计算图转换详细分析"><a href="#vLLM-Safetensors-模型加载与计算图转换详细分析" class="headerlink" title="vLLM Safetensors 模型加载与计算图转换详细分析"></a>vLLM Safetensors 模型加载与计算图转换详细分析</h1><h2 id="1-概述"><a href="#1-概述" class="headerlink" title="1. 概述"></a>1. 概述</h2><p>vLLM 中 safetensors 模型的加载和计算图转换是一个复杂的多阶段过程，涉及模型发现、权重加载、架构实例化、权重绑定和计算图优化等多个步骤。</p>
+<h2 id="2-核心组件架构"><a href="#2-核心组件架构" class="headerlink" title="2. 核心组件架构"></a>2. 核心组件架构</h2><h3 id="2-1-模型加载器层次结构"><a href="#2-1-模型加载器层次结构" class="headerlink" title="2.1 模型加载器层次结构"></a>2.1 模型加载器层次结构</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">BaseModelLoader (抽象基类)</span><br><span class="line">├── DefaultModelLoader (默认实现)</span><br><span class="line">├── TensorizerLoader (张量器加载器)</span><br><span class="line">├── ShardedStateLoader (分片状态加载器)</span><br><span class="line">├── BitsAndBytesModelLoader (量化模型加载器)</span><br><span class="line">└── GGUFModelLoader (GGUF格式加载器)</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-2-关键文件结构"><a href="#2-2-关键文件结构" class="headerlink" title="2.2 关键文件结构"></a>2.2 关键文件结构</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">vllm/model_executor/model_loader/</span><br><span class="line">├── __init__.py                 # 模型加载器工厂</span><br><span class="line">├── base_loader.py              # 基础加载器抽象类</span><br><span class="line">├── default_loader.py           # 默认加载器实现</span><br><span class="line">├── weight_utils.py             # 权重工具函数</span><br><span class="line">├── utils.py                    # 模型初始化工具</span><br><span class="line">└── registry.py                 # 模型注册表</span><br></pre></td></tr></table></figure>
+
+<h2 id="3-详细流程分析"><a href="#3-详细流程分析" class="headerlink" title="3. 详细流程分析"></a>3. 详细流程分析</h2><h3 id="3-1-模型加载器选择"><a href="#3-1-模型加载器选择" class="headerlink" title="3.1 模型加载器选择"></a>3.1 模型加载器选择</h3><p>在 <code>__init__.py</code> 中的 <code>get_model_loader()</code> 函数负责根据 <code>LoadConfig</code> 选择合适的加载器：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">get_model_loader</span>(<span class="params">load_config: LoadConfig</span>) -&gt; BaseModelLoader:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;根据加载格式选择模型加载器&quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">if</span> load_config.load_format == LoadFormat.SAFETENSORS:</span><br><span class="line">        <span class="keyword">return</span> DefaultModelLoader(load_config)</span><br><span class="line">    <span class="keyword">elif</span> load_config.load_format == LoadFormat.FASTSAFETENSORS:</span><br><span class="line">        <span class="keyword">return</span> DefaultModelLoader(load_config)</span><br><span class="line">    <span class="comment"># ... 其他格式</span></span><br><span class="line">    <span class="keyword">return</span> DefaultModelLoader(load_config)  <span class="comment"># 默认加载器</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="3-2-模型架构识别"><a href="#3-2-模型架构识别" class="headerlink" title="3.2 模型架构识别"></a>3.2 模型架构识别</h3><p>通过 <code>ModelRegistry</code> 根据 HuggingFace 配置识别模型架构：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 在 registry.py 中</span></span><br><span class="line">_TEXT_GENERATION_MODELS = &#123;</span><br><span class="line">    <span class="string">&quot;LlamaForCausalLM&quot;</span>: (<span class="string">&quot;llama&quot;</span>, <span class="string">&quot;LlamaForCausalLM&quot;</span>),</span><br><span class="line">    <span class="string">&quot;MistralForCausalLM&quot;</span>: (<span class="string">&quot;llama&quot;</span>, <span class="string">&quot;LlamaForCausalLM&quot;</span>),</span><br><span class="line">    <span class="string">&quot;GemmaForCausalLM&quot;</span>: (<span class="string">&quot;gemma&quot;</span>, <span class="string">&quot;GemmaForCausalLM&quot;</span>),</span><br><span class="line">    <span class="comment"># ... 更多模型映射</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-3-权重文件发现与准备"><a href="#3-3-权重文件发现与准备" class="headerlink" title="3.3 权重文件发现与准备"></a>3.3 权重文件发现与准备</h3><p>在 <code>DefaultModelLoader._prepare_weights()</code> 中：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">_prepare_weights</span>(<span class="params">self, model_name_or_path: <span class="built_in">str</span>, revision: <span class="type">Optional</span>[<span class="built_in">str</span>], </span></span><br><span class="line"><span class="params">                     fall_back_to_pt: <span class="built_in">bool</span>, allow_patterns_overrides: <span class="type">Optional</span>[<span class="built_in">list</span>[<span class="built_in">str</span>]]</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;准备权重文件&quot;&quot;&quot;</span></span><br><span class="line">    <span class="comment"># 1. 确定加载格式</span></span><br><span class="line">    <span class="keyword">if</span> load_format == LoadFormat.SAFETENSORS:</span><br><span class="line">        use_safetensors = <span class="literal">True</span></span><br><span class="line">        allow_patterns = [<span class="string">&quot;*.safetensors&quot;</span>]</span><br><span class="line">    <span class="keyword">elif</span> load_format == LoadFormat.AUTO:</span><br><span class="line">        allow_patterns = [<span class="string">&quot;*.safetensors&quot;</span>, <span class="string">&quot;*.bin&quot;</span>]</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 2. 下载或发现权重文件</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> is_local:</span><br><span class="line">        hf_folder = download_weights_from_hf(...)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        hf_folder = model_name_or_path</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 3. 收集匹配的权重文件</span></span><br><span class="line">    hf_weights_files = []</span><br><span class="line">    <span class="keyword">for</span> pattern <span class="keyword">in</span> allow_patterns:</span><br><span class="line">        hf_weights_files += glob.glob(os.path.join(hf_folder, pattern))</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 4. 处理分片文件去重</span></span><br><span class="line">    <span class="keyword">if</span> use_safetensors:</span><br><span class="line">        hf_weights_files = filter_duplicate_safetensors_files(...)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> hf_folder, hf_weights_files, use_safetensors</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-4-权重迭代器创建"><a href="#3-4-权重迭代器创建" class="headerlink" title="3.4 权重迭代器创建"></a>3.4 权重迭代器创建</h3><p>在 <code>DefaultModelLoader._get_weights_iterator()</code> 中：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">_get_weights_iterator</span>(<span class="params">self, source: <span class="string">&quot;Source&quot;</span></span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;创建权重迭代器&quot;&quot;&quot;</span></span><br><span class="line">    hf_folder, hf_weights_files, use_safetensors = <span class="variable language_">self</span>._prepare_weights(...)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span> use_safetensors:</span><br><span class="line">        <span class="keyword">if</span> <span class="variable language_">self</span>.load_config.load_format == LoadFormat.FASTSAFETENSORS:</span><br><span class="line">            <span class="comment"># 使用快速 safetensors 加载器</span></span><br><span class="line">            weights_iterator = fastsafetensors_weights_iterator(</span><br><span class="line">                hf_weights_files, <span class="variable language_">self</span>.load_config.use_tqdm_on_load)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="comment"># 使用标准 safetensors 加载器</span></span><br><span class="line">            weights_iterator = safetensors_weights_iterator(</span><br><span class="line">                hf_weights_files, <span class="variable language_">self</span>.load_config.use_tqdm_on_load)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> weights_iterator</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-5-Safetensors-权重加载"><a href="#3-5-Safetensors-权重加载" class="headerlink" title="3.5 Safetensors 权重加载"></a>3.5 Safetensors 权重加载</h3><p>在 <code>weight_utils.py</code> 中的 <code>safetensors_weights_iterator()</code> 函数：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">safetensors_weights_iterator</span>(<span class="params"></span></span><br><span class="line"><span class="params">    hf_weights_files: <span class="built_in">list</span>[<span class="built_in">str</span>], use_tqdm_on_load: <span class="built_in">bool</span></span></span><br><span class="line"><span class="params"></span>) -&gt; Generator[<span class="built_in">tuple</span>[<span class="built_in">str</span>, torch.Tensor], <span class="literal">None</span>, <span class="literal">None</span>]:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;迭代加载 safetensors 权重&quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">for</span> st_file <span class="keyword">in</span> tqdm(hf_weights_files, desc=<span class="string">&quot;Loading safetensors checkpoint shards&quot;</span>):</span><br><span class="line">        <span class="comment"># 使用 safetensors 库的 safe_open 函数</span></span><br><span class="line">        <span class="keyword">with</span> safe_open(st_file, framework=<span class="string">&quot;pt&quot;</span>) <span class="keyword">as</span> f:</span><br><span class="line">            <span class="keyword">for</span> name <span class="keyword">in</span> f.keys():</span><br><span class="line">                <span class="comment"># 懒加载每个张量</span></span><br><span class="line">                param = f.get_tensor(name)</span><br><span class="line">                <span class="keyword">yield</span> name, param</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-6-模型实例化"><a href="#3-6-模型实例化" class="headerlink" title="3.6 模型实例化"></a>3.6 模型实例化</h3><p>在 <code>base_loader.py</code> 的 <code>load_model()</code> 方法中：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">load_model</span>(<span class="params">self, vllm_config: VllmConfig, model_config: ModelConfig</span>) -&gt; nn.Module:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;加载模型的主要入口点&quot;&quot;&quot;</span></span><br><span class="line">    device_config = vllm_config.device_config</span><br><span class="line">    target_device = torch.device(device_config.device)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">with</span> set_default_torch_dtype(model_config.dtype):</span><br><span class="line">        <span class="keyword">with</span> target_device:</span><br><span class="line">            <span class="comment"># 1. 初始化模型架构</span></span><br><span class="line">            model = initialize_model(vllm_config=vllm_config, model_config=model_config)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 2. 加载权重到模型</span></span><br><span class="line">        <span class="variable language_">self</span>.load_weights(model, model_config)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 3. 后处理（量化、设备转移等）</span></span><br><span class="line">        process_weights_after_loading(model, model_config, target_device)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> model.<span class="built_in">eval</span>()</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-7-模型初始化"><a href="#3-7-模型初始化" class="headerlink" title="3.7 模型初始化"></a>3.7 模型初始化</h3><p>在 <code>utils.py</code> 的 <code>initialize_model()</code> 函数中：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">initialize_model</span>(<span class="params">vllm_config: VllmConfig, model_config: ModelConfig</span>) -&gt; nn.Module:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;初始化模型架构&quot;&quot;&quot;</span></span><br><span class="line">    <span class="comment"># 1. 获取模型架构类</span></span><br><span class="line">    model_class, _ = get_model_architecture(model_config)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 2. 配置量化</span></span><br><span class="line">    <span class="keyword">if</span> vllm_config.quant_config <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">        configure_quant_config(vllm_config.quant_config, model_class)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 3. 检查构造函数签名</span></span><br><span class="line">    signatures = inspect.signature(model_class.__init__)</span><br><span class="line">    all_params = [param.name <span class="keyword">for</span> param <span class="keyword">in</span> signatures.parameters.values()]</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 4. 创建模型实例</span></span><br><span class="line">    <span class="keyword">if</span> <span class="string">&quot;vllm_config&quot;</span> <span class="keyword">in</span> all_params <span class="keyword">and</span> <span class="string">&quot;prefix&quot;</span> <span class="keyword">in</span> all_params:</span><br><span class="line">        <span class="comment"># 新式模型类</span></span><br><span class="line">        <span class="keyword">return</span> model_class(vllm_config=vllm_config, prefix=prefix)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="comment"># 兼容旧式模型类</span></span><br><span class="line">        kwargs = build_legacy_kwargs(...)</span><br><span class="line">        <span class="keyword">return</span> model_class(**kwargs)</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-8-权重绑定到模型"><a href="#3-8-权重绑定到模型" class="headerlink" title="3.8 权重绑定到模型"></a>3.8 权重绑定到模型</h3><p>在 <code>DefaultModelLoader.load_weights()</code> 中：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">load_weights</span>(<span class="params">self, model: nn.Module, model_config: ModelConfig</span>) -&gt; <span class="literal">None</span>:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;将权重加载到模型中&quot;&quot;&quot;</span></span><br><span class="line">    <span class="comment"># 1. 获取需要加载的权重名称</span></span><br><span class="line">    weights_to_load = &#123;name <span class="keyword">for</span> name, _ <span class="keyword">in</span> model.named_parameters()&#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 2. 调用模型的 load_weights 方法</span></span><br><span class="line">    loaded_weights = model.load_weights(</span><br><span class="line">        <span class="variable language_">self</span>.get_all_weights(model_config, model))</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 3. 验证权重是否完全加载</span></span><br><span class="line">    <span class="keyword">if</span> model_config.quantization <span class="keyword">is</span> <span class="literal">None</span> <span class="keyword">and</span> loaded_weights <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">        weights_not_loaded = weights_to_load - loaded_weights</span><br><span class="line">        <span class="keyword">if</span> weights_not_loaded:</span><br><span class="line">            <span class="keyword">raise</span> ValueError(<span class="string">f&quot;Following weights were not initialized: <span class="subst">&#123;weights_not_loaded&#125;</span>&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<h2 id="4-计算图构建过程"><a href="#4-计算图构建过程" class="headerlink" title="4. 计算图构建过程"></a>4. 计算图构建过程</h2><h3 id="4-1-模型层次结构"><a href="#4-1-模型层次结构" class="headerlink" title="4.1 模型层次结构"></a>4.1 模型层次结构</h3><p>vLLM 中的模型通常遵循以下层次结构：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">ModelForCausalLM</span><br><span class="line">├── Embeddings Layer</span><br><span class="line">├── Transformer Layers</span><br><span class="line">│   ├── Attention Layer</span><br><span class="line">│   ├── MLP Layer</span><br><span class="line">│   └── Layer Norm</span><br><span class="line">└── LM Head</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-2-权重映射与绑定"><a href="#4-2-权重映射与绑定" class="headerlink" title="4.2 权重映射与绑定"></a>4.2 权重映射与绑定</h3><p>每个模型类都实现了 <code>load_weights()</code> 方法来处理权重映射：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">load_weights</span>(<span class="params">self, weights: Iterable[<span class="type">Tuple</span>[<span class="built_in">str</span>, torch.Tensor]]</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;加载权重到模型参数&quot;&quot;&quot;</span></span><br><span class="line">    loaded_weights = <span class="built_in">set</span>()</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> name, loaded_weight <span class="keyword">in</span> weights:</span><br><span class="line">        <span class="comment"># 1. 权重名称映射</span></span><br><span class="line">        <span class="keyword">if</span> name <span class="keyword">in</span> <span class="variable language_">self</span>.params_dict:</span><br><span class="line">            param = <span class="variable language_">self</span>.params_dict[name]</span><br><span class="line">            </span><br><span class="line">            <span class="comment"># 2. 权重形状检查和调整</span></span><br><span class="line">            <span class="keyword">if</span> param.shape != loaded_weight.shape:</span><br><span class="line">                loaded_weight = <span class="variable language_">self</span>._adjust_weight_shape(param, loaded_weight)</span><br><span class="line">            </span><br><span class="line">            <span class="comment"># 3. 权重赋值</span></span><br><span class="line">            param.data.copy_(loaded_weight)</span><br><span class="line">            loaded_weights.add(name)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> loaded_weights</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-3-计算图优化"><a href="#4-3-计算图优化" class="headerlink" title="4.3 计算图优化"></a>4.3 计算图优化</h3><p>在权重加载完成后，vLLM 会进行计算图优化：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">process_weights_after_loading</span>(<span class="params">model: nn.Module, model_config: ModelConfig, </span></span><br><span class="line"><span class="params">                                  target_device: torch.device</span>) -&gt; <span class="literal">None</span>:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;权重加载后处理&quot;&quot;&quot;</span></span><br><span class="line">    <span class="comment"># 1. 量化处理</span></span><br><span class="line">    <span class="keyword">if</span> model_config.quantization <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">        apply_quantization(model, model_config.quantization)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 2. 设备转移</span></span><br><span class="line">    model.to(target_device)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 3. 特殊层处理</span></span><br><span class="line">    <span class="keyword">for</span> _, module <span class="keyword">in</span> model.named_modules():</span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">isinstance</span>(module, QKVCrossParallelLinear):</span><br><span class="line">            module.process_after_load()</span><br></pre></td></tr></table></figure>
+
+<h2 id="5-性能优化特性"><a href="#5-性能优化特性" class="headerlink" title="5. 性能优化特性"></a>5. 性能优化特性</h2><h3 id="5-1-懒加载机制"><a href="#5-1-懒加载机制" class="headerlink" title="5.1 懒加载机制"></a>5.1 懒加载机制</h3><ul>
+<li><strong>按需加载</strong>: 使用 <code>safe_open</code> 实现张量的懒加载</li>
+<li><strong>内存效率</strong>: 避免同时加载所有权重到内存</li>
+<li><strong>流式处理</strong>: 通过迭代器模式支持大模型加载</li>
+</ul>
+<h3 id="5-2-分片文件处理"><a href="#5-2-分片文件处理" class="headerlink" title="5.2 分片文件处理"></a>5.2 分片文件处理</h3><ul>
+<li><strong>自动发现</strong>: 自动识别和合并分片的 safetensors 文件</li>
+<li><strong>去重机制</strong>: 避免重复加载相同的权重文件</li>
+<li><strong>索引文件</strong>: 使用 <code>model.safetensors.index.json</code> 进行高效文件管理</li>
+</ul>
+<h3 id="5-3-多格式支持"><a href="#5-3-多格式支持" class="headerlink" title="5.3 多格式支持"></a>5.3 多格式支持</h3><ul>
+<li><strong>标准 safetensors</strong>: 使用 <code>safetensors</code> 库</li>
+<li><strong>快速 safetensors</strong>: 使用 <code>fastsafetensors</code> 优化库</li>
+<li><strong>RunAI 流式</strong>: 支持 <code>runai-model-streamer</code> 高性能加载</li>
+</ul>
+<h2 id="6-关键技术点"><a href="#6-关键技术点" class="headerlink" title="6. 关键技术点"></a>6. 关键技术点</h2><h3 id="6-1-内存管理"><a href="#6-1-内存管理" class="headerlink" title="6.1 内存管理"></a>6.1 内存管理</h3><ul>
+<li><strong>设备感知</strong>: 根据目标设备优化内存分配</li>
+<li><strong>数据类型</strong>: 支持多种精度（fp16, fp32, int8 等）</li>
+<li><strong>内存映射</strong>: 利用系统内存映射优化大文件访问</li>
+</ul>
+<h3 id="6-2-并行处理"><a href="#6-2-并行处理" class="headerlink" title="6.2 并行处理"></a>6.2 并行处理</h3><ul>
+<li><strong>张量并行</strong>: 支持模型权重的张量并行分布</li>
+<li><strong>流水线并行</strong>: 支持模型层的流水线并行</li>
+<li><strong>异步加载</strong>: 支持异步权重加载提高效率</li>
+</ul>
+<h3 id="6-3-错误处理"><a href="#6-3-错误处理" class="headerlink" title="6.3 错误处理"></a>6.3 错误处理</h3><ul>
+<li><strong>权重验证</strong>: 检查权重完整性和匹配性</li>
+<li><strong>优雅降级</strong>: 在 safetensors 不可用时回退到 .pt 文件</li>
+<li><strong>详细日志</strong>: 提供详细的加载过程日志</li>
+</ul>
+<h2 id="7-总结"><a href="#7-总结" class="headerlink" title="7. 总结"></a>7. 总结</h2><p>vLLM 的 safetensors 模型加载和计算图转换过程是一个高度优化的系统，通过以下关键技术实现了高效的模型加载：</p>
+<ol>
+<li><strong>模块化设计</strong>: 通过加载器抽象实现多格式支持</li>
+<li><strong>懒加载机制</strong>: 优化内存使用和加载性能</li>
+<li><strong>智能缓存</strong>: 避免重复下载和处理</li>
+<li><strong>并行优化</strong>: 支持分布式模型加载</li>
+<li><strong>错误恢复</strong>: 提供多种备用加载方案</li>
+</ol>
+<p>这个设计使得 vLLM 能够高效地处理各种规模的模型，从小型模型到数百GB的大型语言模型。 </p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2025/07/16/System/vLLM_safetensors%E6%A8%A1%E5%9E%8B%E5%8A%A0%E8%BD%BD%E4%B8%8E%E8%AE%A1%E7%AE%97%E5%9B%BE%E8%BD%AC%E6%8D%A2%E8%AF%A6%E7%BB%86%E5%88%86%E6%9E%90/" data-id="cmdpf31ao002fq0on9lxhar1x" data-title="" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2025/07/21/Mental/First%20Principle/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          (no title)
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2025/07/16/System/vLLM_PagedAttention_%E5%AE%9E%E7%8E%B0%E8%AF%A6%E7%BB%86%E5%88%86%E6%9E%90/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title"></div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/System/">System</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Test/">Test</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AI/" rel="tag">AI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Attention/" rel="tag">Attention</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Communication/" rel="tag">Communication</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Compiler/" rel="tag">Compiler</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Computational-Graph/" rel="tag">Computational Graph</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/DeepSeek/" rel="tag">DeepSeek</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Distributed/" rel="tag">Distributed</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/LLM/" rel="tag">LLM</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MoE/" rel="tag">MoE</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Optimization/" rel="tag">Optimization</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Performance/" rel="tag">Performance</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SGLang/" rel="tag">SGLang</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/System/" rel="tag">System</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/blog/" rel="tag">blog</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/blues/" rel="tag">blues</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/career/" rel="tag">career</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/charts/" rel="tag">charts</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/consensus/" rel="tag">consensus</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/data-parallelism/" rel="tag">data-parallelism</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/distributed-systems/" rel="tag">distributed-systems</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/experience/" rel="tag">experience</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/expert-parallelism/" rel="tag">expert-parallelism</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/guitar/" rel="tag">guitar</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/harmony/" rel="tag">harmony</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/licks/" rel="tag">licks</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/life/" rel="tag">life</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/llm/" rel="tag">llm</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mermaid/" rel="tag">mermaid</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/raft/" rel="tag">raft</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/rhythm/" rel="tag">rhythm</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/test/" rel="tag">test</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/AI/" style="font-size: 10px;">AI</a> <a href="/tags/Attention/" style="font-size: 10px;">Attention</a> <a href="/tags/Communication/" style="font-size: 10px;">Communication</a> <a href="/tags/Compiler/" style="font-size: 10px;">Compiler</a> <a href="/tags/Computational-Graph/" style="font-size: 10px;">Computational Graph</a> <a href="/tags/DeepSeek/" style="font-size: 10px;">DeepSeek</a> <a href="/tags/Distributed/" style="font-size: 10px;">Distributed</a> <a href="/tags/LLM/" style="font-size: 10px;">LLM</a> <a href="/tags/MoE/" style="font-size: 10px;">MoE</a> <a href="/tags/Optimization/" style="font-size: 10px;">Optimization</a> <a href="/tags/Performance/" style="font-size: 10px;">Performance</a> <a href="/tags/SGLang/" style="font-size: 10px;">SGLang</a> <a href="/tags/System/" style="font-size: 15px;">System</a> <a href="/tags/blog/" style="font-size: 10px;">blog</a> <a href="/tags/blues/" style="font-size: 20px;">blues</a> <a href="/tags/career/" style="font-size: 10px;">career</a> <a href="/tags/charts/" style="font-size: 10px;">charts</a> <a href="/tags/consensus/" style="font-size: 10px;">consensus</a> <a href="/tags/data-parallelism/" style="font-size: 10px;">data-parallelism</a> <a href="/tags/distributed-systems/" style="font-size: 20px;">distributed-systems</a> <a href="/tags/experience/" style="font-size: 10px;">experience</a> <a href="/tags/expert-parallelism/" style="font-size: 10px;">expert-parallelism</a> <a href="/tags/guitar/" style="font-size: 20px;">guitar</a> <a href="/tags/harmony/" style="font-size: 10px;">harmony</a> <a href="/tags/licks/" style="font-size: 10px;">licks</a> <a href="/tags/life/" style="font-size: 10px;">life</a> <a href="/tags/llm/" style="font-size: 15px;">llm</a> <a href="/tags/mermaid/" style="font-size: 10px;">mermaid</a> <a href="/tags/raft/" style="font-size: 10px;">raft</a> <a href="/tags/rhythm/" style="font-size: 10px;">rhythm</a> <a href="/tags/test/" style="font-size: 10px;">test</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/07/">July 2025</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/06/">June 2025</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/05/">May 2025</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/04/">April 2025</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/03/">March 2025</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/01/">January 2025</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/03/">March 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/01/">January 2024</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2025/07/30/System/%E5%B9%B6%E8%A1%8C%E7%AD%96%E7%95%A5/%E5%BA%8F%E5%88%97%E5%B9%B6%E8%A1%8C/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2025/07/28/PD%E5%88%86%E7%A6%BB%E6%9E%B6%E6%9E%84KVCache%E8%B7%A8%E8%8A%82%E7%82%B9%E4%BC%A0%E8%BE%93%E5%8A%9F%E8%83%BD%E5%BC%80%E5%8F%91%EF%BC%8C%E4%BC%98%E5%8C%96KVCache%E4%BC%A0%E8%BE%93%E6%95%88%E7%8E%87/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2025/07/28/System/%E5%B9%B6%E8%A1%8C%E7%AD%96%E7%95%A5/EP/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2025/07/28/System/%E5%B9%B6%E8%A1%8C%E7%AD%96%E7%95%A5/%E9%9B%86%E5%90%88%E9%80%9A%E4%BF%A1%E5%9F%BA%E7%A1%80/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2025/07/28/System/DeepSeek/">(no title)</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2025 John Doe<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+
+<!-- Mermaid Support -->
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10.6.1/dist/mermaid.min.js"></script>
+<script>
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'default',
+    securityLevel: 'loose',
+    themeVariables: {
+      primaryColor: '#0f4c75',
+      primaryTextColor: '#fff',
+      primaryBorderColor: '#0f4c75',
+      lineColor: '#0f4c75',
+      secondaryColor: '#006ba6',
+      tertiaryColor: '#fff'
+    }
+  });
+</script>
+  </div>
+</body>
+</html>

@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>通信原语 - 大模型推理中的分布式通信 | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="通信原语 - 大模型推理中的分布式通信概述在大模型推理、分布式推理和MoE（Mixture of Experts）模型中，通信原语是实现高效分布式计算的核心组件。本文总结了常用的通信原语及其在不同场景中的应用。 基础通信原语1. AllReduce定义: 所有进程都参与归约操作，每个进程都获得相同的归约结果。 实现:   Ring-AllReduce: 通过环形拓扑结构，分两个阶段完成 Tree-">
+<meta property="og:type" content="article">
+<meta property="og:title" content="通信原语 - 大模型推理中的分布式通信">
+<meta property="og:url" content="http://example.com/2024/01/01/System/%E9%80%9A%E4%BF%A1%E5%8E%9F%E8%AF%AD/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="通信原语 - 大模型推理中的分布式通信概述在大模型推理、分布式推理和MoE（Mixture of Experts）模型中，通信原语是实现高效分布式计算的核心组件。本文总结了常用的通信原语及其在不同场景中的应用。 基础通信原语1. AllReduce定义: 所有进程都参与归约操作，每个进程都获得相同的归约结果。 实现:   Ring-AllReduce: 通过环形拓扑结构，分两个阶段完成 Tree-">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2023-12-31T16:00:00.000Z">
+<meta property="article:modified_time" content="2025-07-11T04:08:35.415Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="System">
+<meta property="article:tag" content="LLM">
+<meta property="article:tag" content="Distributed">
+<meta property="article:tag" content="Communication">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fork-awesome@1.2.0/css/fork-awesome.min.css">
+
+  
+  <!-- Mermaid -->
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.6.1/dist/mermaid.min.js"></script>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: 'default',
+      securityLevel: 'loose',
+      themeVariables: {
+        primaryColor: '#0f4c75',
+        primaryTextColor: '#fff',
+        primaryBorderColor: '#0f4c75',
+        lineColor: '#0f4c75',
+        secondaryColor: '#006ba6',
+        tertiaryColor: '#fff'
+      }
+    });
+  </script>
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/atom.xml" title="RSS Feed"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="Search"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-System/通信原语" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2024/01/01/System/%E9%80%9A%E4%BF%A1%E5%8E%9F%E8%AF%AD/" class="article-date">
+  <time class="dt-published" datetime="2023-12-31T16:00:00.000Z" itemprop="datePublished">2024-01-01</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/System/">System</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      通信原语 - 大模型推理中的分布式通信
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="通信原语-大模型推理中的分布式通信"><a href="#通信原语-大模型推理中的分布式通信" class="headerlink" title="通信原语 - 大模型推理中的分布式通信"></a>通信原语 - 大模型推理中的分布式通信</h1><h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>在大模型推理、分布式推理和MoE（Mixture of Experts）模型中，通信原语是实现高效分布式计算的核心组件。本文总结了常用的通信原语及其在不同场景中的应用。</p>
+<h2 id="基础通信原语"><a href="#基础通信原语" class="headerlink" title="基础通信原语"></a>基础通信原语</h2><h3 id="1-AllReduce"><a href="#1-AllReduce" class="headerlink" title="1. AllReduce"></a>1. AllReduce</h3><p><strong>定义</strong>: 所有进程都参与归约操作，每个进程都获得相同的归约结果。</p>
+<p><strong>实现</strong>: </p>
+<ul>
+<li>Ring-AllReduce: 通过环形拓扑结构，分两个阶段完成</li>
+<li>Tree-AllReduce: 通过树形结构，适合小数据量</li>
+</ul>
+<p><strong>使用场景</strong>:</p>
+<ul>
+<li><strong>数据并行训练</strong>: 梯度同步</li>
+<li><strong>模型并行推理</strong>: 跨设备的激活值聚合</li>
+<li><strong>参数同步</strong>: 分布式优化器状态同步</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 伪代码示例</span></span><br><span class="line"><span class="comment"># 所有GPU上的梯度求和并分发到每个GPU</span></span><br><span class="line">torch.distributed.all_reduce(tensor, op=torch.distributed.ReduceOp.SUM)</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-AllGather"><a href="#2-AllGather" class="headerlink" title="2. AllGather"></a>2. AllGather</h3><p><strong>定义</strong>: 收集所有进程的数据，每个进程都获得完整的数据集合。</p>
+<p><strong>特点</strong>:</p>
+<ul>
+<li>不进行归约操作，只是收集</li>
+<li>输出大小是输入的N倍（N为进程数）</li>
+</ul>
+<p><strong>使用场景</strong>:</p>
+<ul>
+<li><strong>序列并行</strong>: 收集分片的序列数据</li>
+<li><strong>专家并行</strong>: 收集所有专家的输出</li>
+<li><strong>张量并行</strong>: 收集分片的权重矩阵</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 收集所有进程的张量</span></span><br><span class="line">output_tensors = [torch.zeros_like(input_tensor) <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(world_size)]</span><br><span class="line">torch.distributed.all_gather(output_tensors, input_tensor)</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-ReduceScatter"><a href="#3-ReduceScatter" class="headerlink" title="3. ReduceScatter"></a>3. ReduceScatter</h3><p><strong>定义</strong>: 先归约再分发，每个进程只获得归约结果的一部分。</p>
+<p><strong>特点</strong>:</p>
+<ul>
+<li>AllReduce的逆操作</li>
+<li>输出大小是输入的1&#x2F;N</li>
+</ul>
+<p><strong>使用场景</strong>:</p>
+<ul>
+<li><strong>张量并行</strong>: 分发归约后的激活值</li>
+<li><strong>流水线并行</strong>: 梯度分发</li>
+<li><strong>MoE模型</strong>: 专家权重更新</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 归约后分发到不同进程</span></span><br><span class="line">torch.distributed.reduce_scatter(output_tensor, input_tensor_list, op=torch.distributed.ReduceOp.SUM)</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-Broadcast"><a href="#4-Broadcast" class="headerlink" title="4. Broadcast"></a>4. Broadcast</h3><p><strong>定义</strong>: 从一个进程向所有其他进程发送数据。</p>
+<p><strong>使用场景</strong>:</p>
+<ul>
+<li><strong>模型初始化</strong>: 主进程向其他进程广播初始权重</li>
+<li><strong>超参数同步</strong>: 配置参数分发</li>
+<li><strong>控制信号</strong>: 训练状态同步</li>
+</ul>
+<h3 id="5-Point-to-Point-P2P"><a href="#5-Point-to-Point-P2P" class="headerlink" title="5. Point-to-Point (P2P)"></a>5. Point-to-Point (P2P)</h3><p><strong>定义</strong>: 两个进程间的直接通信。</p>
+<p><strong>类型</strong>:</p>
+<ul>
+<li>Send&#x2F;Recv: 阻塞式点对点通信</li>
+<li>Isend&#x2F;Irecv: 非阻塞式点对点通信</li>
+</ul>
+<p><strong>使用场景</strong>:</p>
+<ul>
+<li><strong>流水线并行</strong>: 相邻stage间的激活值传递</li>
+<li><strong>MoE路由</strong>: 专家间的token传递</li>
+<li><strong>异步通信</strong>: 计算与通信重叠</li>
+</ul>
+<h2 id="大模型推理中的通信模式"><a href="#大模型推理中的通信模式" class="headerlink" title="大模型推理中的通信模式"></a>大模型推理中的通信模式</h2><h3 id="1-数据并行-Data-Parallelism"><a href="#1-数据并行-Data-Parallelism" class="headerlink" title="1. 数据并行 (Data Parallelism)"></a>1. 数据并行 (Data Parallelism)</h3><p><strong>通信模式</strong>: </p>
+<ul>
+<li>AllReduce用于梯度同步</li>
+<li>Broadcast用于参数同步</li>
+</ul>
+<p><strong>优化</strong>:</p>
+<ul>
+<li>梯度累积减少通信频次</li>
+<li>混合精度减少通信量</li>
+</ul>
+<h3 id="2-张量并行-Tensor-Parallelism"><a href="#2-张量并行-Tensor-Parallelism" class="headerlink" title="2. 张量并行 (Tensor Parallelism)"></a>2. 张量并行 (Tensor Parallelism)</h3><p><strong>通信模式</strong>:</p>
+<ul>
+<li>AllGather: 收集分片权重</li>
+<li>ReduceScatter: 分发计算结果</li>
+<li>AllReduce: 跨分片聚合</li>
+</ul>
+<p><strong>关键点</strong>:</p>
+<ul>
+<li>通信与计算重叠</li>
+<li>减少通信数据量</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 张量并行中的通信示例</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">ColumnParallelLinear</span>(nn.Module):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, x</span>):</span><br><span class="line">        <span class="comment"># AllGather输入</span></span><br><span class="line">        x_gathered = all_gather(x)</span><br><span class="line">        <span class="comment"># 本地计算</span></span><br><span class="line">        output = F.linear(x_gathered, <span class="variable language_">self</span>.weight)</span><br><span class="line">        <span class="comment"># ReduceScatter输出</span></span><br><span class="line">        output = reduce_scatter(output)</span><br><span class="line">        <span class="keyword">return</span> output</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-流水线并行-Pipeline-Parallelism"><a href="#3-流水线并行-Pipeline-Parallelism" class="headerlink" title="3. 流水线并行 (Pipeline Parallelism)"></a>3. 流水线并行 (Pipeline Parallelism)</h3><p><strong>通信模式</strong>:</p>
+<ul>
+<li>P2P Send&#x2F;Recv: stage间激活值传递</li>
+<li>双向通信: 前向和反向传播</li>
+</ul>
+<p><strong>优化策略</strong>:</p>
+<ul>
+<li>微批次(Micro-batch)减少气泡</li>
+<li>异步通信隐藏延迟</li>
+</ul>
+<h3 id="4-序列并行-Sequence-Parallelism"><a href="#4-序列并行-Sequence-Parallelism" class="headerlink" title="4. 序列并行 (Sequence Parallelism)"></a>4. 序列并行 (Sequence Parallelism)</h3><p><strong>通信模式</strong>:</p>
+<ul>
+<li>AllGather: 收集序列片段</li>
+<li>ReduceScatter: 分发计算结果</li>
+</ul>
+<p><strong>应用</strong>:</p>
+<ul>
+<li>长序列处理</li>
+<li>注意力机制并行化</li>
+</ul>
+<h2 id="MoE模型中的通信原语"><a href="#MoE模型中的通信原语" class="headerlink" title="MoE模型中的通信原语"></a>MoE模型中的通信原语</h2><h3 id="1-专家路由-Expert-Routing"><a href="#1-专家路由-Expert-Routing" class="headerlink" title="1. 专家路由 (Expert Routing)"></a>1. 专家路由 (Expert Routing)</h3><p><strong>通信需求</strong>:</p>
+<ul>
+<li>Token到专家的路由</li>
+<li>专家输出的收集</li>
+</ul>
+<p><strong>通信模式</strong>:</p>
+<ul>
+<li>AlltoAll: token重分布</li>
+<li>AllGather: 收集专家输出</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># MoE路由通信</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">MoELayer</span>(nn.Module):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, x</span>):</span><br><span class="line">        <span class="comment"># 路由计算</span></span><br><span class="line">        router_output = <span class="variable language_">self</span>.router(x)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># AlltoAll: token重分布到专家</span></span><br><span class="line">        expert_inputs = all_to_all(x, router_output)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 专家计算</span></span><br><span class="line">        expert_outputs = <span class="variable language_">self</span>.experts(expert_inputs)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># AlltoAll: 收集专家输出</span></span><br><span class="line">        output = all_to_all(expert_outputs, router_output)</span><br><span class="line">        <span class="keyword">return</span> output</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-专家并行-Expert-Parallelism"><a href="#2-专家并行-Expert-Parallelism" class="headerlink" title="2. 专家并行 (Expert Parallelism)"></a>2. 专家并行 (Expert Parallelism)</h3><p><strong>通信模式</strong>:</p>
+<ul>
+<li>AlltoAll: 专家间token交换</li>
+<li>ReduceScatter: 专家梯度分发</li>
+</ul>
+<p><strong>优化</strong>:</p>
+<ul>
+<li>专家放置策略</li>
+<li>负载均衡</li>
+</ul>
+<h3 id="3-层次化MoE"><a href="#3-层次化MoE" class="headerlink" title="3. 层次化MoE"></a>3. 层次化MoE</h3><p><strong>通信层次</strong>:</p>
+<ul>
+<li>节点内: 高带宽通信</li>
+<li>节点间: 低延迟通信</li>
+</ul>
+<p><strong>策略</strong>:</p>
+<ul>
+<li>本地专家优先</li>
+<li>远程专家缓存</li>
+</ul>
+<h2 id="性能优化策略"><a href="#性能优化策略" class="headerlink" title="性能优化策略"></a>性能优化策略</h2><h3 id="1-通信与计算重叠"><a href="#1-通信与计算重叠" class="headerlink" title="1. 通信与计算重叠"></a>1. 通信与计算重叠</h3><p><strong>技术</strong>:</p>
+<ul>
+<li>异步通信</li>
+<li>流水线执行</li>
+<li>双缓冲</li>
+</ul>
+<p><strong>实现</strong>:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 异步通信示例</span></span><br><span class="line">handle = torch.distributed.all_reduce(tensor, async_op=<span class="literal">True</span>)</span><br><span class="line"><span class="comment"># 并行计算</span></span><br><span class="line">local_computation()</span><br><span class="line"><span class="comment"># 等待通信完成</span></span><br><span class="line">handle.wait()</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-通信融合"><a href="#2-通信融合" class="headerlink" title="2. 通信融合"></a>2. 通信融合</h3><p><strong>策略</strong>:</p>
+<ul>
+<li>小张量合并</li>
+<li>批量操作</li>
+<li>连续内存布局</li>
+</ul>
+<h3 id="3-拓扑感知通信"><a href="#3-拓扑感知通信" class="headerlink" title="3. 拓扑感知通信"></a>3. 拓扑感知通信</h3><p><strong>考虑因素</strong>:</p>
+<ul>
+<li>网络带宽</li>
+<li>延迟特性</li>
+<li>硬件拓扑</li>
+</ul>
+<p><strong>优化</strong>:</p>
+<ul>
+<li>层次化通信</li>
+<li>就近通信</li>
+</ul>
+<h2 id="实际应用案例"><a href="#实际应用案例" class="headerlink" title="实际应用案例"></a>实际应用案例</h2><h3 id="1-GPT-3训练"><a href="#1-GPT-3训练" class="headerlink" title="1. GPT-3训练"></a>1. GPT-3训练</h3><p><strong>并行策略</strong>:</p>
+<ul>
+<li>数据并行 + 模型并行</li>
+<li>流水线并行</li>
+</ul>
+<p><strong>通信原语使用</strong>:</p>
+<ul>
+<li>AllReduce: 梯度同步</li>
+<li>P2P: 流水线通信</li>
+</ul>
+<h3 id="2-Switch-Transformer"><a href="#2-Switch-Transformer" class="headerlink" title="2. Switch Transformer"></a>2. Switch Transformer</h3><p><strong>MoE实现</strong>:</p>
+<ul>
+<li>专家路由: AlltoAll</li>
+<li>负载均衡: AllReduce</li>
+</ul>
+<h3 id="3-PaLM推理"><a href="#3-PaLM推理" class="headerlink" title="3. PaLM推理"></a>3. PaLM推理</h3><p><strong>分布式推理</strong>:</p>
+<ul>
+<li>张量并行: AllGather&#x2F;ReduceScatter</li>
+<li>序列并行: 长序列处理</li>
+</ul>
+<h2 id="工具和框架"><a href="#工具和框架" class="headerlink" title="工具和框架"></a>工具和框架</h2><h3 id="1-NCCL-NVIDIA-Collective-Communications-Library"><a href="#1-NCCL-NVIDIA-Collective-Communications-Library" class="headerlink" title="1. NCCL (NVIDIA Collective Communications Library)"></a>1. NCCL (NVIDIA Collective Communications Library)</h3><p><strong>特点</strong>:</p>
+<ul>
+<li>GPU优化</li>
+<li>高性能集合通信</li>
+</ul>
+<p><strong>支持原语</strong>:</p>
+<ul>
+<li>AllReduce, AllGather, ReduceScatter</li>
+<li>Broadcast, Reduce</li>
+</ul>
+<h3 id="2-Gloo"><a href="#2-Gloo" class="headerlink" title="2. Gloo"></a>2. Gloo</h3><p><strong>特点</strong>:</p>
+<ul>
+<li>CPU&#x2F;GPU通用</li>
+<li>多种后端支持</li>
+</ul>
+<h3 id="3-MPI-Message-Passing-Interface"><a href="#3-MPI-Message-Passing-Interface" class="headerlink" title="3. MPI (Message Passing Interface)"></a>3. MPI (Message Passing Interface)</h3><p><strong>特点</strong>:</p>
+<ul>
+<li>标准化接口</li>
+<li>丰富的通信原语</li>
+</ul>
+<h3 id="4-高层框架"><a href="#4-高层框架" class="headerlink" title="4. 高层框架"></a>4. 高层框架</h3><p><strong>PyTorch Distributed</strong>:</p>
+<ul>
+<li>简化的API</li>
+<li>自动优化</li>
+</ul>
+<p><strong>DeepSpeed</strong>:</p>
+<ul>
+<li>ZeRO优化</li>
+<li>通信调度</li>
+</ul>
+<p><strong>FairScale</strong>:</p>
+<ul>
+<li>模块化设计</li>
+<li>灵活配置</li>
+</ul>
+<h2 id="最佳实践"><a href="#最佳实践" class="headerlink" title="最佳实践"></a>最佳实践</h2><h3 id="1-通信原语选择"><a href="#1-通信原语选择" class="headerlink" title="1. 通信原语选择"></a>1. 通信原语选择</h3><p><strong>原则</strong>:</p>
+<ul>
+<li>根据数据流选择合适原语</li>
+<li>考虑通信开销</li>
+<li>平衡计算与通信</li>
+</ul>
+<h3 id="2-性能调优"><a href="#2-性能调优" class="headerlink" title="2. 性能调优"></a>2. 性能调优</h3><p><strong>策略</strong>:</p>
+<ul>
+<li>通信与计算重叠</li>
+<li>减少通信频次</li>
+<li>优化数据布局</li>
+</ul>
+<h3 id="3-容错处理"><a href="#3-容错处理" class="headerlink" title="3. 容错处理"></a>3. 容错处理</h3><p><strong>机制</strong>:</p>
+<ul>
+<li>超时检测</li>
+<li>错误重试</li>
+<li>故障恢复</li>
+</ul>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>通信原语是大模型分布式推理的基础，选择合适的通信模式和优化策略对性能至关重要。随着模型规模的不断增长，通信效率将成为系统性能的关键瓶颈，需要持续的技术创新和优化。</p>
+<p><strong>关键要点</strong>:</p>
+<ol>
+<li>理解不同通信原语的特点和适用场景</li>
+<li>根据并行策略选择合适的通信模式</li>
+<li>重视通信与计算的重叠优化</li>
+<li>考虑硬件拓扑和网络特性</li>
+<li>持续监控和调优通信性能</li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2024/01/01/System/%E9%80%9A%E4%BF%A1%E5%8E%9F%E8%AF%AD/" data-id="cmdpf31aq002iq0ongtn7f3b0" data-title="通信原语 - 大模型推理中的分布式通信" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Communication/" rel="tag">Communication</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Distributed/" rel="tag">Distributed</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/LLM/" rel="tag">LLM</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/System/" rel="tag">System</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2024/01/01/System/DpAttentionInSGLang/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          SGLang中的DP Attention原理与DeepSeekMoE适配
+        
+      </div>
+    </a>
+  
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/System/">System</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Test/">Test</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AI/" rel="tag">AI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Attention/" rel="tag">Attention</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Communication/" rel="tag">Communication</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Compiler/" rel="tag">Compiler</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Computational-Graph/" rel="tag">Computational Graph</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/DeepSeek/" rel="tag">DeepSeek</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Distributed/" rel="tag">Distributed</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/LLM/" rel="tag">LLM</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MoE/" rel="tag">MoE</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Optimization/" rel="tag">Optimization</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Performance/" rel="tag">Performance</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SGLang/" rel="tag">SGLang</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/System/" rel="tag">System</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/blog/" rel="tag">blog</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/blues/" rel="tag">blues</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/career/" rel="tag">career</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/charts/" rel="tag">charts</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/consensus/" rel="tag">consensus</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/data-parallelism/" rel="tag">data-parallelism</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/distributed-systems/" rel="tag">distributed-systems</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/experience/" rel="tag">experience</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/expert-parallelism/" rel="tag">expert-parallelism</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/guitar/" rel="tag">guitar</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/harmony/" rel="tag">harmony</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/licks/" rel="tag">licks</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/life/" rel="tag">life</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/llm/" rel="tag">llm</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mermaid/" rel="tag">mermaid</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/raft/" rel="tag">raft</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/rhythm/" rel="tag">rhythm</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/test/" rel="tag">test</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/AI/" style="font-size: 10px;">AI</a> <a href="/tags/Attention/" style="font-size: 10px;">Attention</a> <a href="/tags/Communication/" style="font-size: 10px;">Communication</a> <a href="/tags/Compiler/" style="font-size: 10px;">Compiler</a> <a href="/tags/Computational-Graph/" style="font-size: 10px;">Computational Graph</a> <a href="/tags/DeepSeek/" style="font-size: 10px;">DeepSeek</a> <a href="/tags/Distributed/" style="font-size: 10px;">Distributed</a> <a href="/tags/LLM/" style="font-size: 10px;">LLM</a> <a href="/tags/MoE/" style="font-size: 10px;">MoE</a> <a href="/tags/Optimization/" style="font-size: 10px;">Optimization</a> <a href="/tags/Performance/" style="font-size: 10px;">Performance</a> <a href="/tags/SGLang/" style="font-size: 10px;">SGLang</a> <a href="/tags/System/" style="font-size: 15px;">System</a> <a href="/tags/blog/" style="font-size: 10px;">blog</a> <a href="/tags/blues/" style="font-size: 20px;">blues</a> <a href="/tags/career/" style="font-size: 10px;">career</a> <a href="/tags/charts/" style="font-size: 10px;">charts</a> <a href="/tags/consensus/" style="font-size: 10px;">consensus</a> <a href="/tags/data-parallelism/" style="font-size: 10px;">data-parallelism</a> <a href="/tags/distributed-systems/" style="font-size: 20px;">distributed-systems</a> <a href="/tags/experience/" style="font-size: 10px;">experience</a> <a href="/tags/expert-parallelism/" style="font-size: 10px;">expert-parallelism</a> <a href="/tags/guitar/" style="font-size: 20px;">guitar</a> <a href="/tags/harmony/" style="font-size: 10px;">harmony</a> <a href="/tags/licks/" style="font-size: 10px;">licks</a> <a href="/tags/life/" style="font-size: 10px;">life</a> <a href="/tags/llm/" style="font-size: 15px;">llm</a> <a href="/tags/mermaid/" style="font-size: 10px;">mermaid</a> <a href="/tags/raft/" style="font-size: 10px;">raft</a> <a href="/tags/rhythm/" style="font-size: 10px;">rhythm</a> <a href="/tags/test/" style="font-size: 10px;">test</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/07/">July 2025</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/06/">June 2025</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/05/">May 2025</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/04/">April 2025</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/03/">March 2025</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/01/">January 2025</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/03/">March 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/01/">January 2024</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2025/07/30/System/%E5%B9%B6%E8%A1%8C%E7%AD%96%E7%95%A5/%E5%BA%8F%E5%88%97%E5%B9%B6%E8%A1%8C/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2025/07/28/PD%E5%88%86%E7%A6%BB%E6%9E%B6%E6%9E%84KVCache%E8%B7%A8%E8%8A%82%E7%82%B9%E4%BC%A0%E8%BE%93%E5%8A%9F%E8%83%BD%E5%BC%80%E5%8F%91%EF%BC%8C%E4%BC%98%E5%8C%96KVCache%E4%BC%A0%E8%BE%93%E6%95%88%E7%8E%87/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2025/07/28/System/%E5%B9%B6%E8%A1%8C%E7%AD%96%E7%95%A5/EP/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2025/07/28/System/%E5%B9%B6%E8%A1%8C%E7%AD%96%E7%95%A5/%E9%9B%86%E5%90%88%E9%80%9A%E4%BF%A1%E5%9F%BA%E7%A1%80/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2025/07/28/System/DeepSeek/">(no title)</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2025 John Doe<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+
+<!-- Mermaid Support -->
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10.6.1/dist/mermaid.min.js"></script>
+<script>
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'default',
+    securityLevel: 'loose',
+    themeVariables: {
+      primaryColor: '#0f4c75',
+      primaryTextColor: '#fff',
+      primaryBorderColor: '#0f4c75',
+      lineColor: '#0f4c75',
+      secondaryColor: '#006ba6',
+      tertiaryColor: '#fff'
+    }
+  });
+</script>
+  </div>
+</body>
+</html>

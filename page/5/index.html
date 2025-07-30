@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta property="og:type" content="website">
+<meta property="og:title" content="Hexo">
+<meta property="og:url" content="http://example.com/page/5/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:locale" content="en_US">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fork-awesome@1.2.0/css/fork-awesome.min.css">
+
+  
+  <!-- Mermaid -->
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.6.1/dist/mermaid.min.js"></script>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: 'default',
+      securityLevel: 'loose',
+      themeVariables: {
+        primaryColor: '#0f4c75',
+        primaryTextColor: '#fff',
+        primaryBorderColor: '#0f4c75',
+        lineColor: '#0f4c75',
+        secondaryColor: '#006ba6',
+        tertiaryColor: '#fff'
+      }
+    });
+  </script>
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/atom.xml" title="RSS Feed"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="Search"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main">
+  
+    <article id="post-Programming/CPP/os" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2025/06/21/Programming/CPP/os/" class="article-date">
+  <time class="dt-published" datetime="2025-06-21T02:27:13.728Z" itemprop="datePublished">2025-06-21</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>假设给定底层的 allocate(size, alignment) : ptr 和 deallocate(ptr)<br>写一个内存对齐的malloc free</p>
+<ol>
+<li>什么是内存对齐</li>
+<li>内存对齐有什么好处</li>
+<li>用户的数据要内存对齐 , 因此可以申请稍微更大一些的内存，以及存储上user_ptr， user_size的信息确保deallocate时，能够正确释放</li>
+</ol>
+<p>allocate [user_ptr, user_size, user_memory1……..]</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2025/06/21/Programming/CPP/os/" data-id="cmdpf31b00039q0onev6nfr5x" data-title="" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-Programming/CPP/C++" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2025/06/18/Programming/CPP/C++/" class="article-date">
+  <time class="dt-published" datetime="2025-06-18T07:13:09.708Z" itemprop="datePublished">2025-06-18</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <ol>
+<li>八股 [[cliche]]</li>
+<li>linux [[C++ on Linux]]</li>
+<li>编译原理 编译的项目总结 [[compile]]</li>
+</ol>
+<p>手撕系列</p>
+<p>手撕生产者消费者<br>[[手撕shared_ptr]]<br>[[手撕线程池]]</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2025/06/18/Programming/CPP/C++/" data-id="cmdpf31av002yq0onds8wfgec" data-title="" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-System/Paged Attention" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2025/06/18/System/Paged%20Attention/" class="article-date">
+  <time class="dt-published" datetime="2025-06-18T07:06:33.920Z" itemprop="datePublished">2025-06-18</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2025/06/18/System/Paged%20Attention/" data-id="cmdpf31aj001zq0on7vv6cv3j" data-title="" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-System/Flash Attention" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2025/06/18/System/Flash%20Attention/" class="article-date">
+  <time class="dt-published" datetime="2025-06-18T07:04:51.306Z" itemprop="datePublished">2025-06-18</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>首先我们必须掌握一些基础的cuda basics [[Cuda Basics]]</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2025/06/18/System/Flash%20Attention/" data-id="cmdpf31aa001bq0on4h8z2xuh" data-title="" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-System/PD-Disaggregation" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2025/06/16/System/PD-Disaggregation/" class="article-date">
+  <time class="dt-published" datetime="2025-06-16T12:50:21.853Z" itemprop="datePublished">2025-06-16</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>PD混存在的问题：抉择组不同的batch(prefill&#x2F;decode) -&gt; 请求平均时延和P99时延出现波动</p>
+<h2 id="业界"><a href="#业界" class="headerlink" title="业界"></a>业界</h2><h4 id="MoonCake"><a href="#MoonCake" class="headerlink" title="MoonCake:"></a>MoonCake:</h4><p>KV-Cache为中心</p>
+<p>Prefill&#x2F;Decode Pool</p>
+<p>KVCache Pool</p>
+<p>vllm</p>
+<h5 id="数据传输"><a href="#数据传输" class="headerlink" title="数据传输"></a>数据传输</h5><p>TCP：涉及到KVCache从显存拷贝到主机内存，肯定不行<br>RDMA：路径相比TCP更短，不存在拷贝开销，不存在内核态协议栈的处理开销</p>
+<h4 id="控制信息传输"><a href="#控制信息传输" class="headerlink" title="控制信息传输"></a>控制信息传输</h4><p>GRPC over TCP</p>
+<h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/Zs61CDerMwI7JKbFyD001Q">https://mp.weixin.qq.com/s/Zs61CDerMwI7JKbFyD001Q</a></p>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/27836625742">https://zhuanlan.zhihu.com/p/27836625742</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2025/06/16/System/PD-Disaggregation/" data-id="cmdpf31ai001wq0onb3mcg4a8" data-title="" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-System/MHA with KV-Cache" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2025/06/16/System/MHA%20with%20KV-Cache/" class="article-date">
+  <time class="dt-published" datetime="2025-06-16T01:59:51.511Z" itemprop="datePublished">2025-06-16</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>手写一个自带kv-cache的attention,然后和pytorch的build-in attention进行性能和精度对比<br>几个关键的问题：</p>
+<ol>
+<li>怎么计算有KV-Cache后，计算复杂度&#x2F;FLOPS等方面优化了多少？<br>对于prefill时</li>
+<li>给定一个模型的超参数，怎么确定KVCache需要多少Blocks?</li>
+</ol>
+<h4 id="Objectives"><a href="#Objectives" class="headerlink" title="Objectives"></a>Objectives</h4><ol start="0">
+<li>手搓mha: 精度和pytorch build-in的multi-head-attention一致</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">import</span> torch.nn <span class="keyword">as</span> nn</span><br><span class="line"><span class="keyword">import</span> torch.nn.functional <span class="keyword">as</span> F</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">MultiHeadAttentionWithKVCache</span>(nn.Module):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, d_model=<span class="number">512</span>, num_heads=<span class="number">8</span></span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        初始化多头注意力层</span></span><br><span class="line"><span class="string">        </span></span><br><span class="line"><span class="string">        参数:</span></span><br><span class="line"><span class="string">            d_model: 模型维度 (默认: 512)</span></span><br><span class="line"><span class="string">            num_heads: 注意力头数 (默认: 8)</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        <span class="built_in">super</span>().__init__()</span><br><span class="line">        <span class="keyword">assert</span> d_model % num_heads == <span class="number">0</span>, <span class="string">&quot;d_model必须能被num_heads整除&quot;</span></span><br><span class="line">        </span><br><span class="line">        <span class="variable language_">self</span>.d_model = d_model</span><br><span class="line">        <span class="variable language_">self</span>.num_heads = num_heads</span><br><span class="line">        <span class="variable language_">self</span>.d_head = d_model // num_heads</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 线性变换矩阵</span></span><br><span class="line">        <span class="variable language_">self</span>.W_q = nn.Linear(d_model, d_model)  <span class="comment"># 查询变换</span></span><br><span class="line">        <span class="variable language_">self</span>.W_k = nn.Linear(d_model, d_model)  <span class="comment"># 键变换</span></span><br><span class="line">        <span class="variable language_">self</span>.W_v = nn.Linear(d_model, d_model)  <span class="comment"># 值变换</span></span><br><span class="line">        <span class="variable language_">self</span>.W_o = nn.Linear(d_model, d_model)  <span class="comment"># 输出变换</span></span><br><span class="line">        </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, x, k_cache=<span class="literal">None</span>, v_cache=<span class="literal">None</span>, mask=<span class="literal">None</span></span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        前向传播</span></span><br><span class="line"><span class="string">        </span></span><br><span class="line"><span class="string">        参数:</span></span><br><span class="line"><span class="string">            x: 输入张量 (当前步骤的输入)</span></span><br><span class="line"><span class="string">                形状: (batch_size, seq_len, d_model) 或 (batch_size, 1, d_model) 对于自回归解码</span></span><br><span class="line"><span class="string">                </span></span><br><span class="line"><span class="string">            k_cache: 键的缓存 (之前所有步骤的键)</span></span><br><span class="line"><span class="string">                形状: (batch_size, num_heads, cache_len, d_head) 或 None (第一次调用时)</span></span><br><span class="line"><span class="string">                </span></span><br><span class="line"><span class="string">            v_cache: 值的缓存 (之前所有步骤的值)</span></span><br><span class="line"><span class="string">                形状: (batch_size, num_heads, cache_len, d_head) 或 None (第一次调用时)</span></span><br><span class="line"><span class="string">                </span></span><br><span class="line"><span class="string">            mask: 注意力掩码 (可选)</span></span><br><span class="line"><span class="string">                形状: (batch_size, 1, target_len, source_len)</span></span><br><span class="line"><span class="string">        </span></span><br><span class="line"><span class="string">        返回:</span></span><br><span class="line"><span class="string">            output: 注意力输出</span></span><br><span class="line"><span class="string">                形状: (batch_size, seq_len, d_model)</span></span><br><span class="line"><span class="string">                </span></span><br><span class="line"><span class="string">            new_k_cache: 更新后的键缓存</span></span><br><span class="line"><span class="string">                形状: (batch_size, num_heads, cache_len + seq_len, d_head)</span></span><br><span class="line"><span class="string">                </span></span><br><span class="line"><span class="string">            new_v_cache: 更新后的值缓存</span></span><br><span class="line"><span class="string">                形状: (batch_size, num_heads, cache_len + seq_len, d_head)</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        batch_size, seq_len, _ = x.shape</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 1. 线性变换</span></span><br><span class="line">        <span class="comment"># q: (batch_size, seq_len, d_model)</span></span><br><span class="line">        <span class="comment"># k: (batch_size, seq_len, d_model)</span></span><br><span class="line">        <span class="comment"># v: (batch_size, seq_len, d_model)</span></span><br><span class="line">        q = <span class="variable language_">self</span>.W_q(x)</span><br><span class="line">        k = <span class="variable language_">self</span>.W_k(x)</span><br><span class="line">        v = <span class="variable language_">self</span>.W_v(x)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 2. 分割多头</span></span><br><span class="line">        <span class="comment"># q: (batch_size, seq_len, num_heads, d_head) -&gt; (batch_size, num_heads, seq_len, d_head)</span></span><br><span class="line">        <span class="comment"># k: (batch_size, seq_len, num_heads, d_head) -&gt; (batch_size, num_heads, seq_len, d_head)</span></span><br><span class="line">        <span class="comment"># v: (batch_size, seq_len, num_heads, d_head) -&gt; (batch_size, num_heads, seq_len, d_head)</span></span><br><span class="line">        q = q.view(batch_size, seq_len, <span class="variable language_">self</span>.num_heads, <span class="variable language_">self</span>.d_head).transpose(<span class="number">1</span>, <span class="number">2</span>)</span><br><span class="line">        k = k.view(batch_size, seq_len, <span class="variable language_">self</span>.num_heads, <span class="variable language_">self</span>.d_head).transpose(<span class="number">1</span>, <span class="number">2</span>)</span><br><span class="line">        v = v.view(batch_size, seq_len, <span class="variable language_">self</span>.num_heads, <span class="variable language_">self</span>.d_head).transpose(<span class="number">1</span>, <span class="number">2</span>)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 3. 处理KV缓存</span></span><br><span class="line">        <span class="keyword">if</span> k_cache <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span> <span class="keyword">and</span> v_cache <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">            <span class="comment"># 拼接当前k,v和缓存</span></span><br><span class="line">            <span class="comment"># k_cache: (batch_size, num_heads, cache_len, d_head)</span></span><br><span class="line">            <span class="comment"># v_cache: (batch_size, num_heads, cache_len, d_head)</span></span><br><span class="line">            k = torch.cat([k_cache, k], dim=<span class="number">2</span>)</span><br><span class="line">            v = torch.cat([v_cache, v], dim=<span class="number">2</span>)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 更新缓存 (用于下一个时间步)</span></span><br><span class="line">        new_k_cache = k  <span class="comment"># (batch_size, num_heads, cache_len + seq_len, d_head)</span></span><br><span class="line">        new_v_cache = v  <span class="comment"># (batch_size, num_heads, cache_len + seq_len, d_head)</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment"># print(&quot;Q:&quot; ,q)</span></span><br><span class="line">        <span class="comment"># print(&quot;K:&quot; ,k)</span></span><br><span class="line">        <span class="comment"># 4. 计算注意力分数</span></span><br><span class="line">        <span class="comment"># q: (batch_size, num_heads, seq_len, d_head)</span></span><br><span class="line">        <span class="comment"># k: (batch_size, num_heads, cache_len + seq_len, d_head)</span></span><br><span class="line">        <span class="comment"># attn_scores: (batch_size, num_heads, seq_len, cache_len + seq_len)</span></span><br><span class="line">        attn_scores = torch.matmul(q, k.transpose(-<span class="number">2</span>, -<span class="number">1</span>)) / (<span class="variable language_">self</span>.d_head ** <span class="number">0.5</span>)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 5. 应用掩码 (如果有)</span></span><br><span class="line">        <span class="keyword">if</span> mask <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">            attn_scores = attn_scores.masked_fill(mask == <span class="number">0</span>, <span class="built_in">float</span>(<span class="string">&#x27;-inf&#x27;</span>))</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 6. 计算注意力权重</span></span><br><span class="line">        <span class="comment"># print(&quot;attn_scores: &quot;, attn_scores)</span></span><br><span class="line">        attn_weights = F.softmax(attn_scores, dim=-<span class="number">1</span>)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 7. 应用注意力权重到值上</span></span><br><span class="line">        <span class="comment"># attn_weights: (batch_size, num_heads, seq_len, cache_len + seq_len)</span></span><br><span class="line">        <span class="comment"># v: (batch_size, num_heads, cache_len + seq_len, d_head)</span></span><br><span class="line">        <span class="comment"># output: (batch_size, num_heads, seq_len, d_head)</span></span><br><span class="line">        output = torch.matmul(attn_weights, v)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 8. 合并多头</span></span><br><span class="line">        <span class="comment"># output: (batch_size, seq_len, num_heads, d_head)</span></span><br><span class="line">        output = output.transpose(<span class="number">1</span>, <span class="number">2</span>).contiguous()</span><br><span class="line">        <span class="comment"># output: (batch_size, seq_len, d_model)</span></span><br><span class="line">        output = output.view(batch_size, seq_len, <span class="variable language_">self</span>.d_model)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 9. 最终线性变换</span></span><br><span class="line">        output = <span class="variable language_">self</span>.W_o(output)</span><br><span class="line">        <span class="comment"># print(&quot;output shape&quot;, output.shape)</span></span><br><span class="line">        <span class="comment"># print(&quot;\n\n&quot;)</span></span><br><span class="line">        <span class="keyword">return</span> output, new_k_cache, new_v_cache</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    device = torch.device(<span class="string">&#x27;cuda&#x27;</span> <span class="keyword">if</span> torch.cuda.is_available() <span class="keyword">else</span> <span class="string">&#x27;cpu&#x27;</span>)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;Using device: <span class="subst">&#123;device&#125;</span>&quot;</span>)</span><br><span class="line">    <span class="keyword">import</span> time</span><br><span class="line">    embed_dim = <span class="number">3</span></span><br><span class="line">    num_heads = <span class="number">1</span></span><br><span class="line">    input_seq_len = <span class="number">5</span></span><br><span class="line">    max_iter_times = <span class="number">1</span></span><br><span class="line">    batch_size = <span class="number">1</span></span><br><span class="line">    model = MultiHeadAttentionWithKVCache(embed_dim, num_heads).to(device)</span><br><span class="line">    model.<span class="built_in">eval</span>()</span><br><span class="line">    <span class="comment"># create input of shape [bs, intput_seq_len, emebed_dim] , then iterate max_iter_times（do decode）</span></span><br><span class="line">    <span class="comment"># do this operation with and without KVCache</span></span><br><span class="line">    prefill_seqs = torch.randn(batch_size, input_seq_len, embed_dim).to(device)</span><br><span class="line">    decode_input = []</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(max_iter_times):</span><br><span class="line">        decode_input.append(torch.randn(batch_size, <span class="number">1</span>, embed_dim).to(device))</span><br><span class="line">    output_no_cache = []</span><br><span class="line">    output_with_cache =[]</span><br><span class="line">    X = prefill_seqs.clone()</span><br><span class="line">    no_cache_start = time.perf_counter()</span><br><span class="line">    pre_timestamp = time.perf_counter()</span><br><span class="line">    no_cache_time = []</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(max_iter_times):</span><br><span class="line">        </span><br><span class="line">        output, _, _ = model(X)</span><br><span class="line">        no_cache_time.append(time.perf_counter() - pre_timestamp); pre_timestamp = time.perf_counter()</span><br><span class="line">        output_no_cache.append(output[:,-<span class="number">1</span>,:].view(batch_size, <span class="number">1</span>, embed_dim))</span><br><span class="line">        <span class="comment"># output_no_cache.append(output[:,-1,:].view(batch_size, 1, embed_dim))</span></span><br><span class="line">        X = torch.cat([X, decode_input[i]], dim = <span class="number">1</span>)</span><br><span class="line">        no_cache_time.append(time.perf_counter() - pre_timestamp); pre_timestamp = time.perf_counter()</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;Total time without KV cache: <span class="subst">&#123;no_cache_time&#125;</span> seconds&quot;</span>)</span><br><span class="line"></span><br><span class="line">    X = prefill_seqs.clone()</span><br><span class="line">    with_cache_start = time.perf_counter()</span><br><span class="line">    k_cache = <span class="literal">None</span></span><br><span class="line">    v_cache = <span class="literal">None</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(max_iter_times):</span><br><span class="line">        <span class="keyword">if</span> i == <span class="number">0</span>:</span><br><span class="line">            output, k_cache, v_cache = model(X, k_cache, v_cache)</span><br><span class="line">            output_with_cache.append(output[:,-<span class="number">1</span>,:].view(batch_size, <span class="number">1</span>, embed_dim))</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            output, k_cache, v_cache = model(decode_input[i-<span class="number">1</span>], k_cache, v_cache)</span><br><span class="line">            output_with_cache.append(output)</span><br><span class="line">    with_cache_time = time.perf_counter() - with_cache_start</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;Total time with KV cache: <span class="subst">&#123;with_cache_time:<span class="number">.4</span>f&#125;</span> seconds&quot;</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(max_iter_times):</span><br><span class="line">        <span class="built_in">print</span>(output_no_cache[i])</span><br><span class="line">        <span class="built_in">print</span>(output_with_cache[i])</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="Questions"><a href="#Questions" class="headerlink" title="Questions"></a>Questions</h4><ol start="0">
+<li>还得是通过手搓公式的方法来进行理解：</li>
+</ol>
+<p>假设我们有一个长度为3的seq,做完prefill后要预测next token<br>通过embedding后，$ Q &#x3D; [q0, q1, q2]^T  $ , $ K &#x3D; [k0,k1,k2] $<br>$$ S &#x3D; QK &#x3D; [qi^Tkj] $$<br>通过attention计算和掩码处理后，假设我们得到的attentore score &#x3D;<br>$$<br>\begin{bmatrix}<br>1 &amp; 0 &amp; 0 \<br>0.2 &amp; 0.8 &amp;  0 \<br>0.1 &amp; 0.2 &amp;  0.7 \<br>\end{bmatrix}<br>$$<br>那么atten和V矩阵相乘，得到<br>$$<br>\begin{bmatrix}<br>v0  \<br>0.2v0 + 0.8v1 \<br>0.1v0 + 0.2v1 +  0.7v2\<br>\end{bmatrix}<br>$$<br>且对于next token的预测，使用的输入是最后一行的0.1v0 + 0.2v1 +  0.7v2这个结果作为线性变换层的输入</p>
+<h4 id="2-KV-Cache开启前后的FLOPs差异"><a href="#2-KV-Cache开启前后的FLOPs差异" class="headerlink" title="2. KV Cache开启前后的FLOPs差异"></a>2. KV Cache开启前后的FLOPs差异</h4><p>假设序列长度为<code>L</code>，模型维度<code>d</code>，头数<code>h</code>，头维度<code>d_h = d/h</code>，batch size为<code>B</code>：</p>
+<ul>
+<li><p><strong>无KV Cache</strong>：</p>
+<ul>
+<li><p>每次计算都需要处理整个序列：<code>O(B*L^2*d)</code></p>
+</li>
+<li><p>自回归生成<code>N</code>个token的总FLOPs：<code>O(B*N*L^2*d)</code>（随着<code>L</code>增长）</p>
+</li>
+</ul>
+</li>
+<li><p><strong>有KV Cache</strong>：</p>
+<ul>
+<li><p>Prefill阶段：<code>O(B*L^2*d)</code>（与无Cache相同）</p>
+</li>
+<li><p>解码阶段：每次只计算新token的Q与所有K的点积：<code>O(B*L*d)</code>（每个token）</p>
+</li>
+<li><p>自回归生成<code>N</code>个token的总FLOPs：<code>O(B*L^2*d + B*N*L*d)</code></p>
+</li>
+</ul>
+</li>
+</ul>
+<ol>
+<li>对于一个batch 是不是做完prefill之后，P节点的kv-cache就用不到了？-&gt; 分析一下当前LLM是怎么管理KVCache的释放操作的</li>
+</ol>
+<h4 id="3-KV-Cache的内存管理"><a href="#3-KV-Cache的内存管理" class="headerlink" title="3. KV Cache的内存管理"></a>3. KV Cache的内存管理</h4><h5 id="内存计算："><a href="#内存计算：" class="headerlink" title="内存计算："></a>内存计算：</h5><ul>
+<li><p>每个token的KV Cache大小：<code>2 * B * h * L * d_h = 2 * B * L * d</code>（因为<code>h * d_h = d</code>）</p>
+</li>
+<li><p>对于<code>N</code>个token，Cache大小：<code>2 * B * N * d</code>（假设<code>L = N</code>）</p>
+</li>
+</ul>
+<h5 id="管理策略："><a href="#管理策略：" class="headerlink" title="管理策略："></a>管理策略：</h5><ol>
+<li><p><strong>静态分配</strong>：</p>
+<ul>
+<li><p>预分配固定大小的Cache（如最大长度限制）。</p>
+</li>
+<li><p>简单但可能浪费内存或限制生成长度。</p>
+</li>
+</ul>
+</li>
+<li><p><strong>动态分配</strong>：</p>
+<ul>
+<li><p>按需扩展Cache内存（如使用<code>torch.cat</code>）。</p>
+</li>
+<li><p>更灵活但可能引入内存碎片。</p>
+</li>
+</ul>
+</li>
+<li><p><strong>Block管理</strong>（如PagedAttention）：</p>
+<ul>
+<li><p>将Cache划分为固定大小的Block（如每Block存储16个token的KV）。</p>
+</li>
+<li><p>维护一个逻辑到物理Block的映射表。</p>
+</li>
+<li><p>支持不连续的物理内存，便于共享和释放。</p>
+</li>
+</ul>
+</li>
+</ol>
+<h5 id="释放策略："><a href="#释放策略：" class="headerlink" title="释放策略："></a>释放策略：</h5><ul>
+<li><p><strong>Prefill阶段</strong>：通常不需要释放，因为所有token都用于生成第一个输出。</p>
+</li>
+<li><p><strong>解码阶段</strong>：</p>
+<ul>
+<li><p>若支持可变输入长度（如多个并行序列），可以按序列释放。</p>
+</li>
+<li><p>使用引用计数或标记-清除策略管理Block。</p>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="4-Swap-in-Swap-out策略"><a href="#4-Swap-in-Swap-out策略" class="headerlink" title="4. Swap-in&#x2F;Swap-out策略"></a>4. Swap-in&#x2F;Swap-out策略</h4><p>当GPU内存不足时：</p>
+<ol>
+<li><p><strong>最近最少使用（LRU）</strong>：</p>
+<ul>
+<li><p>将最久未访问的Cache Block交换到CPU内存。</p>
+</li>
+<li><p>需要时再交换回GPU。</p>
+</li>
+</ul>
+</li>
+<li><p><strong>按重要性交换</strong>：</p>
+<ul>
+<li><p>根据注意力权重或梯度信息决定保留哪些Block。</p>
+</li>
+<li><p>高权重的Block保留在GPU。</p>
+</li>
+</ul>
+</li>
+<li><p><strong>预取（Prefetch）</strong>：</p>
+<ul>
+<li><p>预测下一步需要的Block提前加载。</p>
+</li>
+<li><p>例如，基于当前生成的token预测下一个可能访问的Block。</p>
+</li>
+</ul>
+</li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2025/06/16/System/MHA%20with%20KV-Cache/" data-id="cmdpf31ai001uq0onfwr469g5" data-title="" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-System/Speculative Decoding" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2025/06/12/System/Speculative%20Decoding/" class="article-date">
+  <time class="dt-published" datetime="2025-06-12T12:00:59.482Z" itemprop="datePublished">2025-06-12</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2025/06/12/System/Speculative%20Decoding/" data-id="cmdpf31am0028q0onhtkh21hx" data-title="" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-System/LLM-Serving" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2025/06/12/System/LLM-Serving/" class="article-date">
+  <time class="dt-published" datetime="2025-06-12T11:50:07.188Z" itemprop="datePublished">2025-06-12</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h4 id="Basics"><a href="#Basics" class="headerlink" title="Basics"></a>Basics</h4><ol>
+<li>KV-Cache Explanation and Implementation [[MHA with KV-Cache]]</li>
+<li>贪婪搜索， Beamsearch 以及核采样</li>
+<li>量化的基本原理</li>
+<li>如何实现模型的高效部署</li>
+<li>[[Speculative Decoding]]</li>
+<li>Flash Attention [[Flash Attention]]</li>
+<li>Paged Attention [[Paged Attention]]</li>
+</ol>
+<h4 id="PD-Disaggregation-PD-Disaggregation"><a href="#PD-Disaggregation-PD-Disaggregation" class="headerlink" title="PD-Disaggregation [[PD-Disaggregation]]"></a>PD-Disaggregation [[PD-Disaggregation]]</h4>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2025/06/12/System/LLM-Serving/" data-id="cmdpf31af001nq0onaqt9f461" data-title="" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-Music/Fundamentals" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2025/06/04/Music/Fundamentals/" class="article-date">
+  <time class="dt-published" datetime="2025-06-04T12:14:02.178Z" itemprop="datePublished">2025-06-04</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>基本功练习：旨在让我在精神上较为疲惫的情况下保持手感，练习一些机能；</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2025/06/04/Music/Fundamentals/" data-id="cmdpf31a3000rq0on8vxqe6cv" data-title="" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-Music/Blues" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2025/06/04/Music/Blues/" class="article-date">
+  <time class="dt-published" datetime="2025-06-04T12:09:19.838Z" itemprop="datePublished">2025-06-04</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h3 id="comping"><a href="#comping" class="headerlink" title="comping"></a>comping</h3><p>[[blues-comping-rhythm |comping]]</p>
+<h3 id="Licks"><a href="#Licks" class="headerlink" title="Licks"></a>Licks</h3><p>[[blues-licks-cliche]]</p>
+<h3 id="Improvisation"><a href="#Improvisation" class="headerlink" title="Improvisation"></a>Improvisation</h3><p>[[blues-chord-connection]]</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2025/06/04/Music/Blues/" data-id="cmdpf31a2000pq0on2nmb4co8" data-title="" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+
+
+  <nav id="page-nav">
+    
+    <a class="extend prev" rel="prev" href="/page/4/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span><a class="page-number" href="/page/6/">6</a><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" href="/page/6/">Next &raquo;</a>
+  </nav>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/System/">System</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Test/">Test</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AI/" rel="tag">AI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Attention/" rel="tag">Attention</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Communication/" rel="tag">Communication</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Compiler/" rel="tag">Compiler</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Computational-Graph/" rel="tag">Computational Graph</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/DeepSeek/" rel="tag">DeepSeek</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Distributed/" rel="tag">Distributed</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/LLM/" rel="tag">LLM</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MoE/" rel="tag">MoE</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Optimization/" rel="tag">Optimization</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Performance/" rel="tag">Performance</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SGLang/" rel="tag">SGLang</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/System/" rel="tag">System</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/blog/" rel="tag">blog</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/blues/" rel="tag">blues</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/career/" rel="tag">career</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/charts/" rel="tag">charts</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/consensus/" rel="tag">consensus</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/data-parallelism/" rel="tag">data-parallelism</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/distributed-systems/" rel="tag">distributed-systems</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/experience/" rel="tag">experience</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/expert-parallelism/" rel="tag">expert-parallelism</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/guitar/" rel="tag">guitar</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/harmony/" rel="tag">harmony</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/licks/" rel="tag">licks</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/life/" rel="tag">life</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/llm/" rel="tag">llm</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mermaid/" rel="tag">mermaid</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/raft/" rel="tag">raft</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/rhythm/" rel="tag">rhythm</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/test/" rel="tag">test</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/AI/" style="font-size: 10px;">AI</a> <a href="/tags/Attention/" style="font-size: 10px;">Attention</a> <a href="/tags/Communication/" style="font-size: 10px;">Communication</a> <a href="/tags/Compiler/" style="font-size: 10px;">Compiler</a> <a href="/tags/Computational-Graph/" style="font-size: 10px;">Computational Graph</a> <a href="/tags/DeepSeek/" style="font-size: 10px;">DeepSeek</a> <a href="/tags/Distributed/" style="font-size: 10px;">Distributed</a> <a href="/tags/LLM/" style="font-size: 10px;">LLM</a> <a href="/tags/MoE/" style="font-size: 10px;">MoE</a> <a href="/tags/Optimization/" style="font-size: 10px;">Optimization</a> <a href="/tags/Performance/" style="font-size: 10px;">Performance</a> <a href="/tags/SGLang/" style="font-size: 10px;">SGLang</a> <a href="/tags/System/" style="font-size: 15px;">System</a> <a href="/tags/blog/" style="font-size: 10px;">blog</a> <a href="/tags/blues/" style="font-size: 20px;">blues</a> <a href="/tags/career/" style="font-size: 10px;">career</a> <a href="/tags/charts/" style="font-size: 10px;">charts</a> <a href="/tags/consensus/" style="font-size: 10px;">consensus</a> <a href="/tags/data-parallelism/" style="font-size: 10px;">data-parallelism</a> <a href="/tags/distributed-systems/" style="font-size: 20px;">distributed-systems</a> <a href="/tags/experience/" style="font-size: 10px;">experience</a> <a href="/tags/expert-parallelism/" style="font-size: 10px;">expert-parallelism</a> <a href="/tags/guitar/" style="font-size: 20px;">guitar</a> <a href="/tags/harmony/" style="font-size: 10px;">harmony</a> <a href="/tags/licks/" style="font-size: 10px;">licks</a> <a href="/tags/life/" style="font-size: 10px;">life</a> <a href="/tags/llm/" style="font-size: 15px;">llm</a> <a href="/tags/mermaid/" style="font-size: 10px;">mermaid</a> <a href="/tags/raft/" style="font-size: 10px;">raft</a> <a href="/tags/rhythm/" style="font-size: 10px;">rhythm</a> <a href="/tags/test/" style="font-size: 10px;">test</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/07/">July 2025</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/06/">June 2025</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/05/">May 2025</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/04/">April 2025</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/03/">March 2025</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/01/">January 2025</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/03/">March 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/01/">January 2024</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2025/07/30/System/%E5%B9%B6%E8%A1%8C%E7%AD%96%E7%95%A5/%E5%BA%8F%E5%88%97%E5%B9%B6%E8%A1%8C/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2025/07/28/PD%E5%88%86%E7%A6%BB%E6%9E%B6%E6%9E%84KVCache%E8%B7%A8%E8%8A%82%E7%82%B9%E4%BC%A0%E8%BE%93%E5%8A%9F%E8%83%BD%E5%BC%80%E5%8F%91%EF%BC%8C%E4%BC%98%E5%8C%96KVCache%E4%BC%A0%E8%BE%93%E6%95%88%E7%8E%87/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2025/07/28/System/%E5%B9%B6%E8%A1%8C%E7%AD%96%E7%95%A5/EP/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2025/07/28/System/%E5%B9%B6%E8%A1%8C%E7%AD%96%E7%95%A5/%E9%9B%86%E5%90%88%E9%80%9A%E4%BF%A1%E5%9F%BA%E7%A1%80/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2025/07/28/System/DeepSeek/">(no title)</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2025 John Doe<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+
+<!-- Mermaid Support -->
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10.6.1/dist/mermaid.min.js"></script>
+<script>
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'default',
+    securityLevel: 'loose',
+    themeVariables: {
+      primaryColor: '#0f4c75',
+      primaryTextColor: '#fff',
+      primaryBorderColor: '#0f4c75',
+      lineColor: '#0f4c75',
+      secondaryColor: '#006ba6',
+      tertiaryColor: '#fff'
+    }
+  });
+</script>
+  </div>
+</body>
+</html>
