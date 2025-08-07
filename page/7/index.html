@@ -89,6 +89,94 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-Programming/CPP/C++ on Linux" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2025/04/21/Programming/CPP/C++%20on%20Linux/" class="article-date">
+  <time class="dt-published" datetime="2025-04-21T06:54:47.013Z" itemprop="datePublished">2025-04-21</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>C++ linux开发</p>
+<h2 id="linux-vitual-memery-layout"><a href="#linux-vitual-memery-layout" class="headerlink" title="linux vitual memery layout"></a>linux vitual memery layout</h2><p>4GB的那个图：</p>
+<p>kernel space: 1gb，用户代码不能写否则段错误</p>
+<p>stack (向下增长)</p>
+<p>Memory Mapping Segment 映射*.so </p>
+<p>Heap”</p>
+<p>BSS segment: 未初始化的变量(static char* userName);</p>
+<p>Data segment: 初始化的static variables: example： static char* str &#x3D; “ABC”;</p>
+<p>Text Segment: 二进制image</p>
+<p><img src="/images/process-memory-layout.png" alt="Process Memory Layout"></p>
+<h2 id="dynamic-memory-management"><a href="#dynamic-memory-management" class="headerlink" title="dynamic memory management:"></a>dynamic memory management:</h2><h3 id="malloc"><a href="#malloc" class="headerlink" title="malloc"></a>malloc</h3><p>在 Linux 中，内存分配涉及以下系统调用：</p>
+<ul>
+<li><strong>brk&#x2F;sbrk</strong>：<ul>
+<li>调整数据段（heap）的顶部地址。</li>
+<li>用于小块内存分配的扩展堆。</li>
+</ul>
+</li>
+<li><strong>mmap&#x2F;munmap</strong>：<ul>
+<li>用于分配大块内存。</li>
+<li>分配的内存独立于堆，不受 <code>brk/sbrk</code> 控制。</li>
+</ul>
+</li>
+</ul>
+<h5 id="内存分配的结构"><a href="#内存分配的结构" class="headerlink" title="内存分配的结构"></a>内存分配的结构</h5><ul>
+<li><p>当你调用 <code>malloc</code> 时，比如：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">c</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">CopyEdit</span><br><span class="line">int* arr = (int*)malloc(10 * sizeof(int));</span><br></pre></td></tr></table></figure>
+
+<p>内存管理器实际上分配的内存比请求的要多：</p>
+<ul>
+<li>用户请求的大小：<code>10 * sizeof(int)</code>。</li>
+<li>额外的元数据空间，用于存储分配信息，如分配块的大小。</li>
+</ul>
+<p>一个典型的内存布局如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">css</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">CopyEdit</span><br><span class="line">[元数据][用户数据区域]</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>元数据</strong>：记录内存块的大小、状态（已分配&#x2F;空闲）等。</li>
+<li><strong>用户数据区域</strong>：返回给用户的指针地址。</li>
+</ul>
+<p><code>malloc</code> 返回的指针是指向用户数据区域的起始位置，而元数据存储在这块内存的前面，用户无法直接访问。</p>
+</li>
+</ul>
+<h3 id="free"><a href="#free" class="headerlink" title="free"></a>free</h3><h5 id="free-传入参数是一个地址是怎么做到free一整个内存块的"><a href="#free-传入参数是一个地址是怎么做到free一整个内存块的" class="headerlink" title="free 传入参数是一个地址是怎么做到free一整个内存块的"></a>free 传入参数是一个地址是怎么做到free一整个内存块的</h5><ul>
+<li><strong>free</strong> 通过内存块前的元数据知道需要释放的整个内存块大小。</li>
+<li><strong>连续性保证</strong>：<code>malloc</code> 保证了分配内存块的连续性，<code>free</code> 只需释放记录的整块内存。</li>
+<li>对于复杂数据结构（如多维数组），需要按块分别释放，因为每次分配的内存块都有独立的元数据记录。</li>
+</ul>
+<h4 id="多维数组的free"><a href="#多维数组的free" class="headerlink" title="多维数组的free"></a>多维数组的free</h4><p>如果数组是动态分配的多维数组，或者使用的是指针数组，例如：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">int** arr = (int**)malloc(10 * sizeof(int*));</span><br><span class="line">for (int i = 0; i &lt; 10; i++) &#123;</span><br><span class="line">    arr[i] = (int*)malloc(5 * sizeof(int));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在这种情况下，释放内存需要用户手动释放每个子数组：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">for (int i = 0; i &lt; 10; i++) &#123;</span><br><span class="line">    free(arr[i]); // 释放每个子数组</span><br><span class="line">&#125;</span><br><span class="line">free(arr); // 释放指针数组</span><br></pre></td></tr></table></figure>
+
+<p>这是因为每个子数组是单独分配的，元数据仅记录单块内存的大小。</p>
+<h4 id="管理策略："><a href="#管理策略：" class="headerlink" title="管理策略："></a>管理策略：</h4><ul>
+<li><strong>分割（Splitting）</strong>：大块内存可能被分割为更小的块以满足分配需求。</li>
+<li><strong>合并（Coalescing）</strong>：相邻的空闲块可能会被合并为更大的块。</li>
+<li><strong>碎片化</strong>：频繁分配和释放可能导致内存碎片化，降低内存利用率。</li>
+</ul>
+<p><strong>内存池（Memory Pool）</strong>：减少频繁的 <code>malloc</code>&#x2F;<code>free</code> 开销，这一点可以细致的了解一下.</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2025/04/21/Programming/CPP/C++%20on%20Linux/" data-id="cme17rzzi002u0oon0o5racvp" data-title="" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-Plans/复盘" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2025/04/20/Plans/%E5%A4%8D%E7%9B%98/" class="article-date">
@@ -122,7 +210,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2025/04/20/Plans/%E5%A4%8D%E7%9B%98/" data-id="cme17ov0l002pwnoncwldft1e" data-title="" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2025/04/20/Plans/%E5%A4%8D%E7%9B%98/" data-id="cme17rzzf002p0oon9hzjbf0v" data-title="" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -258,7 +346,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2025/04/20/%E6%A8%A1%E6%8B%9F/" data-id="cme17ouzj000awnon8pxah2ky" data-title="" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2025/04/20/%E6%A8%A1%E6%8B%9F/" data-id="cme17rzyh00060oon7vjd0wd9" data-title="" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -290,7 +378,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2025/03/05/%E6%98%A5%E9%A3%8E%E5%90%B9-%E6%96%B9%E5%A4%A7%E5%90%8C/" data-id="cme17ouzb0005wnonbognc8v2" data-title="" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2025/03/05/%E6%98%A5%E9%A3%8E%E5%90%B9-%E6%96%B9%E5%A4%A7%E5%90%8C/" data-id="cme17rzyg00050oon3xem6q53" data-title="" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -325,7 +413,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2025/03/05/System/%E6%8E%A8%E7%90%86%E6%9C%8D%E5%8A%A1%E5%8C%96-Essentials/" data-id="cme17ov0g002cwnonhwvu2lwe" data-title="" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2025/03/05/System/%E6%8E%A8%E7%90%86%E6%9C%8D%E5%8A%A1%E5%8C%96-Essentials/" data-id="cme17rzzg002r0oon5oyd0wsv" data-title="" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -365,7 +453,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2025/03/05/hello-world/" data-id="cme17ouyq0002wnon4mbdfnwe" data-title="Hello World" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2025/03/05/hello-world/" data-id="cme17rzya00020oon57yp095f" data-title="Hello World" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -441,7 +529,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2025/03/05/System/%E4%B8%93%E5%AE%B6%E5%B9%B6%E8%A1%8C-LLM-Basics/" data-id="cme17ov0b001ywnon3fxb8833" data-title="专家并行 - LLM 基础" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2025/03/05/System/%E4%B8%93%E5%AE%B6%E5%B9%B6%E8%A1%8C-LLM-Basics/" data-id="cme17rzz8001y0oon2mg94u6d" data-title="专家并行 - LLM 基础" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -527,7 +615,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2025/03/05/System/%E6%95%B0%E6%8D%AE%E5%B9%B6%E8%A1%8C-LLM-Basics/" data-id="cme17ov0d0025wnonc4g694cx" data-title="数据并行 - LLM 基础" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2025/03/05/System/%E6%95%B0%E6%8D%AE%E5%B9%B6%E8%A1%8C-LLM-Basics/" data-id="cme17rzz900230oon1vcp7lju" data-title="数据并行 - LLM 基础" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -568,7 +656,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2025/03/05/Music/Blues/blues-chord-connection/" data-id="cme17ov0w003jwnonbzf7g2m7" data-title="布鲁斯和弦连接" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2025/03/05/Music/Blues/blues-chord-connection/" data-id="cme17rzzq003l0oon5mujeouf" data-title="布鲁斯和弦连接" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -627,98 +715,11 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2025/03/05/Music/Blues/blues-comping-rhythm/" data-id="cme17ov0y003lwnonfc2vh2wd" data-title="Blues Comping Rhythm" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2025/03/05/Music/Blues/blues-comping-rhythm/" data-id="cme17rzzq003n0oon3vne05ky" data-title="Blues Comping Rhythm" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/blues/" rel="tag">blues</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/guitar/" rel="tag">guitar</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/rhythm/" rel="tag">rhythm</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-Music/Blues/blues-licks-cliche" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2025/03/05/Music/Blues/blues-licks-cliche/" class="article-date">
-  <time class="dt-published" datetime="2025-03-04T16:00:00.000Z" itemprop="datePublished">2025-03-05</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2025/03/05/Music/Blues/blues-licks-cliche/">布鲁斯乐句 - 经典套路</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h1 id="布鲁斯乐句-经典套路"><a href="#布鲁斯乐句-经典套路" class="headerlink" title="布鲁斯乐句 - 经典套路"></a>布鲁斯乐句 - 经典套路</h1><h2 id="什么是布鲁斯乐句"><a href="#什么是布鲁斯乐句" class="headerlink" title="什么是布鲁斯乐句"></a>什么是布鲁斯乐句</h2><p>布鲁斯乐句（Blues Licks）是布鲁斯音乐中最具特色的演奏元素。本文将介绍一些经典的布鲁斯乐句套路。</p>
-<h2 id="基础乐句类型"><a href="#基础乐句类型" class="headerlink" title="基础乐句类型"></a>基础乐句类型</h2><ol>
-<li>上行乐句</li>
-<li>下行乐句</li>
-<li>重复音型</li>
-<li>滑音技巧</li>
-</ol>
-<h2 id="经典乐句分析"><a href="#经典乐句分析" class="headerlink" title="经典乐句分析"></a>经典乐句分析</h2><h3 id="1-小调五声音阶"><a href="#1-小调五声音阶" class="headerlink" title="1. 小调五声音阶"></a>1. 小调五声音阶</h3><ul>
-<li>基本音型</li>
-<li>变奏方式</li>
-<li>应用场景</li>
-</ul>
-<h3 id="2-蓝音运用"><a href="#2-蓝音运用" class="headerlink" title="2. 蓝音运用"></a>2. 蓝音运用</h3><ul>
-<li>蓝音位置</li>
-<li>情感表达</li>
-<li>即兴技巧</li>
-</ul>
-<h3 id="3-节奏变化"><a href="#3-节奏变化" class="headerlink" title="3. 节奏变化"></a>3. 节奏变化</h3><ul>
-<li>切分音</li>
-<li>重音移位</li>
-<li>节奏组合</li>
-</ul>
-<h2 id="实践练习"><a href="#实践练习" class="headerlink" title="实践练习"></a>实践练习</h2><h3 id="1-基础练习"><a href="#1-基础练习" class="headerlink" title="1. 基础练习"></a>1. 基础练习</h3><ul>
-<li>音阶练习</li>
-<li>节奏训练</li>
-<li>技巧组合</li>
-</ul>
-<h3 id="2-即兴演奏"><a href="#2-即兴演奏" class="headerlink" title="2. 即兴演奏"></a>2. 即兴演奏</h3><ul>
-<li>乐句连接</li>
-<li>情感表达</li>
-<li>风格融合</li>
-</ul>
-<h2 id="音频示例"><a href="#音频示例" class="headerlink" title="音频示例"></a>音频示例</h2><audio controls>
-  <source src="/audio/blues-licks-1.mp3" type="audio/mpeg">
-  您的浏览器不支持音频播放。
-</audio>
-
-<h2 id="进阶技巧"><a href="#进阶技巧" class="headerlink" title="进阶技巧"></a>进阶技巧</h2><ol>
-<li>和声进行</li>
-<li>调式转换</li>
-<li>风格融合</li>
-</ol>
-<h2 id="学习建议"><a href="#学习建议" class="headerlink" title="学习建议"></a>学习建议</h2><ol>
-<li>练习方法</li>
-<li>常见问题</li>
-<li>进阶方向</li>
-</ol>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2025/03/05/Music/Blues/blues-licks-cliche/" data-id="cme17ov0z003ownon9d78g313" data-title="布鲁斯乐句 - 经典套路" class="article-share-link"><span class="fa fa-share">Share</span></a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/blues/" rel="tag">blues</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/guitar/" rel="tag">guitar</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/licks/" rel="tag">licks</a></li></ul>
 
     </footer>
   </div>
@@ -785,6 +786,10 @@
       <ul>
         
           <li>
+            <a href="/2025/08/07/Plans/PlanForAugust/">(no title)</a>
+          </li>
+        
+          <li>
             <a href="/2025/08/03/Plans/%E5%B7%A5%E4%BD%9C%E4%B8%AD%E9%81%87%E5%88%B0%E7%9A%84%E4%B8%80%E4%BA%9B%E9%9A%BE%E9%A2%98/">(no title)</a>
           </li>
         
@@ -798,10 +803,6 @@
         
           <li>
             <a href="/2025/07/31/Programming/CPP/constexpr/">(no title)</a>
-          </li>
-        
-          <li>
-            <a href="/2025/07/30/System/%E5%B9%B6%E8%A1%8C%E7%AD%96%E7%95%A5/%E5%BA%8F%E5%88%97%E5%B9%B6%E8%A1%8C/">(no title)</a>
           </li>
         
       </ul>
