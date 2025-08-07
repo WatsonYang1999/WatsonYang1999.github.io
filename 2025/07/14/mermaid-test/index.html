@@ -4,14 +4,21 @@
   <meta charset="utf-8">
   
   
-  <title>Archives: 2025/1 | Hexo</title>
+  <title>Mermaid Charts Test Page | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Hexo">
-<meta property="og:url" content="http://example.com/archives/2025/01/index.html">
+  <meta name="description" content="Mermaid Charts Test PageThis page contains various types of Mermaid diagrams to test the functionality. 1. Flowchartgraph TD     A[Start] --&gt; B{Is it working?}     B --&gt;|Yes| C[Great!]     B --&gt;|No| D">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Mermaid Charts Test Page">
+<meta property="og:url" content="http://example.com/2025/07/14/mermaid-test/index.html">
 <meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="Mermaid Charts Test PageThis page contains various types of Mermaid diagrams to test the functionality. 1. Flowchartgraph TD     A[Start] --&gt; B{Is it working?}     B --&gt;|Yes| C[Great!]     B --&gt;|No| D">
 <meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2025-07-14T03:21:30.000Z">
+<meta property="article:modified_time" content="2025-08-07T09:45:44.794Z">
 <meta property="article:author" content="John Doe">
+<meta property="article:tag" content="mermaid">
+<meta property="article:tag" content="charts">
+<meta property="article:tag" content="test">
 <meta name="twitter:card" content="summary">
   
     <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
@@ -87,39 +94,200 @@
 </header>
 
       <div class="outer">
-        <section id="main">
-  
-  
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2025" class="archive-year">2025</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2025/01/15/System/AI%20Compiler/" class="archive-article-date">
-  <time class="dt-published" datetime="2025-01-15T02:00:00.000Z" itemprop="datePublished">Jan 15</time>
+        <section id="main"><article id="post-mermaid-test" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2025/07/14/mermaid-test/" class="article-date">
+  <time class="dt-published" datetime="2025-07-14T03:21:30.000Z" itemprop="datePublished">2025-07-14</time>
 </a>
-      
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Test/">Test</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2025/01/15/System/AI%20Compiler/">AI Compiler - 计算图优化与编译器后端</a>
+    <h1 class="p-name article-title" itemprop="headline name">
+      Mermaid Charts Test Page
     </h1>
   
 
-    </header>
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="Mermaid-Charts-Test-Page"><a href="#Mermaid-Charts-Test-Page" class="headerlink" title="Mermaid Charts Test Page"></a>Mermaid Charts Test Page</h1><p>This page contains various types of Mermaid diagrams to test the functionality.</p>
+<h2 id="1-Flowchart"><a href="#1-Flowchart" class="headerlink" title="1. Flowchart"></a>1. Flowchart</h2><pre class="mermaid">graph TD
+    A[Start] --> B{Is it working?}
+    B -->|Yes| C[Great!]
+    B -->|No| D[Debug]
+    D --> E[Fix issues]
+    E --> B
+    C --> F[End]</pre>
+
+<h2 id="2-Sequence-Diagram"><a href="#2-Sequence-Diagram" class="headerlink" title="2. Sequence Diagram"></a>2. Sequence Diagram</h2><pre class="mermaid">sequenceDiagram
+    participant User
+    participant Frontend
+    participant Backend
+    participant Database
+    
+    User->>Frontend: Request data
+    Frontend->>Backend: API call
+    Backend->>Database: Query
+    Database-->>Backend: Results
+    Backend-->>Frontend: Response
+    Frontend-->>User: Display data</pre>
+
+<h2 id="3-Class-Diagram"><a href="#3-Class-Diagram" class="headerlink" title="3. Class Diagram"></a>3. Class Diagram</h2><pre class="mermaid">classDiagram
+    class Animal {
+        +String name
+        +int age
+        +makeSound()
+    }
+    
+    class Dog {
+        +String breed
+        +bark()
+    }
+    
+    class Cat {
+        +String color
+        +meow()
+    }
+    
+    Animal <|-- Dog
+    Animal <|-- Cat</pre>
+
+<h2 id="4-Pie-Chart"><a href="#4-Pie-Chart" class="headerlink" title="4. Pie Chart"></a>4. Pie Chart</h2><pre class="mermaid">pie title Programming Languages Usage
+    "Python" : 40
+    "JavaScript" : 30
+    "C++" : 20
+    "Others" : 10</pre>
+
+<h2 id="5-Gitgraph"><a href="#5-Gitgraph" class="headerlink" title="5. Gitgraph"></a>5. Gitgraph</h2><pre class="mermaid">gitgraph
+    commit
+    commit
+    branch develop
+    checkout develop
+    commit
+    commit
+    checkout main
+    merge develop
+    commit</pre>
+
+<h2 id="6-State-Diagram"><a href="#6-State-Diagram" class="headerlink" title="6. State Diagram"></a>6. State Diagram</h2><pre class="mermaid">stateDiagram-v2
+    [*] --> Idle
+    Idle --> Processing : start
+    Processing --> Success : complete
+    Processing --> Error : fail
+    Success --> [*]
+    Error --> Idle : retry</pre>
+
+<h2 id="7-Gantt-Chart"><a href="#7-Gantt-Chart" class="headerlink" title="7. Gantt Chart"></a>7. Gantt Chart</h2><pre class="mermaid">gantt
+    title Project Timeline
+    dateFormat  YYYY-MM-DD
+    section Planning
+    Requirements    :active, req, 2024-01-01, 30d
+    Design         :des, after req, 20d
+    section Development
+    Frontend       :dev1, after des, 40d
+    Backend        :dev2, after des, 35d
+    Testing        :test, after dev1, 15d</pre>
+
+<h2 id="8-ER-Diagram"><a href="#8-ER-Diagram" class="headerlink" title="8. ER Diagram"></a>8. ER Diagram</h2><pre class="mermaid">erDiagram
+    CUSTOMER {
+        string name
+        string email
+        string phone
+    }
+    ORDER {
+        int order_id
+        string date
+        float total
+    }
+    PRODUCT {
+        int product_id
+        string name
+        float price
+    }
+    
+    CUSTOMER ||--o{ ORDER : places
+    ORDER ||--o{ PRODUCT : contains</pre>
+
+<h2 id="9-Journey-Map"><a href="#9-Journey-Map" class="headerlink" title="9. Journey Map"></a>9. Journey Map</h2><pre class="mermaid">journey
+    title User Shopping Journey
+    section Browse
+      Visit website: 3: User
+      Search products: 4: User
+      View details: 5: User
+    section Purchase
+      Add to cart: 4: User
+      Checkout: 3: User
+      Payment: 2: User
+    section Post-purchase
+      Receive confirmation: 5: User
+      Track order: 4: User
+      Receive product: 5: User</pre>
+
+<h2 id="10-Timeline"><a href="#10-Timeline" class="headerlink" title="10. Timeline"></a>10. Timeline</h2><pre class="mermaid">timeline
+    title Software Development Timeline
+    
+    2024-01    : Planning Phase
+             : Requirements Gathering
+             : Architecture Design
+    
+    2024-02    : Development Phase
+             : Backend Development
+             : Frontend Development
+    
+    2024-03    : Testing Phase
+             : Unit Testing
+             : Integration Testing
+    
+    2024-04    : Deployment Phase
+             : Production Deployment
+             : Monitoring Setup</pre>
+
+<p>If you can see all these diagrams rendered correctly, then Mermaid is working properly! </p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2025/07/14/mermaid-test/" data-id="cme17ouz80004wnon8yr1bz3w" data-title="Mermaid Charts Test Page" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/charts/" rel="tag">charts</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mermaid/" rel="tag">mermaid</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/test/" rel="tag">test</a></li></ul>
+
+    </footer>
   </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2025/07/16/System/Continuous_Batching%E4%B8%8E%E8%AF%B7%E6%B1%82%E8%B0%83%E5%BA%A6%E4%BC%98%E5%8C%96%E5%88%86%E6%9E%90/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          (no title)
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2025/07/14/System/LLM_Serving_Framework_Comparison/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title"></div>
+    </a>
+  
+</nav>
+
+  
 </article>
-  
-  
-    </div></section>
-  
 
 
 </section>
@@ -159,7 +327,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/08/">August 2025</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/07/">July 2025</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/06/">June 2025</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/05/">May 2025</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/04/">April 2025</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/03/">March 2025</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/01/">January 2025</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/03/">March 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/01/">January 2024</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/08/">August 2025</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/07/">July 2025</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/06/">June 2025</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/05/">May 2025</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/04/">April 2025</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/03/">March 2025</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/03/">March 2024</a></li></ul>
     </div>
   </div>
 

@@ -106,7 +106,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2025/07/23/System/Kernel%20%E8%B0%83%E5%BA%A6%E4%BC%98%E5%8C%96/" data-id="cme178g830018y8onb9w5ct4u" data-title="" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2025/07/23/System/Kernel%20%E8%B0%83%E5%BA%A6%E4%BC%98%E5%8C%96/" data-id="cme17ov04001kwnon01rua8zs" data-title="" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -134,7 +134,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2025/07/23/System/Untitled/" data-id="cme178g8b001xy8on0d5ibnpe" data-title="" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2025/07/23/System/Untitled/" data-id="cme17ov08001rwnone3w9c3hl" data-title="" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -171,10 +171,219 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2025/07/21/Mental/First%20Principle/" data-id="cme178g7p000fy8on9nbmg66t" data-title="" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2025/07/21/Mental/First%20Principle/" data-id="cme17ouzp000jwnonhb3v9pyu" data-title="" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-System/AI Compiler" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2025/07/19/System/AI%20Compiler/" class="article-date">
+  <time class="dt-published" datetime="2025-07-19T01:53:10.000Z" itemprop="datePublished">2025-07-19</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/System/">System</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2025/07/19/System/AI%20Compiler/">AI Compiler - 计算图优化与编译器后端</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="AI-Compiler-计算图优化与编译器后端"><a href="#AI-Compiler-计算图优化与编译器后端" class="headerlink" title="AI Compiler - 计算图优化与编译器后端"></a>AI Compiler - 计算图优化与编译器后端</h1><h2 id="Q-什么是计算图（Computational-Graph）？"><a href="#Q-什么是计算图（Computational-Graph）？" class="headerlink" title="Q: 什么是计算图（Computational Graph）？"></a>Q: 什么是计算图（Computational Graph）？</h2><p><strong>A:</strong> 计算图是深度学习框架中的核心概念，用于表示神经网络的计算过程。</p>
+<h3 id="计算图构成"><a href="#计算图构成" class="headerlink" title="计算图构成"></a>计算图构成</h3><ul>
+<li><strong>Tensor（张量）</strong>：数据节点，存储模型的输入、输出和中间结果</li>
+<li><strong>Operator（算子）</strong>：计算节点，执行具体的数学运算（如卷积、矩阵乘法等）</li>
+</ul>
+<h3 id="计算图生成方式"><a href="#计算图生成方式" class="headerlink" title="计算图生成方式"></a>计算图生成方式</h3><ol>
+<li><strong>静态图</strong>：先定义完整的计算图结构，再执行</li>
+<li><strong>动态图</strong>：边定义边执行，即时构建计算图</li>
+</ol>
+<h2 id="Q-什么是算子融合（Operator-Fusion）？"><a href="#Q-什么是算子融合（Operator-Fusion）？" class="headerlink" title="Q: 什么是算子融合（Operator Fusion）？"></a>Q: 什么是算子融合（Operator Fusion）？</h2><p><strong>A:</strong> 算子融合是AI编译器中的一种重要优化技术，它将多个连续的算子合并为一个复合操作。</p>
+<h3 id="具体例子"><a href="#具体例子" class="headerlink" title="具体例子"></a>具体例子</h3><p>将Add算子与ReLU合并为一个操作，可以：</p>
+<ul>
+<li>节省中间计算结果的存储、读取等过程</li>
+<li>降低框架底层算子调度的开销</li>
+<li>提升执行性能和效率</li>
+<li>降低内存开销</li>
+</ul>
+<h2 id="Q-为什么算子融合能提升性能？"><a href="#Q-为什么算子融合能提升性能？" class="headerlink" title="Q: 为什么算子融合能提升性能？"></a>Q: 为什么算子融合能提升性能？</h2><p><strong>A:</strong> 算子融合通过减少内存访问和调度开销来提升性能：</p>
+<h3 id="性能提升原因"><a href="#性能提升原因" class="headerlink" title="性能提升原因"></a>性能提升原因</h3><ol>
+<li><strong>减少内存访问</strong>：避免中间结果的存储和读取</li>
+<li><strong>降低调度开销</strong>：减少算子间的调度切换</li>
+<li><strong>提高缓存效率</strong>：数据在缓存中停留更长时间</li>
+<li><strong>减少内存占用</strong>：不需要为中间结果分配额外内存</li>
+</ol>
+<h2 id="Q-动态图和静态图有什么区别？"><a href="#Q-动态图和静态图有什么区别？" class="headerlink" title="Q: 动态图和静态图有什么区别？"></a>Q: 动态图和静态图有什么区别？</h2><p><strong>A:</strong> 动态图和静态图代表了两种不同的深度学习框架设计理念：</p>
+<h3 id="动态图特点"><a href="#动态图特点" class="headerlink" title="动态图特点"></a>动态图特点</h3><ul>
+<li><strong>边解释边执行</strong>：代码按顺序执行，立即得到结果</li>
+<li><strong>灵活性高</strong>：支持动态控制流（if&#x2F;else、循环等）</li>
+<li><strong>调试友好</strong>：可以随时打印中间结果，便于调试</li>
+<li><strong>开发效率高</strong>：类似Python的交互式编程体验</li>
+</ul>
+<h3 id="静态图特点"><a href="#静态图特点" class="headerlink" title="静态图特点"></a>静态图特点</h3><ul>
+<li><strong>先定义后执行</strong>：先构建完整的计算图，再统一执行</li>
+<li><strong>优化空间大</strong>：编译时可以进行全局优化</li>
+<li><strong>部署效率高</strong>：可以编译为高效的执行代码</li>
+<li><strong>性能更好</strong>：减少运行时开销</li>
+</ul>
+<h2 id="Q-PyTorch和TensorFlow的对比如何理解？"><a href="#Q-PyTorch和TensorFlow的对比如何理解？" class="headerlink" title="Q: PyTorch和TensorFlow的对比如何理解？"></a>Q: PyTorch和TensorFlow的对比如何理解？</h2><p><strong>A:</strong> 可以用编程模式的类比来理解：</p>
+<h3 id="类比说明"><a href="#类比说明" class="headerlink" title="类比说明"></a>类比说明</h3><ul>
+<li><p><strong>PyTorch (动态图)</strong> ≈ <strong>Jupyter Notebook编程</strong></p>
+<ul>
+<li>交互式、即时反馈</li>
+<li>可以随时修改和调试</li>
+<li>开发体验友好</li>
+</ul>
+</li>
+<li><p><strong>TensorFlow 1.x (静态图)</strong> ≈ <strong>C++编译型编程</strong></p>
+<ul>
+<li>先定义完整程序，再编译执行</li>
+<li>性能优化空间大</li>
+<li>部署效率高</li>
+</ul>
+</li>
+</ul>
+<h3 id="现代发展"><a href="#现代发展" class="headerlink" title="现代发展"></a>现代发展</h3><ul>
+<li><strong>TensorFlow 2.x</strong>：默认启用Eager Execution（动态图），同时保留静态图优化</li>
+<li><strong>PyTorch</strong>：通过TorchScript和TorchDynamo支持静态图优化</li>
+<li><strong>趋势</strong>：两种模式融合，开发时用动态图，部署时用静态图</li>
+</ul>
+<h2 id="Q-PyTorch如何部署静态图？"><a href="#Q-PyTorch如何部署静态图？" class="headerlink" title="Q: PyTorch如何部署静态图？"></a>Q: PyTorch如何部署静态图？</h2><p><strong>A:</strong> PyTorch提供了多种方式将动态图转换为静态图进行部署：</p>
+<h3 id="1-TorchScript-传统方式"><a href="#1-TorchScript-传统方式" class="headerlink" title="1. TorchScript (传统方式)"></a>1. TorchScript (传统方式)</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 方法1: Tracing - 跟踪执行路径</span></span><br><span class="line">traced_model = torch.jit.trace(model, example_input)</span><br><span class="line">traced_model.save(<span class="string">&quot;model.pt&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 方法2: Scripting - 直接编译Python代码</span></span><br><span class="line">scripted_model = torch.jit.script(model)</span><br><span class="line">scripted_model.save(<span class="string">&quot;model.pt&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<p><strong>特点：</strong></p>
+<ul>
+<li><strong>Tracing</strong>：记录一次前向传播的执行路径，适合无控制流的模型</li>
+<li><strong>Scripting</strong>：直接分析Python代码结构，支持控制流但有限制</li>
+<li><strong>限制</strong>：不支持所有Python特性，需要修改代码</li>
+</ul>
+<h3 id="2-TorchDynamo-PyTorch-2-0"><a href="#2-TorchDynamo-PyTorch-2-0" class="headerlink" title="2. TorchDynamo (PyTorch 2.0+)"></a>2. TorchDynamo (PyTorch 2.0+)</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 使用torch.compile自动优化</span></span><br><span class="line">optimized_model = torch.<span class="built_in">compile</span>(model)</span><br><span class="line"><span class="comment"># 或指定后端</span></span><br><span class="line">optimized_model = torch.<span class="built_in">compile</span>(model, backend=<span class="string">&quot;inductor&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<p><strong>特点：</strong></p>
+<ul>
+<li><strong>自动优化</strong>：无需修改代码，自动识别可优化部分</li>
+<li><strong>多后端支持</strong>：支持AOTAutograd、TorchInductor等后端</li>
+<li><strong>渐进式采用</strong>：可以只优化部分模型</li>
+</ul>
+<h3 id="3-部署方式对比"><a href="#3-部署方式对比" class="headerlink" title="3. 部署方式对比"></a>3. 部署方式对比</h3><table>
+<thead>
+<tr>
+<th>方法</th>
+<th>易用性</th>
+<th>性能</th>
+<th>兼容性</th>
+<th>适用场景</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>TorchScript Tracing</td>
+<td>中等</td>
+<td>高</td>
+<td>中等</td>
+<td>简单模型</td>
+</tr>
+<tr>
+<td>TorchScript Scripting</td>
+<td>低</td>
+<td>高</td>
+<td>低</td>
+<td>复杂控制流</td>
+</tr>
+<tr>
+<td>TorchDynamo</td>
+<td>高</td>
+<td>很高</td>
+<td>高</td>
+<td>现代PyTorch模型</td>
+</tr>
+</tbody></table>
+<h3 id="4-实际部署流程"><a href="#4-实际部署流程" class="headerlink" title="4. 实际部署流程"></a>4. 实际部署流程</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 1. 开发阶段：使用动态图</span></span><br><span class="line">model = MyModel()</span><br><span class="line">model.train()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 2. 部署阶段：转换为静态图</span></span><br><span class="line">model.<span class="built_in">eval</span>()</span><br><span class="line"><span class="keyword">if</span> use_torchdynamo:</span><br><span class="line">    model = torch.<span class="built_in">compile</span>(model)</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    model = torch.jit.trace(model, example_input)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 3. 保存和加载</span></span><br><span class="line">torch.save(model, <span class="string">&quot;deployed_model.pt&quot;</span>)</span><br><span class="line">loaded_model = torch.load(<span class="string">&quot;deployed_model.pt&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<p><strong>最佳实践：</strong></p>
+<ul>
+<li><strong>开发时</strong>：使用动态图，享受调试便利</li>
+<li><strong>部署时</strong>：使用<code>torch.compile()</code>自动优化</li>
+<li><strong>特殊需求</strong>：使用TorchScript获得最大兼容性</li>
+</ul>
+<h2 id="Q-AI编译器后端的主要任务是什么？"><a href="#Q-AI编译器后端的主要任务是什么？" class="headerlink" title="Q: AI编译器后端的主要任务是什么？"></a>Q: AI编译器后端的主要任务是什么？</h2><p><strong>A:</strong> 编译器后端主要负责三个核心任务：计算图优化、算子选择、内存分配。</p>
+<h3 id="1-计算图优化"><a href="#1-计算图优化" class="headerlink" title="1. 计算图优化"></a>1. 计算图优化</h3><p><strong>目标</strong>：在不影响模型数值特性的基础上，通过图变换达到减少资源开销、适配硬件执行能力、提升执行性能的目的。</p>
+<p><strong>优化类型</strong>：</p>
+<ul>
+<li><strong>硬件通用优化</strong>：与硬件无关的算子内存IO优化</li>
+<li><strong>特定硬件优化</strong>：适配特定硬件指令限制的子图变换</li>
+</ul>
+<h3 id="2-算子选择"><a href="#2-算子选择" class="headerlink" title="2. 算子选择"></a>2. 算子选择</h3><p><strong>目标</strong>：为IR图中的每个计算节点选择最适合在设备上执行的算子。</p>
+<p><strong>考虑因素</strong>：</p>
+<ul>
+<li><strong>存储格式</strong>：不同的数据存储格式对性能影响很大</li>
+<li><strong>计算精度</strong>：FP32、FP16、INT8等精度选择</li>
+<li><strong>硬件特性</strong>：GPU、CPU、专用加速器的算子库差异</li>
+</ul>
+<h3 id="3-内存分配"><a href="#3-内存分配" class="headerlink" title="3. 内存分配"></a>3. 内存分配</h3><p><strong>目标</strong>：为算子的输入输出Tensor分配内存，然后加载算子到硬件上执行。</p>
+<p><strong>优化策略</strong>：</p>
+<ul>
+<li><strong>内存复用</strong>：让设备上容纳更大的网络模型</li>
+<li><strong>通信算子内存融合</strong>：提高通信效率</li>
+<li><strong>In-Place算子优化</strong>：节省内存使用并提高计算效率</li>
+</ul>
+<h2 id="Q-运行时调度有哪些模式？"><a href="#Q-运行时调度有哪些模式？" class="headerlink" title="Q: 运行时调度有哪些模式？"></a>Q: 运行时调度有哪些模式？</h2><p><strong>A:</strong> 运行时对于算子的执行可以分为两种主要模式：</p>
+<h3 id="1-单算子调度"><a href="#1-单算子调度" class="headerlink" title="1. 单算子调度"></a>1. 单算子调度</h3><ul>
+<li><strong>特点</strong>：逐个执行算子，调度开销较大</li>
+<li><strong>适用</strong>：调试阶段或简单场景</li>
+</ul>
+<h3 id="2-计算图调度"><a href="#2-计算图调度" class="headerlink" title="2. 计算图调度"></a>2. 计算图调度</h3><ul>
+<li><strong>交互式执行</strong>：具备更多灵活性，适合复杂控制流</li>
+<li><strong>下沉式执行</strong>：获得更好的计算性能，适合批量推理</li>
+</ul>
+<h3 id="3-并行优化"><a href="#3-并行优化" class="headerlink" title="3. 并行优化"></a>3. 并行优化</h3><ul>
+<li><strong>算子级并行</strong>：多个算子同时执行</li>
+<li><strong>训练推理并行</strong>：异步进行数据预处理&#x2F;训练等</li>
+</ul>
+<h2 id="Q-算子编译器的关键技术是什么？"><a href="#Q-算子编译器的关键技术是什么？" class="headerlink" title="Q: 算子编译器的关键技术是什么？"></a>Q: 算子编译器的关键技术是什么？</h2><p><strong>A:</strong> 算子编译器是优化硬件性能的关键组件，主要有两个核心技术：</p>
+<h3 id="1-调度策略优化"><a href="#1-调度策略优化" class="headerlink" title="1. 调度策略优化"></a>1. 调度策略优化</h3><ul>
+<li><strong>循环优化</strong>：重新组织循环结构</li>
+<li><strong>内存访问优化</strong>：提高缓存命中率</li>
+<li><strong>并行度优化</strong>：充分利用硬件并行能力</li>
+</ul>
+<h3 id="2-多面体模型算法"><a href="#2-多面体模型算法" class="headerlink" title="2. 多面体模型算法"></a>2. 多面体模型算法</h3><ul>
+<li><strong>循环变换</strong>：基于数学理论进行循环优化</li>
+<li><strong>依赖分析</strong>：分析数据依赖关系</li>
+<li><strong>自动调优</strong>：自动生成最优的调度策略</li>
+</ul>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://openmlsys.github.io/chapter_computational_graph/generation_of_computational_graph.html">OpenMLSys - 计算图生成</a></li>
+<li><a target="_blank" rel="noopener" href="https://openmlsys.github.io/chapter_backend_and_runtime/summary.html">OpenMLSys - 编译器后端总结</a></li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2025/07/19/System/AI%20Compiler/" data-id="cme17ouzr000nwnonc2x0hor3" data-title="AI Compiler - 计算图优化与编译器后端" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/AI/" rel="tag">AI</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Compiler/" rel="tag">Compiler</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Computational-Graph/" rel="tag">Computational Graph</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Optimization/" rel="tag">Optimization</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Performance/" rel="tag">Performance</a></li></ul>
+
     </footer>
   </div>
   
@@ -276,7 +485,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2025/07/16/System/vLLM_safetensors%E6%A8%A1%E5%9E%8B%E5%8A%A0%E8%BD%BD%E4%B8%8E%E8%AE%A1%E7%AE%97%E5%9B%BE%E8%BD%AC%E6%8D%A2%E8%AF%A6%E7%BB%86%E5%88%86%E6%9E%90/" data-id="cme178g8d0026y8onh1yh5r7v" data-title="" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2025/07/16/System/vLLM_safetensors%E6%A8%A1%E5%9E%8B%E5%8A%A0%E8%BD%BD%E4%B8%8E%E8%AE%A1%E7%AE%97%E5%9B%BE%E8%BD%AC%E6%8D%A2%E8%AF%A6%E7%BB%86%E5%88%86%E6%9E%90/" data-id="cme17ov0a001wwnon1mz65nbk" data-title="" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -571,7 +780,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2025/07/16/System/vLLM_PagedAttention_%E5%AE%9E%E7%8E%B0%E8%AF%A6%E7%BB%86%E5%88%86%E6%9E%90/" data-id="cme178g8d0024y8on1cqa7i0o" data-title="" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2025/07/16/System/vLLM_PagedAttention_%E5%AE%9E%E7%8E%B0%E8%AF%A6%E7%BB%86%E5%88%86%E6%9E%90/" data-id="cme17ov09001uwnon0wxpdr5d" data-title="" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -799,7 +1008,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2025/07/16/System/PD%E5%88%86%E7%A6%BB%E6%9E%B6%E6%9E%84KV_Cache%E8%B7%A8%E8%8A%82%E7%82%B9%E4%BC%A0%E8%BE%93%E6%8A%80%E6%9C%AF%E5%88%86%E6%9E%90/" data-id="cme178g87001ny8on213k5nhj" data-title="" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2025/07/16/System/PD%E5%88%86%E7%A6%BB%E6%9E%B6%E6%9E%84KV_Cache%E8%B7%A8%E8%8A%82%E7%82%B9%E4%BC%A0%E8%BE%93%E6%8A%80%E6%9C%AF%E5%88%86%E6%9E%90/" data-id="cme17ov02001dwnong821fr08" data-title="" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -1046,7 +1255,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2025/07/16/System/KVCache%E6%B1%A0%E5%8C%96%E6%8A%80%E6%9C%AF%E6%B7%B1%E5%BA%A6%E5%88%86%E6%9E%90/" data-id="cme178g820015y8ong4m85xk5" data-title="" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2025/07/16/System/KVCache%E6%B1%A0%E5%8C%96%E6%8A%80%E6%9C%AF%E6%B7%B1%E5%BA%A6%E5%88%86%E6%9E%90/" data-id="cme17ouzx000ywnond3gzagxj" data-title="" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -1266,7 +1475,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2025/07/16/System/Continuous_Batching%E4%B8%8E%E8%AF%B7%E6%B1%82%E8%B0%83%E5%BA%A6%E4%BC%98%E5%8C%96%E5%88%86%E6%9E%90/" data-id="cme178g7w000sy8on5rd733p4" data-title="" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2025/07/16/System/Continuous_Batching%E4%B8%8E%E8%AF%B7%E6%B1%82%E8%B0%83%E5%BA%A6%E4%BC%98%E5%8C%96%E5%88%86%E6%9E%90/" data-id="cme17ouzt000pwnon2a8s5usk" data-title="" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -1278,600 +1487,175 @@
 
 
   
-    <article id="post-System/LLM_Serving_Framework_Comparison" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+    <article id="post-mermaid-test" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
-    <a href="/2025/07/14/System/LLM_Serving_Framework_Comparison/" class="article-date">
-  <time class="dt-published" datetime="2025-07-14T03:21:11.628Z" itemprop="datePublished">2025-07-14</time>
+    <a href="/2025/07/14/mermaid-test/" class="article-date">
+  <time class="dt-published" datetime="2025-07-14T03:21:30.000Z" itemprop="datePublished">2025-07-14</time>
 </a>
     
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Test/">Test</a>
+  </div>
+
   </div>
   <div class="article-inner">
     
     
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2025/07/14/mermaid-test/">Mermaid Charts Test Page</a>
+    </h1>
+  
+
+      </header>
+    
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <h1 id="LLM-Serving-Framework-Comparison-KVCache-PrefixCache-and-Prefill-Decode-Disaggregation"><a href="#LLM-Serving-Framework-Comparison-KVCache-PrefixCache-and-Prefill-Decode-Disaggregation" class="headerlink" title="LLM Serving Framework Comparison: KVCache, PrefixCache, and Prefill-Decode-Disaggregation"></a>LLM Serving Framework Comparison: KVCache, PrefixCache, and Prefill-Decode-Disaggregation</h1><h2 id="Executive-Summary"><a href="#Executive-Summary" class="headerlink" title="Executive Summary"></a>Executive Summary</h2><p>This document provides a comprehensive analysis of three major LLM serving frameworks: <strong>TensorRT-LLM</strong>, <strong>vLLM</strong>, and <strong>SGLang</strong>, focusing on their implementations of:</p>
-<ol>
-<li><strong>KV Cache Management</strong> - Memory optimization for attention mechanisms</li>
-<li><strong>Prefix Caching</strong> - Reuse of computed attention states for shared prefixes</li>
-<li><strong>Prefill-Decode Disaggregation</strong> - Separation of prefill and decode phases for better resource utilization</li>
-</ol>
-<h2 id="1-KV-Cache-Management"><a href="#1-KV-Cache-Management" class="headerlink" title="1. KV Cache Management"></a>1. KV Cache Management</h2><h3 id="TensorRT-LLM-Implementation"><a href="#TensorRT-LLM-Implementation" class="headerlink" title="TensorRT-LLM Implementation"></a>TensorRT-LLM Implementation</h3><p><strong>Core Architecture:</strong></p>
-<ul>
-<li><strong>Files</strong>: <code>kvCacheManager.cpp</code>, <code>kvCacheEventManager.cpp</code>, <code>allocateKvCache.cpp</code></li>
-<li><strong>Block-based memory management</strong> with configurable block sizes (16, 32, 64, 128 tokens)</li>
-<li><strong>Multi-level cache system</strong> with primary GPU memory and secondary CPU memory for offloading</li>
-<li><strong>Paged attention</strong> with TensorRT kernel optimizations</li>
-</ul>
-<p><strong>Key Features:</strong></p>
-<ul>
-<li>Hash-based block identification for efficient lookups</li>
-<li>Reference counting for memory safety</li>
-<li>Priority-based LRU eviction with retention policies</li>
-<li>Multi-pool architecture for different KV head configurations</li>
-<li>Quantization support (FP8, INT4, AWQ, GPTQ) for memory efficiency</li>
-<li>Thread-safe operations with mutex&#x2F;condition variable synchronization</li>
-</ul>
-<p><strong>Memory Management:</strong></p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Block management with priority-based eviction</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">BlockManager</span> &#123;</span><br><span class="line">    std::unordered_map&lt;BlockHash, BlockId&gt; cached_blocks;</span><br><span class="line">    std::vector&lt;BlockPool&gt; pools_by_config;</span><br><span class="line">    LRUEvictionPolicy eviction_policy;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+        <h1 id="Mermaid-Charts-Test-Page"><a href="#Mermaid-Charts-Test-Page" class="headerlink" title="Mermaid Charts Test Page"></a>Mermaid Charts Test Page</h1><p>This page contains various types of Mermaid diagrams to test the functionality.</p>
+<h2 id="1-Flowchart"><a href="#1-Flowchart" class="headerlink" title="1. Flowchart"></a>1. Flowchart</h2><pre class="mermaid">graph TD
+    A[Start] --> B{Is it working?}
+    B -->|Yes| C[Great!]
+    B -->|No| D[Debug]
+    D --> E[Fix issues]
+    E --> B
+    C --> F[End]</pre>
 
-<h3 id="vLLM-Implementation"><a href="#vLLM-Implementation" class="headerlink" title="vLLM Implementation"></a>vLLM Implementation</h3><p><strong>Core Architecture:</strong></p>
-<ul>
-<li><strong>Files</strong>: <code>core/block_manager.py</code>, <code>core/block/prefix_caching_block.py</code>, <code>attention/layer.py</code></li>
-<li><strong>BlockSpaceManager</strong> for centralized memory allocation</li>
-<li><strong>Prefix-aware block allocation</strong> with copy-on-write semantics</li>
-<li><strong>Lookahead slots</strong> for speculative decoding support</li>
-</ul>
-<p><strong>Key Features:</strong></p>
-<ul>
-<li>Unified block management for both regular and prefix-cached blocks</li>
-<li>Sliding window attention support</li>
-<li>Advanced scheduling integration with memory-aware allocation</li>
-<li>Support for both CPU and GPU memory pools</li>
-<li>Seamless integration with attention backends (FlashAttention, etc.)</li>
-</ul>
-<p><strong>Memory Management:</strong></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">SelfAttnBlockSpaceManager</span>(<span class="title class_ inherited__">BlockSpaceManager</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, block_size: <span class="built_in">int</span>, num_gpu_blocks: <span class="built_in">int</span>, num_cpu_blocks: <span class="built_in">int</span></span>):</span><br><span class="line">        <span class="variable language_">self</span>.block_allocator = CpuGpuBlockAllocator(...)</span><br><span class="line">        <span class="variable language_">self</span>.block_tables = &#123;&#125;  <span class="comment"># seq_id -&gt; BlockTable</span></span><br></pre></td></tr></table></figure>
+<h2 id="2-Sequence-Diagram"><a href="#2-Sequence-Diagram" class="headerlink" title="2. Sequence Diagram"></a>2. Sequence Diagram</h2><pre class="mermaid">sequenceDiagram
+    participant User
+    participant Frontend
+    participant Backend
+    participant Database
+    
+    User->>Frontend: Request data
+    Frontend->>Backend: API call
+    Backend->>Database: Query
+    Database-->>Backend: Results
+    Backend-->>Frontend: Response
+    Frontend-->>User: Display data</pre>
 
-<h3 id="SGLang-Implementation"><a href="#SGLang-Implementation" class="headerlink" title="SGLang Implementation"></a>SGLang Implementation</h3><p><strong>Core Architecture:</strong></p>
-<ul>
-<li><strong>Files</strong>: <code>mem_cache/memory_pool.py</code>, <code>mem_cache/radix_cache.py</code>, <code>mem_cache/swa_radix_cache.py</code></li>
-<li><strong>Three-tier memory pool system</strong>: ReqToTokenPool → TokenToKVPoolAllocator → KVCache</li>
-<li><strong>RadixAttention</strong> with tree-based prefix sharing</li>
-<li><strong>Sliding Window Attention (SWA)</strong> with hybrid full&#x2F;SWA cache management</li>
-</ul>
-<p><strong>Key Features:</strong></p>
-<ul>
-<li>Most sophisticated memory hierarchy with multiple abstraction levels</li>
-<li>Native support for different attention mechanisms (MHA, MLA, SWA)</li>
-<li>Advanced eviction policies with LRU lists and tombstone mechanisms</li>
-<li>Host memory backup for cache persistence</li>
-<li>Specialized kernels for different hardware (CUDA, Ascend NPU)</li>
-</ul>
-<p><strong>Memory Management:</strong></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">ReqToTokenPool</span>:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;Maps requests to token locations&quot;&quot;&quot;</span></span><br><span class="line">    </span><br><span class="line"><span class="keyword">class</span> <span class="title class_">TokenToKVPoolAllocator</span>:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;Manages KV cache indices&quot;&quot;&quot;</span></span><br><span class="line">    </span><br><span class="line"><span class="keyword">class</span> <span class="title class_">KVCache</span>:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;Physical KV cache storage&quot;&quot;&quot;</span></span><br></pre></td></tr></table></figure>
+<h2 id="3-Class-Diagram"><a href="#3-Class-Diagram" class="headerlink" title="3. Class Diagram"></a>3. Class Diagram</h2><pre class="mermaid">classDiagram
+    class Animal {
+        +String name
+        +int age
+        +makeSound()
+    }
+    
+    class Dog {
+        +String breed
+        +bark()
+    }
+    
+    class Cat {
+        +String color
+        +meow()
+    }
+    
+    Animal <|-- Dog
+    Animal <|-- Cat</pre>
 
-<h2 id="2-Prefix-Caching"><a href="#2-Prefix-Caching" class="headerlink" title="2. Prefix Caching"></a>2. Prefix Caching</h2><h3 id="TensorRT-LLM-Implementation-1"><a href="#TensorRT-LLM-Implementation-1" class="headerlink" title="TensorRT-LLM Implementation"></a>TensorRT-LLM Implementation</h3><p><strong>Core Architecture:</strong></p>
-<ul>
-<li><strong>Hash-based prefix identification</strong> using <code>BlockKeyHasher::hash()</code></li>
-<li><strong>Radix tree structure</strong> for hierarchical prefix organization</li>
-<li><strong>Partial block reuse</strong> with configurable granularity</li>
-<li><strong>Cache hit rate tracking</strong> for performance monitoring</li>
-</ul>
-<p><strong>Key Features:</strong></p>
-<ul>
-<li>Block-level prefix matching with configurable page sizes</li>
-<li>Copy-on-write semantics for memory efficiency</li>
-<li>Sophisticated cache replacement policies</li>
-<li>Integration with dynamic profiling for optimization</li>
-</ul>
-<p><strong>Prefix Matching:</strong></p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">BlockKeyHasher</span> &#123;</span><br><span class="line">    <span class="function"><span class="type">static</span> <span class="type">uint64_t</span> <span class="title">hash</span><span class="params">(<span class="type">const</span> std::vector&lt;<span class="type">int</span>&gt;&amp; tokens, <span class="type">int</span> extra_hash = <span class="number">0</span>)</span></span>;</span><br><span class="line">    <span class="function"><span class="type">static</span> <span class="type">bool</span> <span class="title">matches</span><span class="params">(<span class="type">const</span> BlockKey&amp; key1, <span class="type">const</span> BlockKey&amp; key2)</span></span>;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h2 id="4-Pie-Chart"><a href="#4-Pie-Chart" class="headerlink" title="4. Pie Chart"></a>4. Pie Chart</h2><pre class="mermaid">pie title Programming Languages Usage
+    "Python" : 40
+    "JavaScript" : 30
+    "C++" : 20
+    "Others" : 10</pre>
 
-<h3 id="vLLM-Implementation-1"><a href="#vLLM-Implementation-1" class="headerlink" title="vLLM Implementation"></a>vLLM Implementation</h3><p><strong>Core Architecture:</strong></p>
-<ul>
-<li><strong>Files</strong>: <code>core/block/prefix_caching_block.py</code>, <code>core/block/cpu_gpu_block_allocator.py</code></li>
-<li><strong>PrefixCachingBlockAllocator</strong> with content-hash based caching</li>
-<li><strong>ComputedBlocksTracker</strong> for managing computed state</li>
-<li><strong>Comprehensive prefix cache APIs</strong> across the engine</li>
-</ul>
-<p><strong>Key Features:</strong></p>
-<ul>
-<li>Content-based hashing for reliable prefix identification</li>
-<li>Immutable vs mutable block distinction</li>
-<li>Extensive prefix cache hit rate monitoring</li>
-<li>API endpoints for cache management (<code>/reset_prefix_cache</code>)</li>
-<li>Integration with speculative decoding</li>
-</ul>
-<p><strong>Prefix Cache Management:</strong></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">PrefixCachingBlockAllocator</span>(<span class="title class_ inherited__">BlockAllocator</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, num_blocks: <span class="built_in">int</span>, block_size: <span class="built_in">int</span>, eviction_policy: EvictionPolicy</span>):</span><br><span class="line">        <span class="variable language_">self</span>._cached_blocks: <span class="type">Dict</span>[PrefixHash, BlockId] = &#123;&#125;</span><br><span class="line">        <span class="variable language_">self</span>._touched_blocks: <span class="type">Set</span>[BlockId] = <span class="built_in">set</span>()</span><br><span class="line">        <span class="variable language_">self</span>._block_tracker: <span class="type">Dict</span>[BlockId, BlockTracker] = &#123;&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="5-Gitgraph"><a href="#5-Gitgraph" class="headerlink" title="5. Gitgraph"></a>5. Gitgraph</h2><pre class="mermaid">gitgraph
+    commit
+    commit
+    branch develop
+    checkout develop
+    commit
+    commit
+    checkout main
+    merge develop
+    commit</pre>
 
-<h3 id="SGLang-Implementation-1"><a href="#SGLang-Implementation-1" class="headerlink" title="SGLang Implementation"></a>SGLang Implementation</h3><p><strong>Core Architecture:</strong></p>
-<ul>
-<li><strong>Files</strong>: <code>mem_cache/radix_cache.py</code>, <code>mem_cache/swa_radix_cache.py</code>, <code>mem_cache/hiradix_cache.py</code></li>
-<li><strong>RadixCache</strong> with tree-based prefix sharing</li>
-<li><strong>SWARadixCache</strong> for sliding window attention</li>
-<li><strong>HiRadixCache</strong> for hierarchical caching</li>
-</ul>
-<p><strong>Key Features:</strong></p>
-<ul>
-<li>Most advanced prefix caching with multiple cache types</li>
-<li>Tree-based prefix sharing with automatic splitting&#x2F;merging</li>
-<li>Support for different page sizes and sliding window configurations</li>
-<li>Host memory backup for prefix persistence</li>
-<li>Event-driven cache management for disaggregated scenarios</li>
-</ul>
-<p><strong>Radix Tree Implementation:</strong></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">TreeNode</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="variable language_">self</span>.children = defaultdict(TreeNode)</span><br><span class="line">        <span class="variable language_">self</span>.parent: TreeNode = <span class="literal">None</span></span><br><span class="line">        <span class="variable language_">self</span>.key: <span class="type">List</span>[<span class="built_in">int</span>] = <span class="literal">None</span></span><br><span class="line">        <span class="variable language_">self</span>.value: <span class="type">Optional</span>[torch.Tensor] = <span class="literal">None</span></span><br><span class="line">        <span class="variable language_">self</span>.lock_ref = <span class="number">0</span></span><br><span class="line">        <span class="variable language_">self</span>.last_access_time = time.monotonic()</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">RadixCache</span>(<span class="title class_ inherited__">BasePrefixCache</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">match_prefix</span>(<span class="params">self, key: <span class="type">List</span>[<span class="built_in">int</span>]</span>) -&gt; MatchResult:</span><br><span class="line">        <span class="comment"># Tree traversal for prefix matching</span></span><br></pre></td></tr></table></figure>
+<h2 id="6-State-Diagram"><a href="#6-State-Diagram" class="headerlink" title="6. State Diagram"></a>6. State Diagram</h2><pre class="mermaid">stateDiagram-v2
+    [*] --> Idle
+    Idle --> Processing : start
+    Processing --> Success : complete
+    Processing --> Error : fail
+    Success --> [*]
+    Error --> Idle : retry</pre>
 
-<h2 id="3-Prefill-Decode-Disaggregation"><a href="#3-Prefill-Decode-Disaggregation" class="headerlink" title="3. Prefill-Decode Disaggregation"></a>3. Prefill-Decode Disaggregation</h2><h3 id="TensorRT-LLM-Implementation-2"><a href="#TensorRT-LLM-Implementation-2" class="headerlink" title="TensorRT-LLM Implementation"></a>TensorRT-LLM Implementation</h3><p><strong>Core Architecture:</strong></p>
-<ul>
-<li><strong>Files</strong>: <code>trtGptModelInflightBatching.cpp</code>, <code>dataTransceiverImpl.cpp</code>, <code>cacheTransBuffer.cpp</code></li>
-<li><strong>Separate context and generation phases</strong> in model execution</li>
-<li><strong>KV cache transfer protocols</strong> for distributed serving</li>
-<li><strong>Layer-wise disaggregation</strong> with selective transfer</li>
-</ul>
-<p><strong>Key Features:</strong></p>
-<ul>
-<li>Production-ready disaggregation with robust error handling</li>
-<li>Optimized cache transfer with bandwidth reduction</li>
-<li>Async&#x2F;sync transfer modes with overlap capabilities</li>
-<li>Comprehensive metrics and benchmarking support</li>
-<li>Integration with TensorRT’s dynamic profiling</li>
-</ul>
-<p><strong>Cache Transfer:</strong></p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">CacheTransBuffer</span> &#123;</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">transferKVCache</span><span class="params">(LayerId layer, <span class="type">const</span> KVData&amp; data, TransferMode mode)</span></span>;</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">waitForTransfer</span><span class="params">(LayerId layer)</span></span>;</span><br><span class="line">    <span class="function"><span class="type">bool</span> <span class="title">isTransferComplete</span><span class="params">(LayerId layer)</span></span>;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h2 id="7-Gantt-Chart"><a href="#7-Gantt-Chart" class="headerlink" title="7. Gantt Chart"></a>7. Gantt Chart</h2><pre class="mermaid">gantt
+    title Project Timeline
+    dateFormat  YYYY-MM-DD
+    section Planning
+    Requirements    :active, req, 2024-01-01, 30d
+    Design         :des, after req, 20d
+    section Development
+    Frontend       :dev1, after des, 40d
+    Backend        :dev2, after des, 35d
+    Testing        :test, after dev1, 15d</pre>
 
-<h3 id="vLLM-Implementation-2"><a href="#vLLM-Implementation-2" class="headerlink" title="vLLM Implementation"></a>vLLM Implementation</h3><p><strong>Core Architecture:</strong></p>
-<ul>
-<li><strong>Files</strong>: <code>distributed/kv_transfer/</code>, <code>examples/online_serving/disaggregated_serving/</code></li>
-<li><strong>Disaggregated serving examples</strong> with prefill&#x2F;decode separation</li>
-<li><strong>KV transfer protocols</strong> for distributed deployment</li>
-<li><strong>Proxy-based routing</strong> between prefill and decode instances</li>
-</ul>
-<p><strong>Key Features:</strong></p>
-<ul>
-<li>Reference implementations and examples</li>
-<li>Support for different transfer backends (NCCL, gRPC)</li>
-<li>Integration with existing vLLM scheduling</li>
-<li>Experimental disaggregation features</li>
-<li>Focus on ease of deployment and configuration</li>
-</ul>
-<p><strong>Disaggregated Architecture:</strong></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Prefill instance handles context processing</span></span><br><span class="line">prefill_instance = vLLM(model_path, instance_type=<span class="string">&quot;prefill&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Decode instance handles generation</span></span><br><span class="line">decode_instance = vLLM(model_path, instance_type=<span class="string">&quot;decode&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Proxy routes requests between instances</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">DisaggregatedProxy</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">route_request</span>(<span class="params">self, request</span>):</span><br><span class="line">        <span class="comment"># Route to appropriate instance</span></span><br></pre></td></tr></table></figure>
+<h2 id="8-ER-Diagram"><a href="#8-ER-Diagram" class="headerlink" title="8. ER Diagram"></a>8. ER Diagram</h2><pre class="mermaid">erDiagram
+    CUSTOMER {
+        string name
+        string email
+        string phone
+    }
+    ORDER {
+        int order_id
+        string date
+        float total
+    }
+    PRODUCT {
+        int product_id
+        string name
+        float price
+    }
+    
+    CUSTOMER ||--o{ ORDER : places
+    ORDER ||--o{ PRODUCT : contains</pre>
 
-<h3 id="SGLang-Implementation-2"><a href="#SGLang-Implementation-2" class="headerlink" title="SGLang Implementation"></a>SGLang Implementation</h3><p><strong>Core Architecture:</strong></p>
-<ul>
-<li><strong>Files</strong>: <code>disaggregation/prefill.py</code>, <code>disaggregation/decode.py</code>, <code>disaggregation/utils.py</code></li>
-<li><strong>Comprehensive disaggregation framework</strong> with multiple backends</li>
-<li><strong>Advanced queue management</strong> for different phases</li>
-<li><strong>Sophisticated KV transfer protocols</strong></li>
-</ul>
-<p><strong>Key Features:</strong></p>
-<ul>
-<li>Most comprehensive disaggregation implementation</li>
-<li>Support for multiple transfer backends (NIXL, Mooncake, etc.)</li>
-<li>Advanced queue management with bootstrap, transfer, and inflight phases</li>
-<li>Extensive metadata management for distributed coordination</li>
-<li>Integration with RadixAttention for efficient prefix sharing</li>
-</ul>
-<p><strong>Disaggregation Architecture:</strong></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">PrefillBootstrapQueue</span>:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;Bootstrap queue for prefill requests&quot;&quot;&quot;</span></span><br><span class="line">    </span><br><span class="line"><span class="keyword">class</span> <span class="title class_">DecodePreallocQueue</span>:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;Pre-allocation queue for decode requests&quot;&quot;&quot;</span></span><br><span class="line">    </span><br><span class="line"><span class="keyword">class</span> <span class="title class_">DecodeTransferQueue</span>:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;Transfer queue for KV data&quot;&quot;&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">BaseKVManager</span>:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;Abstract base for KV transfer management&quot;&quot;&quot;</span></span><br></pre></td></tr></table></figure>
+<h2 id="9-Journey-Map"><a href="#9-Journey-Map" class="headerlink" title="9. Journey Map"></a>9. Journey Map</h2><pre class="mermaid">journey
+    title User Shopping Journey
+    section Browse
+      Visit website: 3: User
+      Search products: 4: User
+      View details: 5: User
+    section Purchase
+      Add to cart: 4: User
+      Checkout: 3: User
+      Payment: 2: User
+    section Post-purchase
+      Receive confirmation: 5: User
+      Track order: 4: User
+      Receive product: 5: User</pre>
 
-<h2 id="4-Technical-Comparison-Summary"><a href="#4-Technical-Comparison-Summary" class="headerlink" title="4. Technical Comparison Summary"></a>4. Technical Comparison Summary</h2><h3 id="Performance-Characteristics"><a href="#Performance-Characteristics" class="headerlink" title="Performance Characteristics"></a>Performance Characteristics</h3><table>
-<thead>
-<tr>
-<th>Feature</th>
-<th>TensorRT-LLM</th>
-<th>vLLM</th>
-<th>SGLang</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><strong>KV Cache Efficiency</strong></td>
-<td>⭐⭐⭐⭐⭐</td>
-<td>⭐⭐⭐⭐</td>
-<td>⭐⭐⭐⭐⭐</td>
-</tr>
-<tr>
-<td><strong>Prefix Cache Hit Rate</strong></td>
-<td>⭐⭐⭐⭐</td>
-<td>⭐⭐⭐⭐</td>
-<td>⭐⭐⭐⭐⭐</td>
-</tr>
-<tr>
-<td><strong>Disaggregation Maturity</strong></td>
-<td>⭐⭐⭐⭐⭐</td>
-<td>⭐⭐⭐</td>
-<td>⭐⭐⭐⭐⭐</td>
-</tr>
-<tr>
-<td><strong>Memory Efficiency</strong></td>
-<td>⭐⭐⭐⭐</td>
-<td>⭐⭐⭐⭐</td>
-<td>⭐⭐⭐⭐⭐</td>
-</tr>
-<tr>
-<td><strong>Scalability</strong></td>
-<td>⭐⭐⭐⭐⭐</td>
-<td>⭐⭐⭐⭐</td>
-<td>⭐⭐⭐⭐</td>
-</tr>
-</tbody></table>
-<h3 id="Implementation-Complexity"><a href="#Implementation-Complexity" class="headerlink" title="Implementation Complexity"></a>Implementation Complexity</h3><table>
-<thead>
-<tr>
-<th>Aspect</th>
-<th>TensorRT-LLM</th>
-<th>vLLM</th>
-<th>SGLang</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><strong>Codebase Size</strong></td>
-<td>Large (C++)</td>
-<td>Medium (Python)</td>
-<td>Large (Python)</td>
-</tr>
-<tr>
-<td><strong>Architecture</strong></td>
-<td>Monolithic</td>
-<td>Modular</td>
-<td>Highly Modular</td>
-</tr>
-<tr>
-<td><strong>Extensibility</strong></td>
-<td>Medium</td>
-<td>High</td>
-<td>Very High</td>
-</tr>
-<tr>
-<td><strong>Documentation</strong></td>
-<td>Good</td>
-<td>Excellent</td>
-<td>Good</td>
-</tr>
-<tr>
-<td><strong>Community</strong></td>
-<td>NVIDIA</td>
-<td>Very Active</td>
-<td>Growing</td>
-</tr>
-</tbody></table>
-<h3 id="Use-Case-Recommendations"><a href="#Use-Case-Recommendations" class="headerlink" title="Use Case Recommendations"></a>Use Case Recommendations</h3><p><strong>TensorRT-LLM:</strong></p>
-<ul>
-<li>✅ Production deployments requiring maximum performance</li>
-<li>✅ NVIDIA GPU-centric environments</li>
-<li>✅ Applications needing quantization support</li>
-<li>✅ Enterprise deployments with dedicated DevOps teams</li>
-</ul>
-<p><strong>vLLM:</strong></p>
-<ul>
-<li>✅ Research and development environments</li>
-<li>✅ Rapid prototyping and experimentation</li>
-<li>✅ Multi-GPU deployments with good Python ecosystem integration</li>
-<li>✅ Applications requiring extensive customization</li>
-</ul>
-<p><strong>SGLang:</strong></p>
-<ul>
-<li>✅ Advanced research requiring cutting-edge optimizations</li>
-<li>✅ Applications with complex attention patterns (sliding window, etc.)</li>
-<li>✅ Disaggregated deployments with sophisticated requirements</li>
-<li>✅ Multi-modal and structured generation tasks</li>
-</ul>
-<h2 id="5-Key-Insights-and-Recommendations"><a href="#5-Key-Insights-and-Recommendations" class="headerlink" title="5. Key Insights and Recommendations"></a>5. Key Insights and Recommendations</h2><h3 id="Architecture-Insights"><a href="#Architecture-Insights" class="headerlink" title="Architecture Insights"></a>Architecture Insights</h3><ol>
-<li><strong>SGLang</strong> shows the most sophisticated approach to memory management with its three-tier system and multiple cache types</li>
-<li><strong>TensorRT-LLM</strong> provides the most production-ready disaggregation with robust error handling and performance optimization</li>
-<li><strong>vLLM</strong> offers the best balance of features and usability for most deployment scenarios</li>
-</ol>
-<h3 id="Performance-Considerations"><a href="#Performance-Considerations" class="headerlink" title="Performance Considerations"></a>Performance Considerations</h3><ol>
-<li><strong>Memory Efficiency</strong>: SGLang &gt; TensorRT-LLM &gt; vLLM</li>
-<li><strong>Prefix Cache Effectiveness</strong>: SGLang ≈ TensorRT-LLM &gt; vLLM</li>
-<li><strong>Disaggregation Maturity</strong>: TensorRT-LLM ≈ SGLang &gt; vLLM</li>
-<li><strong>Deployment Simplicity</strong>: vLLM &gt; SGLang &gt; TensorRT-LLM</li>
-</ol>
-<h3 id="Future-Trends"><a href="#Future-Trends" class="headerlink" title="Future Trends"></a>Future Trends</h3><ol>
-<li><strong>Convergence</strong>: All frameworks are evolving toward similar architectural patterns</li>
-<li><strong>Specialization</strong>: Each framework is developing unique strengths for different use cases</li>
-<li><strong>Integration</strong>: Increasing focus on multi-modal and structured generation capabilities</li>
-<li><strong>Hardware Optimization</strong>: Growing emphasis on hardware-specific optimizations</li>
-</ol>
-<h2 id="6-Conclusion"><a href="#6-Conclusion" class="headerlink" title="6. Conclusion"></a>6. Conclusion</h2><p>All three frameworks represent significant advances in LLM serving technology, each with distinct strengths:</p>
-<ul>
-<li><strong>TensorRT-LLM</strong> excels in production-ready performance optimization and NVIDIA ecosystem integration</li>
-<li><strong>vLLM</strong> provides the best developer experience and community support for most use cases</li>
-<li><strong>SGLang</strong> pushes the boundaries of what’s possible with advanced memory management and disaggregation</li>
-</ul>
-<p>The choice between frameworks should be based on specific requirements: performance needs, deployment complexity, hardware constraints, and team expertise. For most applications, vLLM provides the best starting point, while TensorRT-LLM offers maximum performance for production deployments, and SGLang enables cutting-edge research and advanced optimizations. </p>
+<h2 id="10-Timeline"><a href="#10-Timeline" class="headerlink" title="10. Timeline"></a>10. Timeline</h2><pre class="mermaid">timeline
+    title Software Development Timeline
+    
+    2024-01    : Planning Phase
+             : Requirements Gathering
+             : Architecture Design
+    
+    2024-02    : Development Phase
+             : Backend Development
+             : Frontend Development
+    
+    2024-03    : Testing Phase
+             : Unit Testing
+             : Integration Testing
+    
+    2024-04    : Deployment Phase
+             : Production Deployment
+             : Monitoring Setup</pre>
+
+<p>If you can see all these diagrams rendered correctly, then Mermaid is working properly! </p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2025/07/14/System/LLM_Serving_Framework_Comparison/" data-id="cme178g85001gy8oncpci29as" data-title="" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2025/07/14/mermaid-test/" data-id="cme17ouz80004wnon8yr1bz3w" data-title="Mermaid Charts Test Page" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
-    </footer>
-  </div>
-  
-</article>
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/charts/" rel="tag">charts</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mermaid/" rel="tag">mermaid</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/test/" rel="tag">test</a></li></ul>
 
-
-
-  
-    <article id="post-System/LLM_KVCache_详细分析" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2025/07/14/System/LLM_KVCache_%E8%AF%A6%E7%BB%86%E5%88%86%E6%9E%90/" class="article-date">
-  <time class="dt-published" datetime="2025-07-14T03:21:11.624Z" itemprop="datePublished">2025-07-14</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h1 id="LLM-Serving-Framework-KV-Cache-管理机制详细分析"><a href="#LLM-Serving-Framework-KV-Cache-管理机制详细分析" class="headerlink" title="LLM Serving Framework KV Cache 管理机制详细分析"></a>LLM Serving Framework KV Cache 管理机制详细分析</h1><h2 id="目录"><a href="#目录" class="headerlink" title="目录"></a>目录</h2><ol>
-<li><a href="#%E6%A6%82%E8%BF%B0">概述</a></li>
-<li><a href="#tensorrt-llm-kv-cache-%E7%AE%A1%E7%90%86">TensorRT-LLM KV Cache 管理</a></li>
-<li><a href="#vllm-kv-cache-%E7%AE%A1%E7%90%86">vLLM KV Cache 管理</a>  </li>
-<li><a href="#sglang-kv-cache-%E7%AE%A1%E7%90%86">SGLang KV Cache 管理</a></li>
-<li><a href="#%E6%8A%80%E6%9C%AF%E5%AF%B9%E6%AF%94%E4%B8%8E%E6%B7%B1%E5%BA%A6%E5%88%86%E6%9E%90">技术对比与深度分析</a></li>
-<li><a href="#%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E7%AD%96%E7%95%A5">性能优化策略</a></li>
-<li><a href="#%E6%80%BB%E7%BB%93%E4%B8%8E%E5%BB%BA%E8%AE%AE">总结与建议</a></li>
-</ol>
-<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>KV Cache是大语言模型推理中最关键的优化技术之一，它通过缓存attention机制中的Key和Value张量来避免重复计算，显著提升推理性能。本文深入分析TensorRT-LLM、vLLM和SGLang三个主流LLM serving框架的KV Cache管理实现。</p>
-<h3 id="KV-Cache基本原理"><a href="#KV-Cache基本原理" class="headerlink" title="KV Cache基本原理"></a>KV Cache基本原理</h3><p>在Transformer架构中，每个attention层都需要计算Q、K、V三个矩阵：</p>
-<ul>
-<li><strong>Query (Q)</strong>: 当前token的查询向量</li>
-<li><strong>Key (K)</strong>: 所有token的键向量  </li>
-<li><strong>Value (V)</strong>: 所有token的值向量</li>
-</ul>
-<p>KV Cache的核心思想是：</p>
-<ol>
-<li><strong>缓存已计算的K、V</strong>: 避免重复计算历史token的K、V</li>
-<li><strong>增量更新</strong>: 只计算新token的K、V并追加到缓存</li>
-<li><strong>内存复用</strong>: 通过block管理和prefix sharing减少内存占用</li>
-</ol>
-<h2 id="TensorRT-LLM-KV-Cache-管理"><a href="#TensorRT-LLM-KV-Cache-管理" class="headerlink" title="TensorRT-LLM KV Cache 管理"></a>TensorRT-LLM KV Cache 管理</h2><h3 id="整体架构设计"><a href="#整体架构设计" class="headerlink" title="整体架构设计"></a>整体架构设计</h3><p>TensorRT-LLM采用<strong>分层block管理架构</strong>，具有以下核心组件：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 核心类层次结构</span></span><br><span class="line">KVCacheManager</span><br><span class="line">├── BlockManager</span><br><span class="line">│   └── <span class="built_in">WindowBlockManager</span> (多个，按window size分组)</span><br><span class="line">│       ├── <span class="built_in">KVCacheBlockPool</span> (内存池)</span><br><span class="line">│       ├── <span class="built_in">LRUEvictionPolicy</span> (驱逐策略)</span><br><span class="line">│       └── <span class="built_in">KVCacheTransferManager</span> (传输管理)</span><br><span class="line">├── <span class="built_in">KVCacheEventManager</span> (事件管理)</span><br><span class="line">└── <span class="built_in">AllocateKvCache</span> (分配策略)</span><br></pre></td></tr></table></figure>
-
-<h3 id="1-Block管理机制"><a href="#1-Block管理机制" class="headerlink" title="1. Block管理机制"></a>1. Block管理机制</h3><h4 id="Block数据结构"><a href="#Block数据结构" class="headerlink" title="Block数据结构"></a>Block数据结构</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">KVCacheBlock</span> &#123;</span><br><span class="line">    IdType mBlockId;                    <span class="comment">// 块ID</span></span><br><span class="line">    tk::KVCacheIndex mMemoryPoolBlockIndex; <span class="comment">// 内存池索引</span></span><br><span class="line">    <span class="type">int32_t</span> mRefCount;                  <span class="comment">// 引用计数</span></span><br><span class="line">    <span class="type">int32_t</span> mSchedulingRefCount;        <span class="comment">// 调度引用计数</span></span><br><span class="line">    BlockPtr mPrevBlock;                <span class="comment">// 前驱块指针</span></span><br><span class="line">    NextBlockMap mNextBlocks;           <span class="comment">// 后继块映射</span></span><br><span class="line">    <span class="type">bool</span> mIsFull;                       <span class="comment">// 是否已满</span></span><br><span class="line">    executor::RetentionPriority mPriority; <span class="comment">// 优先级</span></span><br><span class="line">    std::optional&lt;std::chrono::milliseconds&gt; mDurationMs; <span class="comment">// 持续时间</span></span><br><span class="line">    <span class="type">size_t</span> mHash;                       <span class="comment">// 哈希值</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-<h4 id="Block分配策略"><a href="#Block分配策略" class="headerlink" title="Block分配策略"></a>Block分配策略</h4><ol>
-<li><strong>分池管理</strong>: 根据KV head数量分组，相同配置的layer共享池</li>
-<li><strong>优先级分配</strong>: 支持设置block优先级和过期时间</li>
-<li><strong>引用计数</strong>: 精确跟踪block使用情况，支持共享和释放</li>
-</ol>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Block分配核心逻辑</span></span><br><span class="line"><span class="function">BlockPtr <span class="title">WindowBlockManager::getFreeBlock</span><span class="params">(</span></span></span><br><span class="line"><span class="params"><span class="function">    executor::RetentionPriority priority, </span></span></span><br><span class="line"><span class="params"><span class="function">    std::optional&lt;std::chrono::milliseconds&gt; durationMs)</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 1. 从驱逐策略获取空闲block</span></span><br><span class="line">    <span class="keyword">auto</span> [block, canOffload] = mEvictionPolicy-&gt;<span class="built_in">getFreeBlock</span>(kPrimaryLevel);</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 2. 如果需要，执行offload到secondary memory</span></span><br><span class="line">    <span class="keyword">if</span> (!block-&gt;<span class="built_in">getUniqueTokens</span>().<span class="built_in">empty</span>() &amp;&amp; canOffload &amp;&amp; </span><br><span class="line">        mEvictionPolicy-&gt;<span class="built_in">getNumFreeBlocks</span>(kSecondaryLevel) &gt; <span class="number">0</span> &amp;&amp; mOnboardBlocks) &#123;</span><br><span class="line">        <span class="keyword">auto</span> offloadBlock = std::<span class="built_in">get</span>&lt;<span class="number">0</span>&gt;(mEvictionPolicy-&gt;<span class="built_in">getFreeBlock</span>(kSecondaryLevel));</span><br><span class="line">        mTransferManager-&gt;<span class="built_in">offload</span>(block, offloadBlock, mPools);</span><br><span class="line">        block-&gt;<span class="built_in">swapMemoryPoolBlockOffset</span>(offloadBlock);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> block;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h3 id="2-内存池管理"><a href="#2-内存池管理" class="headerlink" title="2. 内存池管理"></a>2. 内存池管理</h3><h4 id="分层内存设计"><a href="#分层内存设计" class="headerlink" title="分层内存设计"></a>分层内存设计</h4><ul>
-<li><strong>Primary Pool</strong>: GPU快速内存，用于活跃block</li>
-<li><strong>Secondary Pool</strong>: CPU较慢内存，用于offload</li>
-<li><strong>Block Pool</strong>: 按layer配置分组的物理内存</li>
-</ul>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">KVCacheBlockPool</span> &#123;</span><br><span class="line">    SizeType32 numLayers;           <span class="comment">// layer数量</span></span><br><span class="line">    SizeType32 kvFactor;            <span class="comment">// KV因子(通常为2，K和V)</span></span><br><span class="line">    SizeType32 numKvHeads;          <span class="comment">// KV head数量</span></span><br><span class="line">    SizeType32 tokensPerBlock;      <span class="comment">// 每个block的token数</span></span><br><span class="line">    runtime::ITensor::SharedPtr primaryPtr;   <span class="comment">// 主内存池</span></span><br><span class="line">    runtime::ITensor::SharedPtr secondaryPtr; <span class="comment">// 辅助内存池</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-<h4 id="内存分配流程"><a href="#内存分配流程" class="headerlink" title="内存分配流程"></a>内存分配流程</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">WindowBlockManager::allocatePools</span><span class="params">(<span class="type">bool</span> useUvm)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">auto</span>&amp; pool : mPools) &#123;</span><br><span class="line">        <span class="comment">// 计算block大小</span></span><br><span class="line">        <span class="keyword">auto</span> blockSize = pool.blockSize;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 主内存池分配 - 形状: [num_blocks, num_layers, kv_factor, block_size]</span></span><br><span class="line">        nvinfer1::Dims cacheShape = ITensor::<span class="built_in">makeShape</span>(</span><br><span class="line">            &#123;mNumPrimaryBlocks, pool.numLayers, mKVFactor, blockSize&#125;);</span><br><span class="line">            </span><br><span class="line">        <span class="keyword">if</span> (useUvm)</span><br><span class="line">            pool.primaryPtr = BufferManager::<span class="built_in">managed</span>(cacheShape, poolDtype);</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">            pool.primaryPtr = mBufferManager.<span class="built_in">gpuSync</span>(cacheShape, poolDtype);</span><br><span class="line">            </span><br><span class="line">        <span class="comment">// 辅助内存池分配</span></span><br><span class="line">        <span class="keyword">if</span> (mNumSecondaryBlocks &gt; <span class="number">0</span>) &#123;</span><br><span class="line">            nvinfer1::Dims cacheShapeOffload = ITensor::<span class="built_in">makeShape</span>(</span><br><span class="line">                &#123;mNumSecondaryBlocks, pool.numLayers, mKVFactor, blockSize&#125;);</span><br><span class="line">            pool.secondaryPtr = BufferManager::<span class="built_in">pinned</span>(cacheShapeOffload, poolDtype);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h3 id="3-哈希与缓存复用"><a href="#3-哈希与缓存复用" class="headerlink" title="3. 哈希与缓存复用"></a>3. 哈希与缓存复用</h3><h4 id="高性能哈希算法"><a href="#高性能哈希算法" class="headerlink" title="高性能哈希算法"></a>高性能哈希算法</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">size_t</span> <span class="title">BlockKeyHasher::hash</span><span class="params">(BlockKey <span class="type">const</span>&amp; blockKey, std::<span class="type">size_t</span> parentHash)</span> <span class="keyword">noexcept</span> </span>&#123;</span><br><span class="line">    <span class="type">size_t</span> seed = blockKey.uniqueTokens.<span class="built_in">size</span>() ^ parentHash * <span class="built_in">UINT64_C</span>(<span class="number">0xbf58476d1ce4e5b9</span>);</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">auto</span> <span class="type">const</span>&amp; uniqueToken : blockKey.uniqueTokens) &#123;</span><br><span class="line">        <span class="comment">// 使用Wang hash算法优化token ID哈希</span></span><br><span class="line">        <span class="type">uint32_t</span> a = <span class="built_in">static_cast</span>&lt;<span class="type">uint32_t</span>&gt;(uniqueToken.tokenId);</span><br><span class="line">        a = ((a &gt;&gt; <span class="number">16</span>) ^ a) * <span class="number">0x45d9f3b</span>;</span><br><span class="line">        a = ((a &gt;&gt; <span class="number">16</span>) ^ a) * <span class="number">0x45d9f3b</span>; </span><br><span class="line">        a = (a &gt;&gt; <span class="number">16</span>) ^ a;</span><br><span class="line">        seed ^= a + <span class="number">0x9e3779b9</span> + (seed &lt;&lt; <span class="number">6</span>) + (seed &gt;&gt; <span class="number">2</span>);</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 处理额外ID（如LoRA task ID）</span></span><br><span class="line">        <span class="keyword">if</span> (blockKey.usesExtraIds) &#123;</span><br><span class="line">            <span class="type">uint64_t</span> b = uniqueToken.tokenExtraId;</span><br><span class="line">            <span class="comment">// 64位哈希处理...</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> seed;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h3 id="4-驱逐策略"><a href="#4-驱逐策略" class="headerlink" title="4. 驱逐策略"></a>4. 驱逐策略</h3><h4 id="LRU驱逐算法"><a href="#LRU驱逐算法" class="headerlink" title="LRU驱逐算法"></a>LRU驱逐算法</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">LRUEvictionPolicy</span> &#123;</span><br><span class="line">    <span class="comment">// 分优先级的队列结构</span></span><br><span class="line">    std::vector&lt;std::vector&lt;FreeBlocksQueue&gt;&gt; mFreeQueues; <span class="comment">// [cache_level][priority]</span></span><br><span class="line">    std::vector&lt;std::unordered_set&lt;SizeType32&gt;&gt; mReleasedBlocks;</span><br><span class="line">    std::vector&lt;SizeType32&gt; mNumFreeBlocksPerLevel;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 获取空闲block</span></span><br><span class="line">    <span class="function">std::tuple&lt;BlockPtr, <span class="type">bool</span>&gt; <span class="title">getFreeBlock</span><span class="params">(SizeType32 level)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 按优先级顺序查找空闲block</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">auto</span> priority = kMinPriority; priority &lt;= kMaxPriority; ++priority) &#123;</span><br><span class="line">            <span class="keyword">auto</span>&amp; freeQueue = mFreeQueues[level][<span class="built_in">getPriorityIdx</span>(priority)];</span><br><span class="line">            <span class="keyword">if</span> (!freeQueue.<span class="built_in">empty</span>()) &#123;</span><br><span class="line">                <span class="keyword">auto</span> block = freeQueue.<span class="built_in">front</span>();</span><br><span class="line">                freeQueue.<span class="built_in">pop_front</span>();</span><br><span class="line">                <span class="keyword">return</span> &#123;block, <span class="literal">true</span>&#125;;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> &#123;<span class="literal">nullptr</span>, <span class="literal">false</span>&#125;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-<h2 id="vLLM-KV-Cache-管理"><a href="#vLLM-KV-Cache-管理" class="headerlink" title="vLLM KV Cache 管理"></a>vLLM KV Cache 管理</h2><h3 id="整体架构设计-1"><a href="#整体架构设计-1" class="headerlink" title="整体架构设计"></a>整体架构设计</h3><p>vLLM采用<strong>模块化block分配架构</strong>，核心设计理念是简洁性和可扩展性：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 核心类层次结构  </span></span><br><span class="line">SelfAttnBlockSpaceManager</span><br><span class="line">├── CpuGpuBlockAllocator</span><br><span class="line">│   ├── PrefixCachingBlockAllocator (GPU)</span><br><span class="line">│   └── PrefixCachingBlockAllocator (CPU)</span><br><span class="line">├── ComputedBlocksTracker (prefix缓存跟踪)</span><br><span class="line">└── LastAccessBlocksTracker (访问时间跟踪)</span><br></pre></td></tr></table></figure>
-
-<h3 id="1-Block分配器设计"><a href="#1-Block分配器设计" class="headerlink" title="1. Block分配器设计"></a>1. Block分配器设计</h3><h4 id="设备感知分配器"><a href="#设备感知分配器" class="headerlink" title="设备感知分配器"></a>设备感知分配器</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">CpuGpuBlockAllocator</span>(<span class="title class_ inherited__">DeviceAwareBlockAllocator</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, cpu_block_allocator: BlockAllocator, </span></span><br><span class="line"><span class="params">                 gpu_block_allocator: BlockAllocator</span>):</span><br><span class="line">        <span class="variable language_">self</span>._allocators = &#123;</span><br><span class="line">            Device.CPU: cpu_block_allocator,</span><br><span class="line">            Device.GPU: gpu_block_allocator,</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="variable language_">self</span>._swap_mapping: <span class="type">Dict</span>[<span class="built_in">int</span>, <span class="built_in">int</span>] = &#123;&#125;  <span class="comment"># CPU-GPU交换映射</span></span><br><span class="line">        </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">allocate_mutable_block</span>(<span class="params">self, prev_block: <span class="type">Optional</span>[Block], </span></span><br><span class="line"><span class="params">                              device: Device, extra_hash: <span class="type">Optional</span>[<span class="built_in">int</span>] = <span class="literal">None</span></span>) -&gt; Block:</span><br><span class="line">        <span class="keyword">return</span> <span class="variable language_">self</span>._allocators[device].allocate_mutable_block(prev_block, extra_hash=extra_hash)</span><br></pre></td></tr></table></figure>
-
-<h4 id="PrefixCaching分配器"><a href="#PrefixCaching分配器" class="headerlink" title="PrefixCaching分配器"></a>PrefixCaching分配器</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">PrefixCachingBlockAllocator</span>(<span class="title class_ inherited__">BlockAllocator</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, num_blocks: <span class="built_in">int</span>, block_size: <span class="built_in">int</span>, </span></span><br><span class="line"><span class="params">                 eviction_policy: EvictionPolicy = EvictionPolicy.LRU</span>):</span><br><span class="line">        <span class="comment"># prefix hash到block ID的映射</span></span><br><span class="line">        <span class="variable language_">self</span>._cached_blocks: <span class="type">Dict</span>[PrefixHash, BlockId] = &#123;&#125;</span><br><span class="line">        <span class="comment"># 被调度器触及的不可变block ID集合</span></span><br><span class="line">        <span class="variable language_">self</span>._touched_blocks: <span class="type">Set</span>[BlockId] = <span class="built_in">set</span>()</span><br><span class="line">        <span class="comment"># 每个物理block ID的状态跟踪</span></span><br><span class="line">        <span class="variable language_">self</span>._block_tracker: <span class="type">Dict</span>[BlockId, BlockTracker] = &#123;&#125;</span><br></pre></td></tr></table></figure>
-
-<h3 id="2-Block生命周期管理"><a href="#2-Block生命周期管理" class="headerlink" title="2. Block生命周期管理"></a>2. Block生命周期管理</h3><h4 id="Block状态跟踪"><a href="#Block状态跟踪" class="headerlink" title="Block状态跟踪"></a>Block状态跟踪</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">BlockTracker</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="variable language_">self</span>.active: <span class="built_in">bool</span> = <span class="literal">False</span>           <span class="comment"># 是否活跃</span></span><br><span class="line">        <span class="variable language_">self</span>.last_accessed: <span class="built_in">float</span> = -<span class="number">1</span>      <span class="comment"># 最后访问时间</span></span><br><span class="line">        <span class="variable language_">self</span>.computed: <span class="built_in">bool</span> = <span class="literal">False</span>         <span class="comment"># 是否已计算</span></span><br><span class="line">        </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">enable</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="variable language_">self</span>.active = <span class="literal">True</span></span><br><span class="line">        <span class="variable language_">self</span>.reset()</span><br><span class="line">        </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">reset</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="variable language_">self</span>.last_accessed = _DEFAULT_LAST_ACCESSED_TIME</span><br><span class="line">        <span class="variable language_">self</span>.computed = <span class="literal">False</span></span><br></pre></td></tr></table></figure>
-
-<h4 id="Immutable-vs-Mutable-Block"><a href="#Immutable-vs-Mutable-Block" class="headerlink" title="Immutable vs Mutable Block"></a>Immutable vs Mutable Block</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">allocate_immutable_block</span>(<span class="params">self, prev_block: <span class="type">Optional</span>[Block], </span></span><br><span class="line"><span class="params">                           token_ids: <span class="type">List</span>[<span class="built_in">int</span>], extra_hash: <span class="type">Optional</span>[<span class="built_in">int</span>] = <span class="literal">None</span></span>) -&gt; Block:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;分配不可变block用于prefix caching&quot;&quot;&quot;</span></span><br><span class="line">    block = <span class="variable language_">self</span>._create_block(prev_block, token_ids, <span class="variable language_">self</span>._block_size, </span><br><span class="line">                              <span class="variable language_">self</span>, computed=<span class="literal">True</span>, extra_hash=extra_hash)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 检查是否已缓存</span></span><br><span class="line">    <span class="keyword">if</span> block.content_hash <span class="keyword">in</span> <span class="variable language_">self</span>._cached_blocks:</span><br><span class="line">        cached_block_id = <span class="variable language_">self</span>._cached_blocks[block.content_hash]</span><br><span class="line">        <span class="variable language_">self</span>._incr_refcount_cached_block(<span class="variable language_">self</span>._blocks[cached_block_id])</span><br><span class="line">        <span class="keyword">return</span> <span class="variable language_">self</span>._blocks[cached_block_id]</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 分配新block</span></span><br><span class="line">    <span class="variable language_">self</span>._cached_blocks[block.content_hash] = block.block_id</span><br><span class="line">    <span class="keyword">return</span> block</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">allocate_mutable_block</span>(<span class="params">self, prev_block: <span class="type">Optional</span>[Block], </span></span><br><span class="line"><span class="params">                          extra_hash: <span class="type">Optional</span>[<span class="built_in">int</span>] = <span class="literal">None</span></span>) -&gt; Block:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;分配可变block用于新生成的token&quot;&quot;&quot;</span></span><br><span class="line">    block_id = <span class="variable language_">self</span>._allocate_block_id()</span><br><span class="line">    block = <span class="variable language_">self</span>._create_block(prev_block, [], <span class="variable language_">self</span>._block_size, </span><br><span class="line">                              <span class="variable language_">self</span>, block_id, extra_hash=extra_hash)</span><br><span class="line">    <span class="keyword">return</span> block</span><br></pre></td></tr></table></figure>
-
-<h3 id="3-内容哈希机制"><a href="#3-内容哈希机制" class="headerlink" title="3. 内容哈希机制"></a>3. 内容哈希机制</h3><h4 id="层次化哈希计算"><a href="#层次化哈希计算" class="headerlink" title="层次化哈希计算"></a>层次化哈希计算</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">PrefixCachingBlock</span>(<span class="title class_ inherited__">Block</span>):</span><br><span class="line"><span class="meta">    @classmethod</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">hash_block_tokens</span>(<span class="params">cls, is_first_block: <span class="built_in">bool</span>, prev_block_hash: <span class="type">Optional</span>[<span class="built_in">int</span>],</span></span><br><span class="line"><span class="params">                         cur_block_token_ids: <span class="type">List</span>[<span class="built_in">int</span>], extra_hash: <span class="type">Optional</span>[<span class="built_in">int</span>] = <span class="literal">None</span></span>) -&gt; <span class="built_in">int</span>:</span><br><span class="line">        <span class="string">&quot;&quot;&quot;计算block的内容哈希&quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">if</span> is_first_block:</span><br><span class="line">            <span class="keyword">return</span> <span class="built_in">hash</span>((<span class="built_in">tuple</span>(cur_block_token_ids), extra_hash))</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="built_in">hash</span>((prev_block_hash, <span class="built_in">tuple</span>(cur_block_token_ids), extra_hash))</span><br><span class="line">    </span><br><span class="line"><span class="meta">    @property </span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">content_hash</span>(<span class="params">self</span>) -&gt; <span class="type">Optional</span>[<span class="built_in">int</span>]:</span><br><span class="line">        <span class="keyword">if</span> <span class="variable language_">self</span>._content_hash <span class="keyword">is</span> <span class="literal">None</span> <span class="keyword">and</span> <span class="variable language_">self</span>.token_ids:</span><br><span class="line">            <span class="variable language_">self</span>._content_hash = <span class="variable language_">self</span>.hash_block_tokens(</span><br><span class="line">                <span class="variable language_">self</span>._prev_block <span class="keyword">is</span> <span class="literal">None</span>,</span><br><span class="line">                <span class="variable language_">self</span>._prev_block.content_hash <span class="keyword">if</span> <span class="variable language_">self</span>._prev_block <span class="keyword">else</span> <span class="literal">None</span>,</span><br><span class="line">                <span class="variable language_">self</span>.token_ids,</span><br><span class="line">                <span class="variable language_">self</span>.extra_hash</span><br><span class="line">            )</span><br><span class="line">        <span class="keyword">return</span> <span class="variable language_">self</span>._content_hash</span><br></pre></td></tr></table></figure>
-
-<h3 id="4-调度集成"><a href="#4-调度集成" class="headerlink" title="4. 调度集成"></a>4. 调度集成</h3><h4 id="Memory-aware调度"><a href="#Memory-aware调度" class="headerlink" title="Memory-aware调度"></a>Memory-aware调度</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">SelfAttnBlockSpaceManager</span>(<span class="title class_ inherited__">BlockSpaceManager</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">can_allocate</span>(<span class="params">self, seq_group: SequenceGroup, num_lookahead_slots: <span class="built_in">int</span> = <span class="number">0</span></span>) -&gt; AllocStatus:</span><br><span class="line">        <span class="comment"># 检查是否有足够的GPU blocks</span></span><br><span class="line">        num_required_blocks = <span class="variable language_">self</span>._get_seq_num_required_blocks(seq_group.get_seqs()[<span class="number">0</span>])</span><br><span class="line">        num_required_blocks += num_lookahead_slots</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span> <span class="variable language_">self</span>.block_allocator.get_num_free_blocks(Device.GPU) &lt; num_required_blocks:</span><br><span class="line">            <span class="keyword">return</span> AllocStatus.NEVER</span><br><span class="line">            </span><br><span class="line">        <span class="keyword">return</span> AllocStatus.OK</span><br><span class="line">        </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">allocate</span>(<span class="params">self, seq_group: SequenceGroup</span>) -&gt; <span class="literal">None</span>:</span><br><span class="line">        <span class="string">&quot;&quot;&quot;为sequence group分配blocks&quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">for</span> seq <span class="keyword">in</span> seq_group.get_seqs():</span><br><span class="line">            block_table = <span class="variable language_">self</span>._allocate_sequence(seq)</span><br><span class="line">            seq.block_table = block_table</span><br></pre></td></tr></table></figure>
-
-<h2 id="SGLang-KV-Cache-管理"><a href="#SGLang-KV-Cache-管理" class="headerlink" title="SGLang KV Cache 管理"></a>SGLang KV Cache 管理</h2><h3 id="整体架构设计-2"><a href="#整体架构设计-2" class="headerlink" title="整体架构设计"></a>整体架构设计</h3><p>SGLang采用<strong>三层内存池架构</strong>，这是三个框架中最复杂和最灵活的设计：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 三层架构设计</span></span><br><span class="line">ReqToTokenPool          <span class="comment"># 第一层：请求到token位置映射</span></span><br><span class="line">├── TokenToKVPoolAllocator    <span class="comment"># 第二层：token到KV pool分配</span></span><br><span class="line">│   ├── PagedTokenToKVPoolAllocator (分页版本)</span><br><span class="line">│   └── SWATokenToKVPoolAllocator (滑动窗口版本)  </span><br><span class="line">└── KVCache                   <span class="comment"># 第三层：物理KV cache存储</span></span><br><span class="line">    ├── MHATokenToKVPool     <span class="comment"># 多头注意力</span></span><br><span class="line">    ├── MLATokenToKVPool     <span class="comment"># MLA注意力  </span></span><br><span class="line">    └── SWAKVPool            <span class="comment"># 滑动窗口注意力</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="1-请求级内存管理"><a href="#1-请求级内存管理" class="headerlink" title="1. 请求级内存管理"></a>1. 请求级内存管理</h3><h4 id="ReqToTokenPool"><a href="#ReqToTokenPool" class="headerlink" title="ReqToTokenPool"></a>ReqToTokenPool</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">ReqToTokenPool</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, size: <span class="built_in">int</span>, max_context_len: <span class="built_in">int</span>, device: <span class="built_in">str</span>, enable_memory_saver: <span class="built_in">bool</span></span>):</span><br><span class="line">        <span class="variable language_">self</span>.size = size</span><br><span class="line">        <span class="variable language_">self</span>.max_context_len = max_context_len</span><br><span class="line">        <span class="comment"># 核心张量：[size, max_context_len]，存储token位置</span></span><br><span class="line">        <span class="variable language_">self</span>.req_to_token = torch.zeros((size, max_context_len), </span><br><span class="line">                                       dtype=torch.int32, device=device)</span><br><span class="line">        <span class="variable language_">self</span>.free_slots = <span class="built_in">list</span>(<span class="built_in">range</span>(size))  <span class="comment"># 空闲slot列表</span></span><br><span class="line">        </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">alloc</span>(<span class="params">self, need_size: <span class="built_in">int</span></span>) -&gt; <span class="type">List</span>[<span class="built_in">int</span>]:</span><br><span class="line">        <span class="string">&quot;&quot;&quot;分配指定数量的slots&quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">if</span> need_size &gt; <span class="built_in">len</span>(<span class="variable language_">self</span>.free_slots):</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">None</span></span><br><span class="line">        select_index = <span class="variable language_">self</span>.free_slots[:need_size]</span><br><span class="line">        <span class="variable language_">self</span>.free_slots = <span class="variable language_">self</span>.free_slots[need_size:]</span><br><span class="line">        <span class="keyword">return</span> select_index</span><br></pre></td></tr></table></figure>
-
-<h3 id="2-分页Token分配器"><a href="#2-分页Token分配器" class="headerlink" title="2. 分页Token分配器"></a>2. 分页Token分配器</h3><h4 id="PagedTokenToKVPoolAllocator"><a href="#PagedTokenToKVPoolAllocator" class="headerlink" title="PagedTokenToKVPoolAllocator"></a>PagedTokenToKVPoolAllocator</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">PagedTokenToKVPoolAllocator</span>(<span class="title class_ inherited__">BaseTokenToKVPoolAllocator</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, size: <span class="built_in">int</span>, page_size: <span class="built_in">int</span>, dtype: torch.dtype, device: <span class="built_in">str</span>, kvcache: KVCache</span>):</span><br><span class="line">        <span class="variable language_">self</span>.size = size</span><br><span class="line">        <span class="variable language_">self</span>.page_size = page_size</span><br><span class="line">        <span class="comment"># 空闲页面列表：每个页面包含page_size个tokens</span></span><br><span class="line">        <span class="variable language_">self</span>.free_pages = torch.arange(<span class="number">1</span>, (size // page_size) + <span class="number">1</span>, device=device)</span><br><span class="line">        </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">alloc_extend</span>(<span class="params">self, prefix_lens: torch.Tensor, seq_lens: torch.Tensor, </span></span><br><span class="line"><span class="params">                    last_loc: torch.Tensor, extend_num_tokens: <span class="built_in">int</span></span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;为extend阶段分配内存（使用Triton kernel优化）&quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">return</span> alloc_extend_kernel(prefix_lens, seq_lens, last_loc, </span><br><span class="line">                                 <span class="variable language_">self</span>.free_pages, extend_num_tokens, <span class="variable language_">self</span>.page_size)</span><br></pre></td></tr></table></figure>
-
-<h4 id="高性能Triton-Kernel"><a href="#高性能Triton-Kernel" class="headerlink" title="高性能Triton Kernel"></a>高性能Triton Kernel</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@triton.jit</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">alloc_extend_kernel</span>(<span class="params">pre_lens_ptr, seq_lens_ptr, last_loc_ptr, free_page_ptr,</span></span><br><span class="line"><span class="params">                       out_indices, ret_values, bs_upper: tl.constexpr, </span></span><br><span class="line"><span class="params">                       page_size: tl.constexpr, max_num_extend_tokens: tl.constexpr</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;使用Triton实现的高性能内存分配kernel&quot;&quot;&quot;</span></span><br><span class="line">    bid = tl.program_id(<span class="number">0</span>)</span><br><span class="line">    <span class="keyword">if</span> bid &gt;= bs_upper:</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">        </span><br><span class="line">    <span class="comment"># 加载序列信息</span></span><br><span class="line">    pre_len = tl.load(pre_lens_ptr + bid)</span><br><span class="line">    seq_len = tl.load(seq_lens_ptr + bid)</span><br><span class="line">    last_loc = tl.load(last_loc_ptr + bid)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 计算需要的token数和页数</span></span><br><span class="line">    num_new_tokens = seq_len - pre_len</span><br><span class="line">    num_new_pages = (num_new_tokens + page_size - <span class="number">1</span>) // page_size</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 原子操作分配页面</span></span><br><span class="line">    global_start_page = tl.atomic_add(free_page_ptr, num_new_pages)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 生成连续的token indices</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(num_new_tokens):</span><br><span class="line">        page_idx = i // page_size</span><br><span class="line">        page_offset = i % page_size</span><br><span class="line">        token_idx = (global_start_page + page_idx) * page_size + page_offset</span><br><span class="line">        tl.store(out_indices + bid * max_num_extend_tokens + i, token_idx)</span><br></pre></td></tr></table></figure>
-
-<h3 id="3-SWA-Sliding-Window-Attention-支持"><a href="#3-SWA-Sliding-Window-Attention-支持" class="headerlink" title="3. SWA (Sliding Window Attention) 支持"></a>3. SWA (Sliding Window Attention) 支持</h3><h4 id="SWATokenToKVPoolAllocator"><a href="#SWATokenToKVPoolAllocator" class="headerlink" title="SWATokenToKVPoolAllocator"></a>SWATokenToKVPoolAllocator</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">SWATokenToKVPoolAllocator</span>(<span class="title class_ inherited__">BaseTokenToKVPoolAllocator</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, size: <span class="built_in">int</span>, size_swa: <span class="built_in">int</span>, dtype: torch.dtype, device: <span class="built_in">str</span>, kvcache: SWAKVPool</span>):</span><br><span class="line">        <span class="comment"># 全注意力内存池</span></span><br><span class="line">        <span class="variable language_">self</span>.size_full = size</span><br><span class="line">        <span class="variable language_">self</span>.free_pages_full = torch.arange(<span class="number">1</span>, size + <span class="number">1</span>, device=device)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 滑动窗口注意力内存池  </span></span><br><span class="line">        <span class="variable language_">self</span>.size_swa = size_swa</span><br><span class="line">        <span class="variable language_">self</span>.free_pages_swa = torch.arange(<span class="number">1</span>, size_swa + <span class="number">1</span>, device=device)</span><br><span class="line">        </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">alloc</span>(<span class="params">self, need_size: <span class="built_in">int</span></span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;优先从full pool分配，不足时使用swa pool&quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">if</span> need_size &lt;= <span class="built_in">len</span>(<span class="variable language_">self</span>.free_pages_full):</span><br><span class="line">            <span class="comment"># 从full pool分配</span></span><br><span class="line">            select_index = <span class="variable language_">self</span>.free_pages_full[:need_size]</span><br><span class="line">            <span class="variable language_">self</span>.free_pages_full = <span class="variable language_">self</span>.free_pages_full[need_size:]</span><br><span class="line">            <span class="keyword">return</span> select_index, <span class="string">&quot;full&quot;</span></span><br><span class="line">        <span class="keyword">elif</span> need_size &lt;= <span class="built_in">len</span>(<span class="variable language_">self</span>.free_pages_swa):</span><br><span class="line">            <span class="comment"># 从swa pool分配</span></span><br><span class="line">            select_index = <span class="variable language_">self</span>.free_pages_swa[:need_size]</span><br><span class="line">            <span class="variable language_">self</span>.free_pages_swa = <span class="variable language_">self</span>.free_pages_swa[need_size:]</span><br><span class="line">            <span class="comment"># 转换索引以区分不同池</span></span><br><span class="line">            select_index = <span class="variable language_">self</span>.translate_loc_from_full_to_swa(select_index)</span><br><span class="line">            <span class="keyword">return</span> select_index, <span class="string">&quot;swa&quot;</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">None</span>, <span class="string">&quot;none&quot;</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="4-物理KV-Cache层"><a href="#4-物理KV-Cache层" class="headerlink" title="4. 物理KV Cache层"></a>4. 物理KV Cache层</h3><h4 id="MLA-Multi-Latent-Attention-支持"><a href="#MLA-Multi-Latent-Attention-支持" class="headerlink" title="MLA (Multi-Latent Attention) 支持"></a>MLA (Multi-Latent Attention) 支持</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">MLATokenToKVPool</span>(<span class="title class_ inherited__">KVCache</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, size: <span class="built_in">int</span>, page_size: <span class="built_in">int</span>, dtype: torch.dtype, </span></span><br><span class="line"><span class="params">                 kv_lora_rank: <span class="built_in">int</span>, qk_rope_head_dim: <span class="built_in">int</span>, layer_num: <span class="built_in">int</span>, device: <span class="built_in">str</span></span>):</span><br><span class="line">        <span class="comment"># MLA特殊的KV cache形状：[size, layer_num, kv_lora_rank + qk_rope_head_dim]</span></span><br><span class="line">        <span class="variable language_">self</span>.kv_buffer = torch.empty((size, layer_num, kv_lora_rank + qk_rope_head_dim), </span><br><span class="line">                                    dtype=dtype, device=device)</span><br><span class="line">        </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">set_mla_kv_buffer</span>(<span class="params">self, layer: RadixAttention, loc: torch.Tensor,</span></span><br><span class="line"><span class="params">                         cache_k_nope: torch.Tensor, cache_k_rope: torch.Tensor</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;使用Triton kernel高效设置MLA KV buffer&quot;&quot;&quot;</span></span><br><span class="line">        set_mla_kv_buffer_triton(<span class="variable language_">self</span>.kv_buffer, loc, cache_k_nope, cache_k_rope)</span><br></pre></td></tr></table></figure>
-
-<h4 id="高性能MLA-Kernel"><a href="#高性能MLA-Kernel" class="headerlink" title="高性能MLA Kernel"></a>高性能MLA Kernel</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@triton.jit</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">set_mla_kv_buffer_kernel</span>(<span class="params">kv_buffer_ptr, cache_k_nope_ptr, cache_k_rope_ptr, loc_ptr,</span></span><br><span class="line"><span class="params">                            buffer_stride: tl.constexpr, nope_stride: tl.constexpr, </span></span><br><span class="line"><span class="params">                            rope_stride: tl.constexpr, nope_dim: tl.constexpr, </span></span><br><span class="line"><span class="params">                            rope_dim: tl.constexpr, BLOCK: tl.constexpr</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;MLA KV buffer设置的优化kernel&quot;&quot;&quot;</span></span><br><span class="line">    bid = tl.program_id(<span class="number">0</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 加载位置信息</span></span><br><span class="line">    loc = tl.load(loc_ptr + bid)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 加载nope部分</span></span><br><span class="line">    nope_offset = bid * nope_stride + tl.arange(<span class="number">0</span>, nope_dim)</span><br><span class="line">    cache_k_nope = tl.load(cache_k_nope_ptr + nope_offset)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 加载rope部分</span></span><br><span class="line">    rope_offset = bid * rope_stride + tl.arange(<span class="number">0</span>, rope_dim)  </span><br><span class="line">    cache_k_rope = tl.load(cache_k_rope_ptr + rope_offset)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 写入KV buffer</span></span><br><span class="line">    buffer_offset = loc * buffer_stride + tl.arange(<span class="number">0</span>, nope_dim + rope_dim)</span><br><span class="line">    combined_kv = tl.join(cache_k_nope, cache_k_rope)</span><br><span class="line">    tl.store(kv_buffer_ptr + buffer_offset, combined_kv)</span><br></pre></td></tr></table></figure>
-
-<h3 id="5-RadixAttention集成"><a href="#5-RadixAttention集成" class="headerlink" title="5. RadixAttention集成"></a>5. RadixAttention集成</h3><h4 id="RadixCache树形结构"><a href="#RadixCache树形结构" class="headerlink" title="RadixCache树形结构"></a>RadixCache树形结构</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">RadixCache</span>(<span class="title class_ inherited__">BasePrefixCache</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, req_to_token_pool: ReqToTokenPool, </span></span><br><span class="line"><span class="params">                 token_to_kv_pool: BaseTokenToKVPoolAllocator, page_size: <span class="built_in">int</span></span>):</span><br><span class="line">        <span class="variable language_">self</span>.req_to_token_pool = req_to_token_pool</span><br><span class="line">        <span class="variable language_">self</span>.token_to_kv_pool = token_to_kv_pool  </span><br><span class="line">        <span class="variable language_">self</span>.page_size = page_size</span><br><span class="line">        <span class="variable language_">self</span>.root = TreeNode()  <span class="comment"># 根节点</span></span><br><span class="line">        </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">match_prefix</span>(<span class="params">self, key: <span class="type">List</span>[<span class="built_in">int</span>]</span>) -&gt; MatchResult:</span><br><span class="line">        <span class="string">&quot;&quot;&quot;匹配最长公共前缀&quot;&quot;&quot;</span></span><br><span class="line">        node = <span class="variable language_">self</span>.root</span><br><span class="line">        matched_len = <span class="number">0</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 分页匹配，提高效率</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>, <span class="built_in">len</span>(key), <span class="variable language_">self</span>.page_size):</span><br><span class="line">            page_key = key[i:i+<span class="variable language_">self</span>.page_size]</span><br><span class="line">            <span class="keyword">if</span> <span class="built_in">tuple</span>(page_key) <span class="keyword">in</span> node.children:</span><br><span class="line">                node = node.children[<span class="built_in">tuple</span>(page_key)]</span><br><span class="line">                matched_len += <span class="built_in">len</span>(page_key)</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                <span class="keyword">break</span></span><br><span class="line">                </span><br><span class="line">        <span class="keyword">return</span> MatchResult(matched_len, node)</span><br></pre></td></tr></table></figure>
-
-<h2 id="技术对比与深度分析"><a href="#技术对比与深度分析" class="headerlink" title="技术对比与深度分析"></a>技术对比与深度分析</h2><h3 id="1-内存管理策略对比"><a href="#1-内存管理策略对比" class="headerlink" title="1. 内存管理策略对比"></a>1. 内存管理策略对比</h3><table>
-<thead>
-<tr>
-<th>特性</th>
-<th>TensorRT-LLM</th>
-<th>vLLM</th>
-<th>SGLang</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><strong>架构复杂度</strong></td>
-<td>中等 (分层block)</td>
-<td>简单 (模块化)</td>
-<td>高 (三层架构)</td>
-</tr>
-<tr>
-<td><strong>内存池设计</strong></td>
-<td>按配置分池</td>
-<td>CPU&#x2F;GPU分离</td>
-<td>多类型Pool</td>
-</tr>
-<tr>
-<td><strong>分页支持</strong></td>
-<td>支持 (16,32,64,128)</td>
-<td>支持 (可配置)</td>
-<td>支持 (可配置)</td>
-</tr>
-<tr>
-<td><strong>SWA支持</strong></td>
-<td>支持</td>
-<td>部分支持</td>
-<td>原生支持</td>
-</tr>
-<tr>
-<td><strong>量化支持</strong></td>
-<td>FP8&#x2F;INT4&#x2F;AWQ&#x2F;GPTQ</td>
-<td>FP8</td>
-<td>基础支持</td>
-</tr>
-</tbody></table>
-<h3 id="2-前缀缓存机制对比"><a href="#2-前缀缓存机制对比" class="headerlink" title="2. 前缀缓存机制对比"></a>2. 前缀缓存机制对比</h3><h4 id="哈希算法性能"><a href="#哈希算法性能" class="headerlink" title="哈希算法性能"></a>哈希算法性能</h4><ul>
-<li><strong>TensorRT-LLM</strong>: Wang hash + 64位优化，支持层次化哈希</li>
-<li><strong>vLLM</strong>: Python标准hash，简单高效</li>
-<li><strong>SGLang</strong>: 分页哈希，树形前缀匹配</li>
-</ul>
-<h4 id="缓存共享策略"><a href="#缓存共享策略" class="headerlink" title="缓存共享策略"></a>缓存共享策略</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// TensorRT-LLM: 引用计数 + 优先级管理</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">KVCacheBlock</span> &#123;</span><br><span class="line">    <span class="type">int32_t</span> mRefCount;                  <span class="comment">// 引用计数</span></span><br><span class="line">    executor::RetentionPriority mPriority; <span class="comment">// 优先级</span></span><br><span class="line">    std::chrono::milliseconds mDurationMs; <span class="comment">// 生存时间</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># vLLM: 内容哈希 + LRU</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">PrefixCachingBlockAllocator</span> &#123;</span><br><span class="line">    _cached_blocks: <span class="type">Dict</span>[PrefixHash, BlockId]  <span class="comment"># 哈希到块ID映射</span></span><br><span class="line">    _touched_blocks: <span class="type">Set</span>[BlockId]              <span class="comment"># 调度器触及的块</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># SGLang: 树形结构 + 分页匹配</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">TreeNode</span> &#123;</span><br><span class="line">    children: defaultdict(TreeNode)     <span class="comment"># 子节点映射</span></span><br><span class="line">    value: <span class="type">Optional</span>[torch.Tensor]       <span class="comment"># 缓存值</span></span><br><span class="line">    last_access_time: <span class="built_in">float</span>            <span class="comment"># 最后访问时间</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h3 id="3-性能优化技术"><a href="#3-性能优化技术" class="headerlink" title="3. 性能优化技术"></a>3. 性能优化技术</h3><h4 id="内存访问优化"><a href="#内存访问优化" class="headerlink" title="内存访问优化"></a>内存访问优化</h4><ol>
-<li><p><strong>TensorRT-LLM</strong>:</p>
-<ul>
-<li>CUDA kernel优化的paged attention</li>
-<li>多级缓存 (primary&#x2F;secondary)</li>
-<li>Fabric memory支持高速传输</li>
-</ul>
-</li>
-<li><p><strong>vLLM</strong>: </p>
-<ul>
-<li>Triton kernel实现</li>
-<li>FlashAttention集成</li>
-<li>多后端支持 (CUDA&#x2F;ROCm&#x2F;CPU)</li>
-</ul>
-</li>
-<li><p><strong>SGLang</strong>:</p>
-<ul>
-<li>最多Triton kernel优化</li>
-<li>专门的MLA&#x2F;SWA支持  </li>
-<li>硬件特定优化 (Ascend NPU)</li>
-</ul>
-</li>
-</ol>
-<h4 id="并发和同步"><a href="#并发和同步" class="headerlink" title="并发和同步"></a>并发和同步</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// TensorRT-LLM: 细粒度锁</span></span><br><span class="line">std::mutex mAllocatedBlocksPerSeqMutex;</span><br><span class="line">std::condition_variable mCondVar;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 调度期间的引用计数</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">KVCacheBlock::startScheduling</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    mSchedulingRefCount = mRefCount;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># vLLM: 简化的状态管理</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">BlockTracker</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">enable</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">assert</span> <span class="keyword">not</span> <span class="variable language_">self</span>.active</span><br><span class="line">        <span class="variable language_">self</span>.active = <span class="literal">True</span></span><br><span class="line">        <span class="variable language_">self</span>.reset()</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># SGLang: 分组释放优化</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">free_group_begin</span>(<span class="params">self</span>):</span><br><span class="line">    <span class="variable language_">self</span>.is_not_in_free_group = <span class="literal">False</span></span><br><span class="line">    <span class="variable language_">self</span>.free_group = []</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">free_group_end</span>(<span class="params">self</span>):</span><br><span class="line">    <span class="keyword">if</span> <span class="variable language_">self</span>.free_group:</span><br><span class="line">        <span class="variable language_">self</span>.free(torch.cat(<span class="variable language_">self</span>.free_group))  <span class="comment"># 批量释放</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="性能优化策略"><a href="#性能优化策略" class="headerlink" title="性能优化策略"></a>性能优化策略</h2><h3 id="1-内存分配优化"><a href="#1-内存分配优化" class="headerlink" title="1. 内存分配优化"></a>1. 内存分配优化</h3><h4 id="TensorRT-LLM优化要点"><a href="#TensorRT-LLM优化要点" class="headerlink" title="TensorRT-LLM优化要点"></a>TensorRT-LLM优化要点</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 1. 预分配策略 - 避免运行时分配</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">WindowBlockManager::allocatePools</span><span class="params">(<span class="type">bool</span> useUvm)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 预分配所有内存池</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">auto</span>&amp; pool : mPools) &#123;</span><br><span class="line">        pool.primaryPtr = mBufferManager.<span class="built_in">gpuSync</span>(cacheShape, poolDtype);</span><br><span class="line">        <span class="keyword">if</span> (mNumSecondaryBlocks &gt; <span class="number">0</span>) &#123;</span><br><span class="line">            pool.secondaryPtr = BufferManager::<span class="built_in">pinned</span>(cacheShapeOffload, poolDtype);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 2. 智能驱逐策略</span></span><br><span class="line"><span class="function">BlockPtr <span class="title">getFreeBlock</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 优先级队列 + LRU</span></span><br><span class="line">    <span class="keyword">auto</span> [block, canOffload] = mEvictionPolicy-&gt;<span class="built_in">getFreeBlock</span>(kPrimaryLevel);</span><br><span class="line">    <span class="keyword">if</span> (canOffload &amp;&amp; needOffload) &#123;</span><br><span class="line">        <span class="comment">// 异步offload到secondary memory</span></span><br><span class="line">        mTransferManager-&gt;<span class="built_in">offload</span>(block, offloadBlock, mPools);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> block;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h4 id="vLLM优化要点"><a href="#vLLM优化要点" class="headerlink" title="vLLM优化要点"></a>vLLM优化要点</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 1. 延迟计算 - 仅在需要时计算哈希</span></span><br><span class="line"><span class="meta">@property</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">content_hash</span>(<span class="params">self</span>) -&gt; <span class="type">Optional</span>[<span class="built_in">int</span>]:</span><br><span class="line">    <span class="keyword">if</span> <span class="variable language_">self</span>._content_hash <span class="keyword">is</span> <span class="literal">None</span> <span class="keyword">and</span> <span class="variable language_">self</span>.token_ids:</span><br><span class="line">        <span class="variable language_">self</span>._content_hash = <span class="variable language_">self</span>.hash_block_tokens(...)</span><br><span class="line">    <span class="keyword">return</span> <span class="variable language_">self</span>._content_hash</span><br><span class="line"></span><br><span class="line"><span class="comment"># 2. 设备感知分配</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">allocate_mutable_block</span>(<span class="params">self, device: Device</span>) -&gt; Block:</span><br><span class="line">    <span class="keyword">return</span> <span class="variable language_">self</span>._allocators[device].allocate_mutable_block(...)</span><br></pre></td></tr></table></figure>
-
-<h4 id="SGLang优化要点"><a href="#SGLang优化要点" class="headerlink" title="SGLang优化要点"></a>SGLang优化要点</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 1. Triton kernel加速</span></span><br><span class="line"><span class="meta">@triton.jit  </span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">alloc_extend_kernel</span>(<span class="params">...</span>):</span><br><span class="line">    <span class="comment"># GPU并行分配，避免CPU-GPU同步</span></span><br><span class="line">    global_start_page = tl.atomic_add(free_page_ptr, num_new_pages)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 2. 分组操作减少开销</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">free_group_end</span>(<span class="params">self</span>):</span><br><span class="line">    <span class="keyword">if</span> <span class="variable language_">self</span>.free_group:</span><br><span class="line">        <span class="variable language_">self</span>.free(torch.cat(<span class="variable language_">self</span>.free_group))  <span class="comment"># 批量释放</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="2-缓存命中率优化"><a href="#2-缓存命中率优化" class="headerlink" title="2. 缓存命中率优化"></a>2. 缓存命中率优化</h3><h4 id="前缀匹配算法"><a href="#前缀匹配算法" class="headerlink" title="前缀匹配算法"></a>前缀匹配算法</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># SGLang: 分页前缀匹配</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">_key_match_paged</span>(<span class="params">key0: <span class="type">List</span>, key1: <span class="type">List</span>, page_size: <span class="built_in">int</span></span>):</span><br><span class="line">    min_len = <span class="built_in">min</span>(<span class="built_in">len</span>(key0), <span class="built_in">len</span>(key1))</span><br><span class="line">    i = <span class="number">0</span></span><br><span class="line">    <span class="keyword">while</span> i &lt; min_len:</span><br><span class="line">        <span class="keyword">if</span> key0[i : i + page_size] != key1[i : i + page_size]:</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line">        i += page_size</span><br><span class="line">    <span class="keyword">return</span> i</span><br><span class="line"></span><br><span class="line"><span class="comment"># TensorRT-LLM: 部分块复用</span></span><br><span class="line">std::<span class="built_in">tuple</span>&lt;<span class="built_in">bool</span>, SizeType32, BlockPtr&gt; findMatchingBlock(</span><br><span class="line">    BlockKey const&amp; blockKey, <span class="built_in">bool</span> enablePartialReuse) &#123;</span><br><span class="line">    <span class="keyword">if</span> (enablePartialReuse) &#123;</span><br><span class="line">        // 查找最佳部分匹配</span><br><span class="line">        <span class="keyword">for</span> (auto const&amp; [key, block] : mNextBlocks) &#123;</span><br><span class="line">            SizeType32 numMatched = key.partialMatch(blockKey);</span><br><span class="line">            <span class="keyword">if</span> (numMatched &gt; bestNumMatched) &#123;</span><br><span class="line">                bestNumMatched = numMatched;</span><br><span class="line">                bestBlock = block;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h4 id="缓存替换策略"><a href="#缓存替换策略" class="headerlink" title="缓存替换策略"></a>缓存替换策略</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// TensorRT-LLM: 多因素LRU</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">LRUEvictionPolicy</span> &#123;</span><br><span class="line">    <span class="comment">// 考虑优先级、访问时间、引用计数</span></span><br><span class="line">    std::vector&lt;std::vector&lt;FreeBlocksQueue&gt;&gt; mFreeQueues; <span class="comment">// [level][priority]</span></span><br><span class="line">    </span><br><span class="line">    <span class="function">BlockPtr <span class="title">getLRUBlock</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 优先级 &gt; 最后访问时间 &gt; 引用计数</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">auto</span> priority = kMinPriority; priority &lt;= kMaxPriority; ++priority) &#123;</span><br><span class="line">            <span class="keyword">auto</span>&amp; queue = mFreeQueues[level][priority];</span><br><span class="line">            <span class="keyword">if</span> (!queue.<span class="built_in">empty</span>()) &#123;</span><br><span class="line">                <span class="keyword">return</span> queue.<span class="built_in">front</span>(); <span class="comment">// LRU order</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-<h3 id="3-内存使用优化"><a href="#3-内存使用优化" class="headerlink" title="3. 内存使用优化"></a>3. 内存使用优化</h3><h4 id="动态内存管理"><a href="#动态内存管理" class="headerlink" title="动态内存管理"></a>动态内存管理</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># SGLang: 动态SWA池切换</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">SWATokenToKVPoolAllocator</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">alloc</span>(<span class="params">self, need_size: <span class="built_in">int</span></span>):</span><br><span class="line">        <span class="keyword">if</span> need_size &lt;= <span class="built_in">len</span>(<span class="variable language_">self</span>.free_pages_full):</span><br><span class="line">            <span class="keyword">return</span> <span class="variable language_">self</span>.free_pages_full[:need_size], <span class="string">&quot;full&quot;</span></span><br><span class="line">        <span class="keyword">elif</span> need_size &lt;= <span class="built_in">len</span>(<span class="variable language_">self</span>.free_pages_swa):</span><br><span class="line">            <span class="comment"># 动态切换到SWA池</span></span><br><span class="line">            <span class="keyword">return</span> <span class="variable language_">self</span>.translate_loc_from_full_to_swa(</span><br><span class="line">                <span class="variable language_">self</span>.free_pages_swa[:need_size]), <span class="string">&quot;swa&quot;</span></span><br></pre></td></tr></table></figure>
-
-<h4 id="内存碎片减少"><a href="#内存碎片减少" class="headerlink" title="内存碎片减少"></a>内存碎片减少</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// TensorRT-LLM: 连续块分配</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">addSequence</span><span class="params">(GenerationRequest&amp; sequence, SizeType32 inputLength)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 尽量分配连续的blocks以减少碎片</span></span><br><span class="line">    <span class="keyword">auto</span> blockedUniqueTokens = <span class="built_in">chopVectorIntoBlocks</span>(uniqueTokens, inputLength<span class="number">-1</span>, mTokensPerBlock);</span><br><span class="line">    <span class="keyword">auto</span> prepopulatedPromptLen = <span class="built_in">loadOrAllocateBlocks</span>(blockKeys, numContextBlocks, sequence);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="总结与建议"><a href="#总结与建议" class="headerlink" title="总结与建议"></a>总结与建议</h2><h3 id="各框架优势总结"><a href="#各框架优势总结" class="headerlink" title="各框架优势总结"></a>各框架优势总结</h3><h4 id="TensorRT-LLM"><a href="#TensorRT-LLM" class="headerlink" title="TensorRT-LLM"></a>TensorRT-LLM</h4><p><strong>优势</strong>:</p>
-<ul>
-<li>生产级稳定性和性能</li>
-<li>完善的量化支持</li>
-<li>优秀的CUDA kernel优化</li>
-<li>企业级特性 (优先级、过期时间等)</li>
-</ul>
-<p><strong>适用场景</strong>:</p>
-<ul>
-<li>大规模生产部署</li>
-<li>高性能要求的应用</li>
-<li>NVIDIA GPU集群环境</li>
-</ul>
-<h4 id="vLLM"><a href="#vLLM" class="headerlink" title="vLLM"></a>vLLM</h4><p><strong>优势</strong>:</p>
-<ul>
-<li>代码简洁，易于理解和扩展</li>
-<li>良好的社区支持</li>
-<li>灵活的后端支持</li>
-<li>快速迭代和新特性集成</li>
-</ul>
-<p><strong>适用场景</strong>:</p>
-<ul>
-<li>研究和原型开发</li>
-<li>多样化硬件环境</li>
-<li>需要快速集成新特性</li>
-</ul>
-<h4 id="SGLang"><a href="#SGLang" class="headerlink" title="SGLang"></a>SGLang</h4><p><strong>优势</strong>:</p>
-<ul>
-<li>最先进的内存管理架构</li>
-<li>原生多模态支持</li>
-<li>尖端优化技术 (MLA, SWA等)</li>
-<li>硬件异构支持</li>
-</ul>
-<p><strong>适用场景</strong>:</p>
-<ul>
-<li>前沿研究项目  </li>
-<li>复杂attention模式需求</li>
-<li>异构硬件环境</li>
-</ul>
-<h3 id="技术发展趋势"><a href="#技术发展趋势" class="headerlink" title="技术发展趋势"></a>技术发展趋势</h3><ol>
-<li><strong>架构融合</strong>: 各框架正在互相借鉴优势特性</li>
-<li><strong>硬件特化</strong>: 针对不同硬件的专门优化</li>
-<li><strong>智能调度</strong>: AI驱动的内存管理和调度策略</li>
-<li><strong>异构计算</strong>: CPU&#x2F;GPU&#x2F;NPU协同的KV cache管理</li>
-</ol>
-<h3 id="选择建议"><a href="#选择建议" class="headerlink" title="选择建议"></a>选择建议</h3><table>
-<thead>
-<tr>
-<th>需求</th>
-<th>推荐框架</th>
-<th>理由</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>生产部署</td>
-<td>TensorRT-LLM</td>
-<td>稳定性和性能最佳</td>
-</tr>
-<tr>
-<td>研究开发</td>
-<td>vLLM</td>
-<td>开发效率和扩展性好</td>
-</tr>
-<tr>
-<td>前沿探索</td>
-<td>SGLang</td>
-<td>最新技术和架构创新</td>
-</tr>
-<tr>
-<td>多模态应用</td>
-<td>SGLang</td>
-<td>原生多模态支持</td>
-</tr>
-<tr>
-<td>异构硬件</td>
-<td>SGLang &gt; vLLM &gt; TensorRT-LLM</td>
-<td>硬件支持广度</td>
-</tr>
-</tbody></table>
-<p>选择框架时应综合考虑性能需求、开发资源、部署环境和长期维护等因素。 </p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2025/07/14/System/LLM_KVCache_%E8%AF%A6%E7%BB%86%E5%88%86%E6%9E%90/" data-id="cme178g85001ey8on1s3xej2h" data-title="" class="article-share-link"><span class="fa fa-share">Share</span></a>
-      
-      
-      
     </footer>
   </div>
   
@@ -1924,7 +1708,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/08/">August 2025</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/07/">July 2025</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/06/">June 2025</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/05/">May 2025</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/04/">April 2025</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/03/">March 2025</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/01/">January 2025</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/03/">March 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/01/">January 2024</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/08/">August 2025</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/07/">July 2025</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/06/">June 2025</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/05/">May 2025</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/04/">April 2025</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/03/">March 2025</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/03/">March 2024</a></li></ul>
     </div>
   </div>
 
