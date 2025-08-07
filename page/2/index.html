@@ -111,7 +111,7 @@
 <p>PD-Dist</p>
 <p>按照DistServe的说法，chunked-prefill 还是用 ttft换去了tpot</p>
 <p>分析：<br>decode batch 里加入了一个prefill时，劣化非常显著</p>
-<p>![[Pasted image 20250727172423.png]]</p>
+<p><img src="/images/Pasted%20image%2020250727172423.png" alt="Pasted image 20250727172423.png"></p>
 <p>问题: 怎么插入一个prefill呢，decode是矩阵 * 向量 prefill是矩阵乘；还是说这种情况下就不要kvcache了，一个batch都按照prefill计算来处理？</p>
 <p>新的问题：<br>如果不做Piggpack, P节点分chunks， D节点保持不变呢？</p>
 <p>1 对于Prefill而言，生成一个token的时间无疑是比decode时间长的<br>2 目前来说 prefill在compute bound阶段，batch size设置的远小于 decode<br>3 普遍配置的P节点数量都小于等于D节点<br>then : P节点的吞吐不应该远小于D节点吗，难道不应该多配置一些D节点吗</p>
@@ -119,7 +119,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2025/07/27/System/Untitled%201/" data-id="cme1706jf001z08on6iaw5fqn" data-title="" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2025/07/27/System/Untitled%201/" data-id="cme178g8a001vy8onca0u1uk2" data-title="" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -151,7 +151,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2025/07/27/System/%E9%97%AE%E9%A2%98/" data-id="cme1706jm002k08on0uki4zcs" data-title="" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2025/07/27/System/%E9%97%AE%E9%A2%98/" data-id="cme178g8h002fy8ongqpgbikf" data-title="" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -185,7 +185,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2025/07/27/InterviewArchive/%E5%9C%A8%E7%BA%BF%E9%9D%A2%E7%BB%8F/" data-id="cme1706is000f08on87qwgudi" data-title="" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2025/07/27/InterviewArchive/%E5%9C%A8%E7%BA%BF%E9%9D%A2%E7%BB%8F/" data-id="cme178g8j002ly8on91937ezw" data-title="" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -215,7 +215,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2025/07/27/System/RoPE/" data-id="cme1706jc001s08on8p636byt" data-title="" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2025/07/27/System/RoPE/" data-id="cme178g88001py8on4gjida0u" data-title="" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -246,7 +246,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2025/07/27/System/DP%20%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E8%B0%83%E5%BA%A6/" data-id="cme1706j1000x08on6fa5hs8o" data-title="" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2025/07/27/System/DP%20%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E8%B0%83%E5%BA%A6/" data-id="cme178g7y000uy8on7ozl9c6d" data-title="" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -281,7 +281,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2025/07/27/System/%E5%B9%B6%E8%A1%8C%E7%AD%96%E7%95%A5/%E6%A8%A1%E5%9E%8B%E5%B9%B6%E8%A1%8C/" data-id="cme1706jz003s08on7kdh7zo2" data-title="" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2025/07/27/System/%E5%B9%B6%E8%A1%8C%E7%AD%96%E7%95%A5/%E6%A8%A1%E5%9E%8B%E5%B9%B6%E8%A1%8C/" data-id="cme178g8x003sy8onduwzaaxs" data-title="" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -324,7 +324,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2025/07/27/System/%E5%B9%B6%E8%A1%8C%E7%AD%96%E7%95%A5/TP%E5%B9%B6%E8%A1%8C/" data-id="cme1706jy003o08on9k4w4417" data-title="" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2025/07/27/System/%E5%B9%B6%E8%A1%8C%E7%AD%96%E7%95%A5/TP%E5%B9%B6%E8%A1%8C/" data-id="cme178g8w003oy8on6ev16sti" data-title="" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -356,7 +356,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2025/07/27/System/KVCache%20%E5%A4%A7%E5%B0%8F%E8%AE%A1%E7%AE%97/" data-id="cme1706j4001608on12d1a091" data-title="" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2025/07/27/System/KVCache%20%E5%A4%A7%E5%B0%8F%E8%AE%A1%E7%AE%97/" data-id="cme178g810011y8on0g161u69" data-title="" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -392,7 +392,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2025/07/27/System/LLM%20Inference%20%E4%BC%98%E5%8C%96%E7%BB%B4%E5%BA%A6/" data-id="cme1706j6001c08on3n6y333o" data-title="" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2025/07/27/System/LLM%20Inference%20%E4%BC%98%E5%8C%96%E7%BB%B4%E5%BA%A6/" data-id="cme178g830019y8on1y0z3vq0" data-title="" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -421,7 +421,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2025/07/26/System/Sequence%20Parralel/" data-id="cme1706jd001v08on0omg9djn" data-title="" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2025/07/26/System/Sequence%20Parralel/" data-id="cme178g89001sy8on8207a8t3" data-title="" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       

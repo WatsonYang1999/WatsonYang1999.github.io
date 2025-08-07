@@ -13,10 +13,12 @@
 <meta property="og:site_name" content="Hexo">
 <meta property="og:description" content="Batching 静态批处理： 输入 长度不同的seq 通过左padding对齐之后，进行prefill输出第一个token (下一个token实际上是根据seq 最后的token的o去预测的) 做完prefill后一直做decode，直到达到max_seq_len或者 全部都eos Continuous Batching Selective Batching PD-Dist 按照DistServ">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/images/Pasted%20image%2020250727172423.png">
 <meta property="article:published_time" content="2025-07-27T08:56:08.829Z">
-<meta property="article:modified_time" content="2025-07-27T09:33:36.052Z">
+<meta property="article:modified_time" content="2025-08-07T09:32:14.500Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/images/Pasted%20image%2020250727172423.png">
   
     <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
   
@@ -113,7 +115,7 @@
 <p>PD-Dist</p>
 <p>按照DistServe的说法，chunked-prefill 还是用 ttft换去了tpot</p>
 <p>分析：<br>decode batch 里加入了一个prefill时，劣化非常显著</p>
-<p>![[Pasted image 20250727172423.png]]</p>
+<p><img src="/images/Pasted%20image%2020250727172423.png" alt="Pasted image 20250727172423.png"></p>
 <p>问题: 怎么插入一个prefill呢，decode是矩阵 * 向量 prefill是矩阵乘；还是说这种情况下就不要kvcache了，一个batch都按照prefill计算来处理？</p>
 <p>新的问题：<br>如果不做Piggpack, P节点分chunks， D节点保持不变呢？</p>
 <p>1 对于Prefill而言，生成一个token的时间无疑是比decode时间长的<br>2 目前来说 prefill在compute bound阶段，batch size设置的远小于 decode<br>3 普遍配置的P节点数量都小于等于D节点<br>then : P节点的吞吐不应该远小于D节点吗，难道不应该多配置一些D节点吗</p>
@@ -121,7 +123,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2025/07/27/System/Untitled%201/" data-id="cme1706jf001z08on6iaw5fqn" data-title="" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2025/07/27/System/Untitled%201/" data-id="cme178g8a001vy8onca0u1uk2" data-title="" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       

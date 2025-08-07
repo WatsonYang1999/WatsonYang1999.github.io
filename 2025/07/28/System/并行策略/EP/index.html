@@ -6,17 +6,22 @@
   
   <title>Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="![[Pasted image 20250728115927.png]] 在专家并行中，专家被放置在不同的节点上，每个节点处理不同批次的训练样本。对于非 MoE 层，专家并行的行为与数据并行相同。对于 MoE 层，序列中的令牌被发送到拥有所需专家的节点。 ![[Pasted image 20250728115712.png]] moe_ep vs moe_tp EP并行：每个rank上的专家的权重">
+  <meta name="description" content="在专家并行中，专家被放置在不同的节点上，每个节点处理不同批次的训练样本。对于非 MoE 层，专家并行的行为与数据并行相同。对于 MoE 层，序列中的令牌被发送到拥有所需专家的节点。  moe_ep vs moe_tp EP并行：每个rank上的专家的权重是完整的，计算部分token moe tp 对于 TP，每个 TP rank 都包含所有 expert，但每个 expert 的参数只有 1&amp;#">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Hexo">
 <meta property="og:url" content="http://example.com/2025/07/28/System/%E5%B9%B6%E8%A1%8C%E7%AD%96%E7%95%A5/EP/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="![[Pasted image 20250728115927.png]] 在专家并行中，专家被放置在不同的节点上，每个节点处理不同批次的训练样本。对于非 MoE 层，专家并行的行为与数据并行相同。对于 MoE 层，序列中的令牌被发送到拥有所需专家的节点。 ![[Pasted image 20250728115712.png]] moe_ep vs moe_tp EP并行：每个rank上的专家的权重">
+<meta property="og:description" content="在专家并行中，专家被放置在不同的节点上，每个节点处理不同批次的训练样本。对于非 MoE 层，专家并行的行为与数据并行相同。对于 MoE 层，序列中的令牌被发送到拥有所需专家的节点。  moe_ep vs moe_tp EP并行：每个rank上的专家的权重是完整的，计算部分token moe tp 对于 TP，每个 TP rank 都包含所有 expert，但每个 expert 的参数只有 1&amp;#">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/images/Pasted%20image%2020250728115927.png">
+<meta property="og:image" content="http://example.com/images/Pasted%20image%2020250728115712.png">
+<meta property="og:image" content="http://example.com/images/Pasted%20image%2020250728145326.png">
+<meta property="og:image" content="http://example.com/images/Pasted%20image%2020250728145414.png">
 <meta property="article:published_time" content="2025-07-28T03:57:08.196Z">
-<meta property="article:modified_time" content="2025-07-29T06:21:53.689Z">
+<meta property="article:modified_time" content="2025-08-07T09:32:14.496Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/images/Pasted%20image%2020250728115927.png">
   
     <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
   
@@ -103,13 +108,13 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <p>![[Pasted image 20250728115927.png]]</p>
+        <p><img src="/images/Pasted%20image%2020250728115927.png" alt="Pasted image 20250728115927.png"></p>
 <p>在专家并行中，专家被放置在不同的节点上，每个节点处理不同批次的训练样本。对于非 MoE 层，专家并行的行为与数据并行相同。对于 MoE 层，序列中的令牌被发送到拥有所需专家的节点。</p>
-<p>![[Pasted image 20250728115712.png]]</p>
+<p><img src="/images/Pasted%20image%2020250728115712.png" alt="Pasted image 20250728115712.png"></p>
 <p>moe_ep vs moe_tp</p>
 <p>EP并行：<br>每个rank上的专家的权重是完整的，计算部分token</p>
-<p>![[Pasted image 20250728145326.png]]<br>moe tp</p>
-<p>对于 TP，每个 TP rank 都包含所有 expert，但每个 expert 的参数只有 1&#x2F;TP 份。由于包含所有 expert，无需将 token 发送到其他 rank，可以直接在本地完成计算。<br>![[Pasted image 20250728145414.png]]</p>
+<p><img src="/images/Pasted%20image%2020250728145326.png" alt="Pasted image 20250728145326.png"><br>moe tp</p>
+<p>对于 TP，每个 TP rank 都包含所有 expert，但每个 expert 的参数只有 1&#x2F;TP 份。由于包含所有 expert，无需将 token 发送到其他 rank，可以直接在本地完成计算。<br><img src="/images/Pasted%20image%2020250728145414.png" alt="Pasted image 20250728145414.png"></p>
 <p>总结：EP 和 TP 各有优劣，其选择取决于具体的训练场景和需求：</p>
 <ol>
 <li><strong>计算效率</strong>：EP 在 expert 的计算效率上具有优势，减少了 kernel launch 次数，增加了每次 launch 的 workload。（不使用 cutlass grouped gemm 的话）</li>
@@ -121,7 +126,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2025/07/28/System/%E5%B9%B6%E8%A1%8C%E7%AD%96%E7%95%A5/EP/" data-id="cme1706jy003m08onavoe2jkw" data-title="" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2025/07/28/System/%E5%B9%B6%E8%A1%8C%E7%AD%96%E7%95%A5/EP/" data-id="cme178g8w003my8ongyzu0qt0" data-title="" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
