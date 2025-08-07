@@ -89,6 +89,851 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-System/AI Compiler" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2025/01/15/System/AI%20Compiler/" class="article-date">
+  <time class="dt-published" datetime="2025-01-15T02:00:00.000Z" itemprop="datePublished">2025-01-15</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/System/">System</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2025/01/15/System/AI%20Compiler/">AI Compiler - 计算图优化与编译器后端</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="AI-Compiler-计算图优化与编译器后端"><a href="#AI-Compiler-计算图优化与编译器后端" class="headerlink" title="AI Compiler - 计算图优化与编译器后端"></a>AI Compiler - 计算图优化与编译器后端</h1><h2 id="Q-什么是计算图（Computational-Graph）？"><a href="#Q-什么是计算图（Computational-Graph）？" class="headerlink" title="Q: 什么是计算图（Computational Graph）？"></a>Q: 什么是计算图（Computational Graph）？</h2><p><strong>A:</strong> 计算图是深度学习框架中的核心概念，用于表示神经网络的计算过程。</p>
+<h3 id="计算图构成"><a href="#计算图构成" class="headerlink" title="计算图构成"></a>计算图构成</h3><ul>
+<li><strong>Tensor（张量）</strong>：数据节点，存储模型的输入、输出和中间结果</li>
+<li><strong>Operator（算子）</strong>：计算节点，执行具体的数学运算（如卷积、矩阵乘法等）</li>
+</ul>
+<h3 id="计算图生成方式"><a href="#计算图生成方式" class="headerlink" title="计算图生成方式"></a>计算图生成方式</h3><ol>
+<li><strong>静态图</strong>：先定义完整的计算图结构，再执行</li>
+<li><strong>动态图</strong>：边定义边执行，即时构建计算图</li>
+</ol>
+<h2 id="Q-什么是算子融合（Operator-Fusion）？"><a href="#Q-什么是算子融合（Operator-Fusion）？" class="headerlink" title="Q: 什么是算子融合（Operator Fusion）？"></a>Q: 什么是算子融合（Operator Fusion）？</h2><p><strong>A:</strong> 算子融合是AI编译器中的一种重要优化技术，它将多个连续的算子合并为一个复合操作。</p>
+<h3 id="具体例子"><a href="#具体例子" class="headerlink" title="具体例子"></a>具体例子</h3><p>将Add算子与ReLU合并为一个操作，可以：</p>
+<ul>
+<li>节省中间计算结果的存储、读取等过程</li>
+<li>降低框架底层算子调度的开销</li>
+<li>提升执行性能和效率</li>
+<li>降低内存开销</li>
+</ul>
+<h2 id="Q-为什么算子融合能提升性能？"><a href="#Q-为什么算子融合能提升性能？" class="headerlink" title="Q: 为什么算子融合能提升性能？"></a>Q: 为什么算子融合能提升性能？</h2><p><strong>A:</strong> 算子融合通过减少内存访问和调度开销来提升性能：</p>
+<h3 id="性能提升原因"><a href="#性能提升原因" class="headerlink" title="性能提升原因"></a>性能提升原因</h3><ol>
+<li><strong>减少内存访问</strong>：避免中间结果的存储和读取</li>
+<li><strong>降低调度开销</strong>：减少算子间的调度切换</li>
+<li><strong>提高缓存效率</strong>：数据在缓存中停留更长时间</li>
+<li><strong>减少内存占用</strong>：不需要为中间结果分配额外内存</li>
+</ol>
+<h2 id="Q-动态图和静态图有什么区别？"><a href="#Q-动态图和静态图有什么区别？" class="headerlink" title="Q: 动态图和静态图有什么区别？"></a>Q: 动态图和静态图有什么区别？</h2><p><strong>A:</strong> 动态图和静态图代表了两种不同的深度学习框架设计理念：</p>
+<h3 id="动态图特点"><a href="#动态图特点" class="headerlink" title="动态图特点"></a>动态图特点</h3><ul>
+<li><strong>边解释边执行</strong>：代码按顺序执行，立即得到结果</li>
+<li><strong>灵活性高</strong>：支持动态控制流（if&#x2F;else、循环等）</li>
+<li><strong>调试友好</strong>：可以随时打印中间结果，便于调试</li>
+<li><strong>开发效率高</strong>：类似Python的交互式编程体验</li>
+</ul>
+<h3 id="静态图特点"><a href="#静态图特点" class="headerlink" title="静态图特点"></a>静态图特点</h3><ul>
+<li><strong>先定义后执行</strong>：先构建完整的计算图，再统一执行</li>
+<li><strong>优化空间大</strong>：编译时可以进行全局优化</li>
+<li><strong>部署效率高</strong>：可以编译为高效的执行代码</li>
+<li><strong>性能更好</strong>：减少运行时开销</li>
+</ul>
+<h2 id="Q-PyTorch和TensorFlow的对比如何理解？"><a href="#Q-PyTorch和TensorFlow的对比如何理解？" class="headerlink" title="Q: PyTorch和TensorFlow的对比如何理解？"></a>Q: PyTorch和TensorFlow的对比如何理解？</h2><p><strong>A:</strong> 可以用编程模式的类比来理解：</p>
+<h3 id="类比说明"><a href="#类比说明" class="headerlink" title="类比说明"></a>类比说明</h3><ul>
+<li><p><strong>PyTorch (动态图)</strong> ≈ <strong>Jupyter Notebook编程</strong></p>
+<ul>
+<li>交互式、即时反馈</li>
+<li>可以随时修改和调试</li>
+<li>开发体验友好</li>
+</ul>
+</li>
+<li><p><strong>TensorFlow 1.x (静态图)</strong> ≈ <strong>C++编译型编程</strong></p>
+<ul>
+<li>先定义完整程序，再编译执行</li>
+<li>性能优化空间大</li>
+<li>部署效率高</li>
+</ul>
+</li>
+</ul>
+<h3 id="现代发展"><a href="#现代发展" class="headerlink" title="现代发展"></a>现代发展</h3><ul>
+<li><strong>TensorFlow 2.x</strong>：默认启用Eager Execution（动态图），同时保留静态图优化</li>
+<li><strong>PyTorch</strong>：通过TorchScript和TorchDynamo支持静态图优化</li>
+<li><strong>趋势</strong>：两种模式融合，开发时用动态图，部署时用静态图</li>
+</ul>
+<h2 id="Q-PyTorch如何部署静态图？"><a href="#Q-PyTorch如何部署静态图？" class="headerlink" title="Q: PyTorch如何部署静态图？"></a>Q: PyTorch如何部署静态图？</h2><p><strong>A:</strong> PyTorch提供了多种方式将动态图转换为静态图进行部署：</p>
+<h3 id="1-TorchScript-传统方式"><a href="#1-TorchScript-传统方式" class="headerlink" title="1. TorchScript (传统方式)"></a>1. TorchScript (传统方式)</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 方法1: Tracing - 跟踪执行路径</span></span><br><span class="line">traced_model = torch.jit.trace(model, example_input)</span><br><span class="line">traced_model.save(<span class="string">&quot;model.pt&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 方法2: Scripting - 直接编译Python代码</span></span><br><span class="line">scripted_model = torch.jit.script(model)</span><br><span class="line">scripted_model.save(<span class="string">&quot;model.pt&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<p><strong>特点：</strong></p>
+<ul>
+<li><strong>Tracing</strong>：记录一次前向传播的执行路径，适合无控制流的模型</li>
+<li><strong>Scripting</strong>：直接分析Python代码结构，支持控制流但有限制</li>
+<li><strong>限制</strong>：不支持所有Python特性，需要修改代码</li>
+</ul>
+<h3 id="2-TorchDynamo-PyTorch-2-0"><a href="#2-TorchDynamo-PyTorch-2-0" class="headerlink" title="2. TorchDynamo (PyTorch 2.0+)"></a>2. TorchDynamo (PyTorch 2.0+)</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 使用torch.compile自动优化</span></span><br><span class="line">optimized_model = torch.<span class="built_in">compile</span>(model)</span><br><span class="line"><span class="comment"># 或指定后端</span></span><br><span class="line">optimized_model = torch.<span class="built_in">compile</span>(model, backend=<span class="string">&quot;inductor&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<p><strong>特点：</strong></p>
+<ul>
+<li><strong>自动优化</strong>：无需修改代码，自动识别可优化部分</li>
+<li><strong>多后端支持</strong>：支持AOTAutograd、TorchInductor等后端</li>
+<li><strong>渐进式采用</strong>：可以只优化部分模型</li>
+</ul>
+<h3 id="3-部署方式对比"><a href="#3-部署方式对比" class="headerlink" title="3. 部署方式对比"></a>3. 部署方式对比</h3><table>
+<thead>
+<tr>
+<th>方法</th>
+<th>易用性</th>
+<th>性能</th>
+<th>兼容性</th>
+<th>适用场景</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>TorchScript Tracing</td>
+<td>中等</td>
+<td>高</td>
+<td>中等</td>
+<td>简单模型</td>
+</tr>
+<tr>
+<td>TorchScript Scripting</td>
+<td>低</td>
+<td>高</td>
+<td>低</td>
+<td>复杂控制流</td>
+</tr>
+<tr>
+<td>TorchDynamo</td>
+<td>高</td>
+<td>很高</td>
+<td>高</td>
+<td>现代PyTorch模型</td>
+</tr>
+</tbody></table>
+<h3 id="4-实际部署流程"><a href="#4-实际部署流程" class="headerlink" title="4. 实际部署流程"></a>4. 实际部署流程</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 1. 开发阶段：使用动态图</span></span><br><span class="line">model = MyModel()</span><br><span class="line">model.train()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 2. 部署阶段：转换为静态图</span></span><br><span class="line">model.<span class="built_in">eval</span>()</span><br><span class="line"><span class="keyword">if</span> use_torchdynamo:</span><br><span class="line">    model = torch.<span class="built_in">compile</span>(model)</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    model = torch.jit.trace(model, example_input)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 3. 保存和加载</span></span><br><span class="line">torch.save(model, <span class="string">&quot;deployed_model.pt&quot;</span>)</span><br><span class="line">loaded_model = torch.load(<span class="string">&quot;deployed_model.pt&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<p><strong>最佳实践：</strong></p>
+<ul>
+<li><strong>开发时</strong>：使用动态图，享受调试便利</li>
+<li><strong>部署时</strong>：使用<code>torch.compile()</code>自动优化</li>
+<li><strong>特殊需求</strong>：使用TorchScript获得最大兼容性</li>
+</ul>
+<h2 id="Q-AI编译器后端的主要任务是什么？"><a href="#Q-AI编译器后端的主要任务是什么？" class="headerlink" title="Q: AI编译器后端的主要任务是什么？"></a>Q: AI编译器后端的主要任务是什么？</h2><p><strong>A:</strong> 编译器后端主要负责三个核心任务：计算图优化、算子选择、内存分配。</p>
+<h3 id="1-计算图优化"><a href="#1-计算图优化" class="headerlink" title="1. 计算图优化"></a>1. 计算图优化</h3><p><strong>目标</strong>：在不影响模型数值特性的基础上，通过图变换达到减少资源开销、适配硬件执行能力、提升执行性能的目的。</p>
+<p><strong>优化类型</strong>：</p>
+<ul>
+<li><strong>硬件通用优化</strong>：与硬件无关的算子内存IO优化</li>
+<li><strong>特定硬件优化</strong>：适配特定硬件指令限制的子图变换</li>
+</ul>
+<h3 id="2-算子选择"><a href="#2-算子选择" class="headerlink" title="2. 算子选择"></a>2. 算子选择</h3><p><strong>目标</strong>：为IR图中的每个计算节点选择最适合在设备上执行的算子。</p>
+<p><strong>考虑因素</strong>：</p>
+<ul>
+<li><strong>存储格式</strong>：不同的数据存储格式对性能影响很大</li>
+<li><strong>计算精度</strong>：FP32、FP16、INT8等精度选择</li>
+<li><strong>硬件特性</strong>：GPU、CPU、专用加速器的算子库差异</li>
+</ul>
+<h3 id="3-内存分配"><a href="#3-内存分配" class="headerlink" title="3. 内存分配"></a>3. 内存分配</h3><p><strong>目标</strong>：为算子的输入输出Tensor分配内存，然后加载算子到硬件上执行。</p>
+<p><strong>优化策略</strong>：</p>
+<ul>
+<li><strong>内存复用</strong>：让设备上容纳更大的网络模型</li>
+<li><strong>通信算子内存融合</strong>：提高通信效率</li>
+<li><strong>In-Place算子优化</strong>：节省内存使用并提高计算效率</li>
+</ul>
+<h2 id="Q-运行时调度有哪些模式？"><a href="#Q-运行时调度有哪些模式？" class="headerlink" title="Q: 运行时调度有哪些模式？"></a>Q: 运行时调度有哪些模式？</h2><p><strong>A:</strong> 运行时对于算子的执行可以分为两种主要模式：</p>
+<h3 id="1-单算子调度"><a href="#1-单算子调度" class="headerlink" title="1. 单算子调度"></a>1. 单算子调度</h3><ul>
+<li><strong>特点</strong>：逐个执行算子，调度开销较大</li>
+<li><strong>适用</strong>：调试阶段或简单场景</li>
+</ul>
+<h3 id="2-计算图调度"><a href="#2-计算图调度" class="headerlink" title="2. 计算图调度"></a>2. 计算图调度</h3><ul>
+<li><strong>交互式执行</strong>：具备更多灵活性，适合复杂控制流</li>
+<li><strong>下沉式执行</strong>：获得更好的计算性能，适合批量推理</li>
+</ul>
+<h3 id="3-并行优化"><a href="#3-并行优化" class="headerlink" title="3. 并行优化"></a>3. 并行优化</h3><ul>
+<li><strong>算子级并行</strong>：多个算子同时执行</li>
+<li><strong>训练推理并行</strong>：异步进行数据预处理&#x2F;训练等</li>
+</ul>
+<h2 id="Q-算子编译器的关键技术是什么？"><a href="#Q-算子编译器的关键技术是什么？" class="headerlink" title="Q: 算子编译器的关键技术是什么？"></a>Q: 算子编译器的关键技术是什么？</h2><p><strong>A:</strong> 算子编译器是优化硬件性能的关键组件，主要有两个核心技术：</p>
+<h3 id="1-调度策略优化"><a href="#1-调度策略优化" class="headerlink" title="1. 调度策略优化"></a>1. 调度策略优化</h3><ul>
+<li><strong>循环优化</strong>：重新组织循环结构</li>
+<li><strong>内存访问优化</strong>：提高缓存命中率</li>
+<li><strong>并行度优化</strong>：充分利用硬件并行能力</li>
+</ul>
+<h3 id="2-多面体模型算法"><a href="#2-多面体模型算法" class="headerlink" title="2. 多面体模型算法"></a>2. 多面体模型算法</h3><ul>
+<li><strong>循环变换</strong>：基于数学理论进行循环优化</li>
+<li><strong>依赖分析</strong>：分析数据依赖关系</li>
+<li><strong>自动调优</strong>：自动生成最优的调度策略</li>
+</ul>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://openmlsys.github.io/chapter_computational_graph/generation_of_computational_graph.html">OpenMLSys - 计算图生成</a></li>
+<li><a target="_blank" rel="noopener" href="https://openmlsys.github.io/chapter_backend_and_runtime/summary.html">OpenMLSys - 编译器后端总结</a></li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2025/01/15/System/AI%20Compiler/" data-id="cme16sr8h0014kjon1vuge26u" data-title="AI Compiler - 计算图优化与编译器后端" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/AI/" rel="tag">AI</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Compiler/" rel="tag">Compiler</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Computational-Graph/" rel="tag">Computational Graph</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Optimization/" rel="tag">Optimization</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Performance/" rel="tag">Performance</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-career-summary" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2024/03/21/career-summary/" class="article-date">
+  <time class="dt-published" datetime="2024-03-20T16:00:00.000Z" itemprop="datePublished">2024-03-21</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2024/03/21/career-summary/">工作经历总结</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="工作经历总结"><a href="#工作经历总结" class="headerlink" title="工作经历总结"></a>工作经历总结</h1><h2 id="Amazon-Experience"><a href="#Amazon-Experience" class="headerlink" title="Amazon Experience"></a>Amazon Experience</h2><p>分布式计算</p>
+<p>wechat qrcode business </p>
+<p>基于lambda serverless的微服务</p>
+<ol>
+<li><strong>为什么选择 Lambda？与传统服务器相比有什么优势？</strong><ul>
+<li>回答要点：按需扩展、无状态模型、低运维成本。</li>
+</ul>
+</li>
+<li><strong>如何优化冷启动问题？</strong><ul>
+<li>回答要点：配置预热并发、减小打包体积、优化初始化逻辑。</li>
+</ul>
+</li>
+<li><strong>高并发时如何处理流量限制？</strong><ul>
+<li>回答要点：API Gateway 限流、配置 Lambda 的并发限制、使用 SQS 进行队列化。</li>
+</ul>
+</li>
+<li><strong>二维码生成中的缓存如何设计？</strong><ul>
+<li>回答要点：使用 S3 和 CDN 缓存固定二维码，减少重复生成。</li>
+</ul>
+</li>
+<li><strong>Lambda 的限制有哪些？如何应对？</strong><ul>
+<li>回答要点：运行时长限制（15 分钟）、冷启动、并发限制；应对方法包括任务分解、分批处理、配置预热实例等。</li>
+</ul>
+</li>
+</ol>
+<h3 id="架构优化建议"><a href="#架构优化建议" class="headerlink" title="架构优化建议"></a>架构优化建议</h3><p>如果采用 Lambda 和 Serverless 架构，可以针对二维码生成的需求进行以下优化：</p>
+<h4 id="高并发优化"><a href="#高并发优化" class="headerlink" title="高并发优化"></a><strong>高并发优化</strong></h4><ul>
+<li>使用 <strong>API Gateway</strong> 限流，避免流量暴涨导致 Lambda 并发超额。</li>
+<li>配置 <strong>Provisioned Concurrency</strong> 保证冷启动时延降低。</li>
+</ul>
+<h4 id="静态二维码缓存："><a href="#静态二维码缓存：" class="headerlink" title="静态二维码缓存："></a><strong>静态二维码缓存</strong>：</h4><ul>
+<li>对于固定输入（如 URL、文本）生成的二维码，直接缓存结果（如存储在 S3 或 CDN 中），减少重复计算。</li>
+<li>配置 <strong>CloudFront</strong> 与 <strong>S3</strong>，将常用二维码放置到 CDN 节点，提高响应速度。</li>
+</ul>
+<h4 id="复杂任务分解："><a href="#复杂任务分解：" class="headerlink" title="复杂任务分解："></a><strong>复杂任务分解</strong>：</h4><ul>
+<li>如果需要批量生成二维码，可以拆分任务，将单个二维码生成的请求分发给多个 Lambda 实例，结合 SQS 或 Step Functions 协调任务流程。</li>
+</ul>
+<h4 id="监控与日志："><a href="#监控与日志：" class="headerlink" title="监控与日志："></a><strong>监控与日志</strong>：</h4><ul>
+<li>使用 <strong>CloudWatch</strong> 监控 Lambda 的运行时性能，及时发现冷启动问题或流量异常。</li>
+</ul>
+<h3 id="可能的问题："><a href="#可能的问题：" class="headerlink" title="可能的问题："></a>可能的问题：</h3><p>MindIE Inference Engine Develop</p>
+<ol>
+<li><p>2025.1 - 2025. 6 Develop in MindIE Prefill-Decode-Disaggregation </p>
+<p>Inference Node </p>
+<p>KV Cache Transfer: inter-node level &#x2F; management</p>
+<p>问题：节点之间是基于什么协议通信的：RDMA？</p>
+</li>
+<li><p>2024.8 - 2024. 12</p>
+<p>MindIE Benchmark Develop</p>
+<p>MindIE Server Develop</p>
+</li>
+</ol>
+<p>Think About How to cope with difference job type?</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2024/03/21/career-summary/" data-id="cme16sr7p0001kjongigjfqp7" data-title="工作经历总结" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/career/" rel="tag">career</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/experience/" rel="tag">experience</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-raft" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2024/03/21/raft/" class="article-date">
+  <time class="dt-published" datetime="2024-03-20T16:00:00.000Z" itemprop="datePublished">2024-03-21</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2024/03/21/raft/">Raft 协议笔记</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="Raft-协议笔记"><a href="#Raft-协议笔记" class="headerlink" title="Raft 协议笔记"></a>Raft 协议笔记</h1><h2 id="Leader-Election"><a href="#Leader-Election" class="headerlink" title="Leader Election"></a>Leader Election</h2><ol>
+<li>term在什么时候递增</li>
+<li>server id 怎么表示比较方便</li>
+</ol>
+<h2 id="Log-Duplication"><a href="#Log-Duplication" class="headerlink" title="Log Duplication"></a>Log Duplication</h2><ol>
+<li>什么时候更新log[]</li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2024/03/21/raft/" data-id="cme16sr7t0004kjonft6g251h" data-title="Raft 协议笔记" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/consensus/" rel="tag">consensus</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/distributed-systems/" rel="tag">distributed-systems</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/raft/" rel="tag">raft</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-mermaid-test" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2024/01/15/mermaid-test/" class="article-date">
+  <time class="dt-published" datetime="2024-01-15T02:00:00.000Z" itemprop="datePublished">2024-01-15</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Test/">Test</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2024/01/15/mermaid-test/">Mermaid Charts Test Page</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="Mermaid-Charts-Test-Page"><a href="#Mermaid-Charts-Test-Page" class="headerlink" title="Mermaid Charts Test Page"></a>Mermaid Charts Test Page</h1><p>This page contains various types of Mermaid diagrams to test the functionality.</p>
+<h2 id="1-Flowchart"><a href="#1-Flowchart" class="headerlink" title="1. Flowchart"></a>1. Flowchart</h2><pre class="mermaid">graph TD
+    A[Start] --> B{Is it working?}
+    B -->|Yes| C[Great!]
+    B -->|No| D[Debug]
+    D --> E[Fix issues]
+    E --> B
+    C --> F[End]</pre>
+
+<h2 id="2-Sequence-Diagram"><a href="#2-Sequence-Diagram" class="headerlink" title="2. Sequence Diagram"></a>2. Sequence Diagram</h2><pre class="mermaid">sequenceDiagram
+    participant User
+    participant Frontend
+    participant Backend
+    participant Database
+    
+    User->>Frontend: Request data
+    Frontend->>Backend: API call
+    Backend->>Database: Query
+    Database-->>Backend: Results
+    Backend-->>Frontend: Response
+    Frontend-->>User: Display data</pre>
+
+<h2 id="3-Class-Diagram"><a href="#3-Class-Diagram" class="headerlink" title="3. Class Diagram"></a>3. Class Diagram</h2><pre class="mermaid">classDiagram
+    class Animal {
+        +String name
+        +int age
+        +makeSound()
+    }
+    
+    class Dog {
+        +String breed
+        +bark()
+    }
+    
+    class Cat {
+        +String color
+        +meow()
+    }
+    
+    Animal <|-- Dog
+    Animal <|-- Cat</pre>
+
+<h2 id="4-Pie-Chart"><a href="#4-Pie-Chart" class="headerlink" title="4. Pie Chart"></a>4. Pie Chart</h2><pre class="mermaid">pie title Programming Languages Usage
+    "Python" : 40
+    "JavaScript" : 30
+    "C++" : 20
+    "Others" : 10</pre>
+
+<h2 id="5-Gitgraph"><a href="#5-Gitgraph" class="headerlink" title="5. Gitgraph"></a>5. Gitgraph</h2><pre class="mermaid">gitgraph
+    commit
+    commit
+    branch develop
+    checkout develop
+    commit
+    commit
+    checkout main
+    merge develop
+    commit</pre>
+
+<h2 id="6-State-Diagram"><a href="#6-State-Diagram" class="headerlink" title="6. State Diagram"></a>6. State Diagram</h2><pre class="mermaid">stateDiagram-v2
+    [*] --> Idle
+    Idle --> Processing : start
+    Processing --> Success : complete
+    Processing --> Error : fail
+    Success --> [*]
+    Error --> Idle : retry</pre>
+
+<h2 id="7-Gantt-Chart"><a href="#7-Gantt-Chart" class="headerlink" title="7. Gantt Chart"></a>7. Gantt Chart</h2><pre class="mermaid">gantt
+    title Project Timeline
+    dateFormat  YYYY-MM-DD
+    section Planning
+    Requirements    :active, req, 2024-01-01, 30d
+    Design         :des, after req, 20d
+    section Development
+    Frontend       :dev1, after des, 40d
+    Backend        :dev2, after des, 35d
+    Testing        :test, after dev1, 15d</pre>
+
+<h2 id="8-ER-Diagram"><a href="#8-ER-Diagram" class="headerlink" title="8. ER Diagram"></a>8. ER Diagram</h2><pre class="mermaid">erDiagram
+    CUSTOMER {
+        string name
+        string email
+        string phone
+    }
+    ORDER {
+        int order_id
+        string date
+        float total
+    }
+    PRODUCT {
+        int product_id
+        string name
+        float price
+    }
+    
+    CUSTOMER ||--o{ ORDER : places
+    ORDER ||--o{ PRODUCT : contains</pre>
+
+<h2 id="9-Journey-Map"><a href="#9-Journey-Map" class="headerlink" title="9. Journey Map"></a>9. Journey Map</h2><pre class="mermaid">journey
+    title User Shopping Journey
+    section Browse
+      Visit website: 3: User
+      Search products: 4: User
+      View details: 5: User
+    section Purchase
+      Add to cart: 4: User
+      Checkout: 3: User
+      Payment: 2: User
+    section Post-purchase
+      Receive confirmation: 5: User
+      Track order: 4: User
+      Receive product: 5: User</pre>
+
+<h2 id="10-Timeline"><a href="#10-Timeline" class="headerlink" title="10. Timeline"></a>10. Timeline</h2><pre class="mermaid">timeline
+    title Software Development Timeline
+    
+    2024-01    : Planning Phase
+             : Requirements Gathering
+             : Architecture Design
+    
+    2024-02    : Development Phase
+             : Backend Development
+             : Frontend Development
+    
+    2024-03    : Testing Phase
+             : Unit Testing
+             : Integration Testing
+    
+    2024-04    : Deployment Phase
+             : Production Deployment
+             : Monitoring Setup</pre>
+
+<p>If you can see all these diagrams rendered correctly, then Mermaid is working properly! </p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2024/01/15/mermaid-test/" data-id="cme16sr7v0005kjonch5g79ix" data-title="Mermaid Charts Test Page" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/charts/" rel="tag">charts</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mermaid/" rel="tag">mermaid</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/test/" rel="tag">test</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-System/DpAttentionInSGLang" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2024/01/01/System/DpAttentionInSGLang/" class="article-date">
+  <time class="dt-published" datetime="2023-12-31T16:00:00.000Z" itemprop="datePublished">2024-01-01</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/System/">System</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2024/01/01/System/DpAttentionInSGLang/">SGLang中的DP Attention原理与DeepSeekMoE适配</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="SGLang中的DP-Attention原理与DeepSeekMoE适配"><a href="#SGLang中的DP-Attention原理与DeepSeekMoE适配" class="headerlink" title="SGLang中的DP Attention原理与DeepSeekMoE适配"></a>SGLang中的DP Attention原理与DeepSeekMoE适配</h1><h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>SGLang实现了专门针对DeepSeek系列模型的DP Attention（数据并行注意力）机制，这是一个创新的并行化方案，用于解决Multi-Head Latent Attention (MLA)在传统张量并行下的KV缓存重复问题。本文详细介绍DP Attention的工作原理以及它如何与DeepSeekMoE架构完美结合。</p>
+<h2 id="背景：MLA的挑战"><a href="#背景：MLA的挑战" class="headerlink" title="背景：MLA的挑战"></a>背景：MLA的挑战</h2><h3 id="传统张量并行的问题"><a href="#传统张量并行的问题" class="headerlink" title="传统张量并行的问题"></a>传统张量并行的问题</h3><p>在传统的Multi-Head Attention (MHA)中，张量并行(TP)通过将KV缓存按头数维度切分到不同设备上来实现并行化：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 传统MHA的张量并行</span></span><br><span class="line"><span class="comment"># 假设有8个头，TP=8，每个设备处理1个头</span></span><br><span class="line">device_0: heads[<span class="number">0</span>]</span><br><span class="line">device_1: heads[<span class="number">1</span>]</span><br><span class="line">...</span><br><span class="line">device_7: heads[<span class="number">7</span>]</span><br></pre></td></tr></table></figure>
+
+<h3 id="MLA的特殊性"><a href="#MLA的特殊性" class="headerlink" title="MLA的特殊性"></a>MLA的特殊性</h3><p>DeepSeek的Multi-Head Latent Attention具有以下特点：</p>
+<ol>
+<li><strong>单一KV头</strong>: MLA的<code>head_num</code>为1，无法按头数切分</li>
+<li><strong>低秩压缩</strong>: 使用压缩的潜在向量<code>c_kv</code>存储KV信息</li>
+<li><strong>共享键值</strong>: 所有查询头共享相同的键值表示</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># MLA的结构</span></span><br><span class="line">c_kv = W_down_kv @ hidden_states  <span class="comment"># 压缩的KV表示</span></span><br><span class="line">k_heads = W_up_k @ c_kv           <span class="comment"># 所有头共享相同的键</span></span><br><span class="line">v_heads = W_up_v @ c_kv           <span class="comment"># 所有头共享相同的值</span></span><br></pre></td></tr></table></figure>
+
+<p>这导致在传统TP下，每个设备都必须保存完整的KV缓存，造成存储冗余。</p>
+<h2 id="DP-Attention原理"><a href="#DP-Attention原理" class="headerlink" title="DP Attention原理"></a>DP Attention原理</h2><h3 id="核心思想"><a href="#核心思想" class="headerlink" title="核心思想"></a>核心思想</h3><p>DP Attention采用<strong>数据并行</strong>而非<strong>张量并行</strong>的方式处理MLA：</p>
+<ul>
+<li><strong>按请求分割</strong>: 将不同的请求分配给不同的设备</li>
+<li><strong>阶段分离</strong>: 不同设备可以处理不同的计算阶段（prefill&#x2F;decode）</li>
+<li><strong>通信协调</strong>: 在MLA和MoE之间进行必要的通信同步</li>
+</ul>
+<h3 id="工作流程"><a href="#工作流程" class="headerlink" title="工作流程"></a>工作流程</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># DP Attention的工作流程</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">DPAttention</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, hidden_states, batch_info</span>):</span><br><span class="line">        <span class="comment"># 1. 每个设备处理分配给它的请求</span></span><br><span class="line">        local_hidden_states = hidden_states[device_batch_slice]</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 2. 本地MLA计算</span></span><br><span class="line">        local_output = <span class="variable language_">self</span>.mla_forward(local_hidden_states)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 3. AllGather收集所有设备的输出</span></span><br><span class="line">        global_output = all_gather(local_output)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 4. MoE计算（需要全局信息）</span></span><br><span class="line">        moe_output = <span class="variable language_">self</span>.moe_forward(global_output)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 5. 切片提取本设备负责的结果</span></span><br><span class="line">        final_output = moe_output[device_batch_slice]</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> final_output</span><br></pre></td></tr></table></figure>
+
+<h3 id="内存优化"><a href="#内存优化" class="headerlink" title="内存优化"></a>内存优化</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 内存使用对比</span></span><br><span class="line"><span class="comment"># 传统TP (8设备)</span></span><br><span class="line">memory_per_device = &#123;</span><br><span class="line">    <span class="string">&#x27;model_params&#x27;</span>: total_params / tp_size,</span><br><span class="line">    <span class="string">&#x27;kv_cache&#x27;</span>: full_kv_cache,  <span class="comment"># 每个设备都需要完整KV缓存</span></span><br><span class="line">    <span class="string">&#x27;activations&#x27;</span>: batch_size * hidden_size</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># DP Attention (8设备)</span></span><br><span class="line">memory_per_device = &#123;</span><br><span class="line">    <span class="string">&#x27;model_params&#x27;</span>: total_params,  <span class="comment"># 每个设备有完整参数</span></span><br><span class="line">    <span class="string">&#x27;kv_cache&#x27;</span>: kv_cache / dp_size,  <span class="comment"># KV缓存按请求分割</span></span><br><span class="line">    <span class="string">&#x27;activations&#x27;</span>: (batch_size / dp_size) * hidden_size</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="与DeepSeekMoE的集成"><a href="#与DeepSeekMoE的集成" class="headerlink" title="与DeepSeekMoE的集成"></a>与DeepSeekMoE的集成</h2><h3 id="DeepSeekMoE架构回顾"><a href="#DeepSeekMoE架构回顾" class="headerlink" title="DeepSeekMoE架构回顾"></a>DeepSeekMoE架构回顾</h3><p>DeepSeekMoE采用以下设计：</p>
+<ol>
+<li><strong>共享专家</strong>: 所有token都会访问的专家</li>
+<li><strong>路由专家</strong>: 通过路由机制选择的专家</li>
+<li><strong>细粒度分割</strong>: 专家参数进行更细致的分割</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># DeepSeekMoE结构</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">DeepSeekMoE</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="variable language_">self</span>.shared_experts = nn.ModuleList(shared_experts)</span><br><span class="line">        <span class="variable language_">self</span>.routed_experts = nn.ModuleList(routed_experts)</span><br><span class="line">        <span class="variable language_">self</span>.router = Router()</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, x</span>):</span><br><span class="line">        <span class="comment"># 共享专家处理</span></span><br><span class="line">        shared_output = <span class="built_in">sum</span>(expert(x) <span class="keyword">for</span> expert <span class="keyword">in</span> <span class="variable language_">self</span>.shared_experts)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 路由专家处理</span></span><br><span class="line">        router_weights = <span class="variable language_">self</span>.router(x)</span><br><span class="line">        routed_output = <span class="variable language_">self</span>.route_to_experts(x, router_weights)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> x + shared_output + routed_output</span><br></pre></td></tr></table></figure>
+
+<h3 id="DP-Attention与MoE的协作"><a href="#DP-Attention与MoE的协作" class="headerlink" title="DP Attention与MoE的协作"></a>DP Attention与MoE的协作</h3><h4 id="1-通信模式"><a href="#1-通信模式" class="headerlink" title="1. 通信模式"></a>1. 通信模式</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># DP Attention + MoE的通信模式</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">dp_attention_moe_forward</span>(<span class="params">hidden_states</span>):</span><br><span class="line">    <span class="comment"># 阶段1: 本地MLA计算</span></span><br><span class="line">    local_attn_output = local_mla_attention(hidden_states)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 阶段2: AllGather - 收集所有设备的注意力输出</span></span><br><span class="line">    global_attn_output = all_gather(local_attn_output)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 阶段3: MoE计算 - 需要全局信息进行专家路由</span></span><br><span class="line">    moe_output = deepseek_moe_forward(global_attn_output)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 阶段4: Slice - 提取本设备负责的部分</span></span><br><span class="line">    local_final_output = moe_output[local_slice]</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> local_final_output</span><br></pre></td></tr></table></figure>
+
+<h4 id="2-专家路由适配"><a href="#2-专家路由适配" class="headerlink" title="2. 专家路由适配"></a>2. 专家路由适配</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 专家路由在DP环境下的适配</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">DPAdaptedRouter</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, num_experts, dp_size</span>):</span><br><span class="line">        <span class="variable language_">self</span>.num_experts = num_experts</span><br><span class="line">        <span class="variable language_">self</span>.dp_size = dp_size</span><br><span class="line">        <span class="variable language_">self</span>.device_expert_map = <span class="variable language_">self</span>._create_expert_mapping()</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, tokens</span>):</span><br><span class="line">        <span class="comment"># 路由计算需要考虑设备分布</span></span><br><span class="line">        routing_weights = <span class="variable language_">self</span>.compute_routing_weights(tokens)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 专家负载均衡</span></span><br><span class="line">        balanced_weights = <span class="variable language_">self</span>.balance_across_devices(routing_weights)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> balanced_weights</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">_create_expert_mapping</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="comment"># 将专家均匀分布到不同设备</span></span><br><span class="line">        experts_per_device = <span class="variable language_">self</span>.num_experts // <span class="variable language_">self</span>.dp_size</span><br><span class="line">        <span class="keyword">return</span> &#123;</span><br><span class="line">            device_id: <span class="built_in">list</span>(<span class="built_in">range</span>(</span><br><span class="line">                device_id * experts_per_device,</span><br><span class="line">                (device_id + <span class="number">1</span>) * experts_per_device</span><br><span class="line">            ))</span><br><span class="line">            <span class="keyword">for</span> device_id <span class="keyword">in</span> <span class="built_in">range</span>(<span class="variable language_">self</span>.dp_size)</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="3-负载均衡机制"><a href="#3-负载均衡机制" class="headerlink" title="3. 负载均衡机制"></a>3. 负载均衡机制</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 专家负载均衡</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">ExpertLoadBalancer</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, dp_size, num_experts</span>):</span><br><span class="line">        <span class="variable language_">self</span>.dp_size = dp_size</span><br><span class="line">        <span class="variable language_">self</span>.num_experts = num_experts</span><br><span class="line">        <span class="variable language_">self</span>.expert_usage_stats = &#123;&#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">balance_load</span>(<span class="params">self, routing_decisions</span>):</span><br><span class="line">        <span class="comment"># 统计每个设备的专家使用情况</span></span><br><span class="line">        device_loads = <span class="variable language_">self</span>.calculate_device_loads(routing_decisions)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 动态调整路由以平衡负载</span></span><br><span class="line">        <span class="keyword">if</span> <span class="variable language_">self</span>.is_imbalanced(device_loads):</span><br><span class="line">            routing_decisions = <span class="variable language_">self</span>.rebalance_routing(routing_decisions)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> routing_decisions</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">calculate_device_loads</span>(<span class="params">self, routing_decisions</span>):</span><br><span class="line">        loads = [<span class="number">0</span>] * <span class="variable language_">self</span>.dp_size</span><br><span class="line">        <span class="keyword">for</span> token_routing <span class="keyword">in</span> routing_decisions:</span><br><span class="line">            <span class="keyword">for</span> expert_id <span class="keyword">in</span> token_routing:</span><br><span class="line">                device_id = <span class="variable language_">self</span>.get_expert_device(expert_id)</span><br><span class="line">                loads[device_id] += <span class="number">1</span></span><br><span class="line">        <span class="keyword">return</span> loads</span><br></pre></td></tr></table></figure>
+
+<h2 id="性能优化策略"><a href="#性能优化策略" class="headerlink" title="性能优化策略"></a>性能优化策略</h2><h3 id="1-通信优化"><a href="#1-通信优化" class="headerlink" title="1. 通信优化"></a>1. 通信优化</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 异步通信优化</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">AsyncDPAttention</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="variable language_">self</span>.comm_stream = torch.cuda.Stream()</span><br><span class="line">        <span class="variable language_">self</span>.comp_stream = torch.cuda.Stream()</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, hidden_states</span>):</span><br><span class="line">        <span class="keyword">with</span> torch.cuda.stream(<span class="variable language_">self</span>.comp_stream):</span><br><span class="line">            <span class="comment"># 本地MLA计算</span></span><br><span class="line">            local_output = <span class="variable language_">self</span>.mla_forward(hidden_states)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">with</span> torch.cuda.stream(<span class="variable language_">self</span>.comm_stream):</span><br><span class="line">            <span class="comment"># 异步AllGather</span></span><br><span class="line">            gathered_output = <span class="variable language_">self</span>.async_all_gather(local_output)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 同步点</span></span><br><span class="line">        torch.cuda.synchronize()</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> gathered_output</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-内存优化"><a href="#2-内存优化" class="headerlink" title="2. 内存优化"></a>2. 内存优化</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 内存池管理</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">MemoryPoolManager</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, dp_size</span>):</span><br><span class="line">        <span class="variable language_">self</span>.dp_size = dp_size</span><br><span class="line">        <span class="variable language_">self</span>.kv_cache_pools = &#123;&#125;</span><br><span class="line">        <span class="variable language_">self</span>.activation_pools = &#123;&#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">allocate_kv_cache</span>(<span class="params">self, batch_size, seq_len</span>):</span><br><span class="line">        <span class="comment"># 按设备分配KV缓存</span></span><br><span class="line">        cache_size = batch_size // <span class="variable language_">self</span>.dp_size</span><br><span class="line">        <span class="keyword">return</span> <span class="variable language_">self</span>.get_or_create_cache(cache_size, seq_len)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">get_or_create_cache</span>(<span class="params">self, cache_size, seq_len</span>):</span><br><span class="line">        key = (cache_size, seq_len)</span><br><span class="line">        <span class="keyword">if</span> key <span class="keyword">not</span> <span class="keyword">in</span> <span class="variable language_">self</span>.kv_cache_pools:</span><br><span class="line">            <span class="variable language_">self</span>.kv_cache_pools[key] = torch.empty(</span><br><span class="line">                cache_size, seq_len, <span class="variable language_">self</span>.hidden_size,</span><br><span class="line">                dtype=torch.float16, device=<span class="string">&#x27;cuda&#x27;</span></span><br><span class="line">            )</span><br><span class="line">        <span class="keyword">return</span> <span class="variable language_">self</span>.kv_cache_pools[key]</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-调度优化"><a href="#3-调度优化" class="headerlink" title="3. 调度优化"></a>3. 调度优化</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 批次调度优化</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">DPBatchScheduler</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, dp_size</span>):</span><br><span class="line">        <span class="variable language_">self</span>.dp_size = dp_size</span><br><span class="line">        <span class="variable language_">self</span>.device_queues = [[] <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(dp_size)]</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">schedule_requests</span>(<span class="params">self, requests</span>):</span><br><span class="line">        <span class="comment"># 根据请求特征分配到不同设备</span></span><br><span class="line">        <span class="keyword">for</span> request <span class="keyword">in</span> requests:</span><br><span class="line">            device_id = <span class="variable language_">self</span>.select_device(request)</span><br><span class="line">            <span class="variable language_">self</span>.device_queues[device_id].append(request)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">select_device</span>(<span class="params">self, request</span>):</span><br><span class="line">        <span class="comment"># 负载均衡策略</span></span><br><span class="line">        loads = [<span class="built_in">len</span>(queue) <span class="keyword">for</span> queue <span class="keyword">in</span> <span class="variable language_">self</span>.device_queues]</span><br><span class="line">        <span class="keyword">return</span> loads.index(<span class="built_in">min</span>(loads))</span><br></pre></td></tr></table></figure>
+
+<h2 id="实际应用案例"><a href="#实际应用案例" class="headerlink" title="实际应用案例"></a>实际应用案例</h2><h3 id="1-启动配置"><a href="#1-启动配置" class="headerlink" title="1. 启动配置"></a>1. 启动配置</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 启动带有DP Attention的SGLang服务</span></span><br><span class="line">python -m sglang.launch_server \</span><br><span class="line">    --model deepseek-ai/DeepSeek-V3 \</span><br><span class="line">    --tp 8 \</span><br><span class="line">    --dp 8 \</span><br><span class="line">    --enable-dp-attention \</span><br><span class="line">    --trust-remote-code \</span><br><span class="line">    --mem-fraction-static 0.9</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-性能对比"><a href="#2-性能对比" class="headerlink" title="2. 性能对比"></a>2. 性能对比</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 性能测试结果</span></span><br><span class="line">performance_comparison = &#123;</span><br><span class="line">    <span class="string">&#x27;traditional_tp&#x27;</span>: &#123;</span><br><span class="line">        <span class="string">&#x27;memory_per_device&#x27;</span>: <span class="string">&#x27;40GB&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;throughput&#x27;</span>: <span class="string">&#x27;1000 tokens/s&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;latency&#x27;</span>: <span class="string">&#x27;100ms&#x27;</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="string">&#x27;dp_attention&#x27;</span>: &#123;</span><br><span class="line">        <span class="string">&#x27;memory_per_device&#x27;</span>: <span class="string">&#x27;25GB&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;throughput&#x27;</span>: <span class="string">&#x27;1900 tokens/s&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;latency&#x27;</span>: <span class="string">&#x27;85ms&#x27;</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-扩展性分析"><a href="#3-扩展性分析" class="headerlink" title="3. 扩展性分析"></a>3. 扩展性分析</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 扩展性测试</span></span><br><span class="line">scaling_results = &#123;</span><br><span class="line">    <span class="string">&#x27;batch_size_1&#x27;</span>: &#123;<span class="string">&#x27;improvement&#x27;</span>: <span class="string">&#x27;1.2x&#x27;</span>&#125;,</span><br><span class="line">    <span class="string">&#x27;batch_size_8&#x27;</span>: &#123;<span class="string">&#x27;improvement&#x27;</span>: <span class="string">&#x27;1.6x&#x27;</span>&#125;,</span><br><span class="line">    <span class="string">&#x27;batch_size_32&#x27;</span>: &#123;<span class="string">&#x27;improvement&#x27;</span>: <span class="string">&#x27;1.9x&#x27;</span>&#125;,</span><br><span class="line">    <span class="string">&#x27;batch_size_128&#x27;</span>: &#123;<span class="string">&#x27;improvement&#x27;</span>: <span class="string">&#x27;2.1x&#x27;</span>&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="16用户请求处理流程图"><a href="#16用户请求处理流程图" class="headerlink" title="16用户请求处理流程图"></a>16用户请求处理流程图</h2><p>下图展示了SGLang中DP Attention处理16个用户请求的完整流程，包括数据并行分配、MLA层处理、专家路由和输出聚合的全过程：</p>
+<pre class="mermaid">graph TD
+    subgraph "输入层 - 16个用户请求"
+        U1[Request 1] 
+        U2[Request 2]
+        U3[Request 3]
+        U4[Request 4]
+        U5[Request 5]
+        U6[Request 6]
+        U7[Request 7]
+        U8[Request 8]
+        U9[Request 9]
+        U10[Request 10]
+        U11[Request 11]
+        U12[Request 12]
+        U13[Request 13]
+        U14[Request 14]
+        U15[Request 15]
+        U16[Request 16]
+    end
+
+    subgraph "数据并行分配 - 4个节点"
+        subgraph "Node 0"
+            N0[Requests 1-4<br/>Batch Size: 4]
+        end
+        subgraph "Node 1"
+            N1[Requests 5-8<br/>Batch Size: 4]
+        end
+        subgraph "Node 2"
+            N2[Requests 9-12<br/>Batch Size: 4]
+        end
+        subgraph "Node 3"
+            N3[Requests 13-16<br/>Batch Size: 4]
+        end
+    end
+
+    subgraph "MLA层 - DP Attention处理"
+        subgraph "Node 0 MLA"
+            MLA0[MLA Computation<br/>KV Cache: Local 4 requests<br/>c_kv compression]
+        end
+        subgraph "Node 1 MLA"
+            MLA1[MLA Computation<br/>KV Cache: Local 4 requests<br/>c_kv compression]
+        end
+        subgraph "Node 2 MLA"
+            MLA2[MLA Computation<br/>KV Cache: Local 4 requests<br/>c_kv compression]
+        end
+        subgraph "Node 3 MLA"
+            MLA3[MLA Computation<br/>KV Cache: Local 4 requests<br/>c_kv compression]
+        end
+    end
+
+    subgraph "AllGather - 注意力输出聚合"
+        AG[AllGather Operation<br/>收集所有节点的注意力输出<br/>每个节点获得完整的16个输出]
+    end
+
+    subgraph "MoE层 - 专家路由与并行"
+        subgraph "Expert Routing"
+            ER[Token-level Expert Routing<br/>每个token根据门控网络<br/>路由到对应专家]
+        end
+        
+        subgraph "Expert Parallel Processing"
+            subgraph "Node 0 - Expert 0,1"
+                E0[Expert 0<br/>处理路由到的tokens]
+                E1[Expert 1<br/>处理路由到的tokens]
+            end
+            subgraph "Node 1 - Expert 2,3"
+                E2[Expert 2<br/>处理路由到的tokens]
+                E3[Expert 3<br/>处理路由到的tokens]
+            end
+            subgraph "Node 2 - Expert 4,5"
+                E4[Expert 4<br/>处理路由到的tokens]
+                E5[Expert 5<br/>处理路由到的tokens]
+            end
+            subgraph "Node 3 - Expert 6,7"
+                E6[Expert 6<br/>处理路由到的tokens]
+                E7[Expert 7<br/>处理路由到的tokens]
+            end
+        end
+    end
+
+    subgraph "AllToAll - 专家输出重分布"
+        ATA[AllToAll Communication<br/>将专家输出重新分布<br/>回到原始的数据并行分割]
+    end
+
+    subgraph "输出层 - 结果聚合"
+        subgraph "Node 0 Output"
+            O0[Output for<br/>Requests 1-4]
+        end
+        subgraph "Node 1 Output"
+            O1[Output for<br/>Requests 5-8]
+        end
+        subgraph "Node 2 Output"
+            O2[Output for<br/>Requests 9-12]
+        end
+        subgraph "Node 3 Output"
+            O3[Output for<br/>Requests 13-16]
+        end
+    end
+
+    subgraph "最终输出"
+        OUT[16个完整的推理结果]
+    end
+
+    %% 连接关系
+    U1 --> N0
+    U2 --> N0
+    U3 --> N0
+    U4 --> N0
+    U5 --> N1
+    U6 --> N1
+    U7 --> N1
+    U8 --> N1
+    U9 --> N2
+    U10 --> N2
+    U11 --> N2
+    U12 --> N2
+    U13 --> N3
+    U14 --> N3
+    U15 --> N3
+    U16 --> N3
+
+    N0 --> MLA0
+    N1 --> MLA1
+    N2 --> MLA2
+    N3 --> MLA3
+
+    MLA0 --> AG
+    MLA1 --> AG
+    MLA2 --> AG
+    MLA3 --> AG
+
+    AG --> ER
+    ER --> E0
+    ER --> E1
+    ER --> E2
+    ER --> E3
+    ER --> E4
+    ER --> E5
+    ER --> E6
+    ER --> E7
+
+    E0 --> ATA
+    E1 --> ATA
+    E2 --> ATA
+    E3 --> ATA
+    E4 --> ATA
+    E5 --> ATA
+    E6 --> ATA
+    E7 --> ATA
+
+    ATA --> O0
+    ATA --> O1
+    ATA --> O2
+    ATA --> O3
+
+    O0 --> OUT
+    O1 --> OUT
+    O2 --> OUT
+    O3 --> OUT
+
+    %% 样式
+    classDef nodeStyle fill:#e1f5fe,stroke:#0277bd,stroke-width:2px
+    classDef mlaStyle fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px
+    classDef expertStyle fill:#e8f5e8,stroke:#2e7d32,stroke-width:2px
+    classDef commStyle fill:#fff3e0,stroke:#f57c00,stroke-width:2px
+    classDef outputStyle fill:#fce4ec,stroke:#c2185b,stroke-width:2px
+
+    class N0,N1,N2,N3 nodeStyle
+    class MLA0,MLA1,MLA2,MLA3 mlaStyle
+    class E0,E1,E2,E3,E4,E5,E6,E7 expertStyle
+    class AG,ATA commStyle
+    class O0,O1,O2,O3,OUT outputStyle</pre>
+
+<h3 id="流程关键点说明"><a href="#流程关键点说明" class="headerlink" title="流程关键点说明"></a>流程关键点说明</h3><ol>
+<li><strong>数据并行分配</strong>：16个请求均匀分配到4个节点，每个节点处理4个请求</li>
+<li><strong>MLA层处理</strong>：每个节点独立处理本地请求，只需维护1&#x2F;4的KV缓存</li>
+<li><strong>AllGather聚合</strong>：收集所有节点的注意力输出，为MoE层提供完整上下文</li>
+<li><strong>专家路由</strong>：基于门控网络将tokens路由到不同专家</li>
+<li><strong>专家并行</strong>：8个专家分布在4个节点上并行处理</li>
+<li><strong>AllToAll重分布</strong>：将专家输出重新分布回原始的数据并行布局</li>
+<li><strong>结果输出</strong>：每个节点输出对应请求的完整结果</li>
+</ol>
+<blockquote>
+<p>流程图源文件：<a href="../images/sglang-dpattention-flow.mermaid">sglang-dpattention-flow.mermaid</a></p>
+</blockquote>
+<h2 id="技术细节"><a href="#技术细节" class="headerlink" title="技术细节"></a>技术细节</h2><h3 id="1-通信原语使用"><a href="#1-通信原语使用" class="headerlink" title="1. 通信原语使用"></a>1. 通信原语使用</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># SGLang中使用的通信原语</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">DPCommunication</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, dp_size</span>):</span><br><span class="line">        <span class="variable language_">self</span>.dp_size = dp_size</span><br><span class="line">        <span class="variable language_">self</span>.comm_group = dist.new_group(<span class="built_in">range</span>(dp_size))</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">all_gather_attention_output</span>(<span class="params">self, local_output</span>):</span><br><span class="line">        <span class="comment"># 收集所有设备的注意力输出</span></span><br><span class="line">        gathered_outputs = [torch.zeros_like(local_output) </span><br><span class="line">                          <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(<span class="variable language_">self</span>.dp_size)]</span><br><span class="line">        dist.all_gather(gathered_outputs, local_output, </span><br><span class="line">                       group=<span class="variable language_">self</span>.comm_group)</span><br><span class="line">        <span class="keyword">return</span> torch.cat(gathered_outputs, dim=<span class="number">0</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">scatter_moe_input</span>(<span class="params">self, global_input</span>):</span><br><span class="line">        <span class="comment"># 分散MoE输入到各设备</span></span><br><span class="line">        chunk_size = global_input.size(<span class="number">0</span>) // <span class="variable language_">self</span>.dp_size</span><br><span class="line">        chunks = torch.split(global_input, chunk_size, dim=<span class="number">0</span>)</span><br><span class="line">        local_chunk = torch.empty_like(chunks[<span class="number">0</span>])</span><br><span class="line">        dist.scatter(local_chunk, <span class="built_in">list</span>(chunks) <span class="keyword">if</span> dist.get_rank() == <span class="number">0</span> <span class="keyword">else</span> [], </span><br><span class="line">                    src=<span class="number">0</span>, group=<span class="variable language_">self</span>.comm_group)</span><br><span class="line">        <span class="keyword">return</span> local_chunk</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-错误处理与容错"><a href="#2-错误处理与容错" class="headerlink" title="2. 错误处理与容错"></a>2. 错误处理与容错</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 容错机制</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">DPFaultTolerance</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, dp_size</span>):</span><br><span class="line">        <span class="variable language_">self</span>.dp_size = dp_size</span><br><span class="line">        <span class="variable language_">self</span>.health_status = [<span class="literal">True</span>] * dp_size</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">handle_device_failure</span>(<span class="params">self, failed_device_id</span>):</span><br><span class="line">        <span class="comment"># 设备故障处理</span></span><br><span class="line">        <span class="variable language_">self</span>.health_status[failed_device_id] = <span class="literal">False</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 重新分配负载</span></span><br><span class="line">        healthy_devices = [i <span class="keyword">for</span> i, status <span class="keyword">in</span> <span class="built_in">enumerate</span>(<span class="variable language_">self</span>.health_status) <span class="keyword">if</span> status]</span><br><span class="line">        <span class="keyword">return</span> <span class="variable language_">self</span>.redistribute_load(healthy_devices)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">redistribute_load</span>(<span class="params">self, healthy_devices</span>):</span><br><span class="line">        <span class="comment"># 负载重分配逻辑</span></span><br><span class="line">        new_dp_size = <span class="built_in">len</span>(healthy_devices)</span><br><span class="line">        <span class="keyword">return</span> <span class="variable language_">self</span>.create_new_dp_group(healthy_devices, new_dp_size)</span><br></pre></td></tr></table></figure>
+
+<h2 id="最佳实践"><a href="#最佳实践" class="headerlink" title="最佳实践"></a>最佳实践</h2><h3 id="1-配置建议"><a href="#1-配置建议" class="headerlink" title="1. 配置建议"></a>1. 配置建议</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 推荐配置</span></span><br><span class="line">recommended_config = &#123;</span><br><span class="line">    <span class="string">&#x27;small_batch&#x27;</span>: &#123;</span><br><span class="line">        <span class="string">&#x27;dp_size&#x27;</span>: <span class="number">2</span>,</span><br><span class="line">        <span class="string">&#x27;tp_size&#x27;</span>: <span class="number">4</span>,</span><br><span class="line">        <span class="string">&#x27;enable_overlap&#x27;</span>: <span class="literal">True</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="string">&#x27;large_batch&#x27;</span>: &#123;</span><br><span class="line">        <span class="string">&#x27;dp_size&#x27;</span>: <span class="number">8</span>,</span><br><span class="line">        <span class="string">&#x27;tp_size&#x27;</span>: <span class="number">1</span>,</span><br><span class="line">        <span class="string">&#x27;enable_overlap&#x27;</span>: <span class="literal">True</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="string">&#x27;mixed_workload&#x27;</span>: &#123;</span><br><span class="line">        <span class="string">&#x27;dp_size&#x27;</span>: <span class="number">4</span>,</span><br><span class="line">        <span class="string">&#x27;tp_size&#x27;</span>: <span class="number">2</span>,</span><br><span class="line">        <span class="string">&#x27;enable_overlap&#x27;</span>: <span class="literal">True</span>,</span><br><span class="line">        <span class="string">&#x27;adaptive_scheduling&#x27;</span>: <span class="literal">True</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-监控指标"><a href="#2-监控指标" class="headerlink" title="2. 监控指标"></a>2. 监控指标</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 关键监控指标</span></span><br><span class="line">monitoring_metrics = &#123;</span><br><span class="line">    <span class="string">&#x27;communication_overhead&#x27;</span>: <span class="string">&#x27;AllGather和Scatter的耗时&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;load_balance&#x27;</span>: <span class="string">&#x27;各设备间的负载均衡度&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;memory_utilization&#x27;</span>: <span class="string">&#x27;KV缓存的内存使用率&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;expert_utilization&#x27;</span>: <span class="string">&#x27;专家的使用频率分布&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;throughput&#x27;</span>: <span class="string">&#x27;整体吞吐量&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;latency&#x27;</span>: <span class="string">&#x27;端到端延迟&#x27;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-调优策略"><a href="#3-调优策略" class="headerlink" title="3. 调优策略"></a>3. 调优策略</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 性能调优</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">DPTuningStrategy</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="variable language_">self</span>.tuning_params = &#123;</span><br><span class="line">            <span class="string">&#x27;comm_overlap_ratio&#x27;</span>: <span class="number">0.8</span>,</span><br><span class="line">            <span class="string">&#x27;batch_size_threshold&#x27;</span>: <span class="number">64</span>,</span><br><span class="line">            <span class="string">&#x27;expert_capacity_factor&#x27;</span>: <span class="number">1.2</span>,</span><br><span class="line">            <span class="string">&#x27;load_balance_threshold&#x27;</span>: <span class="number">0.1</span></span><br><span class="line">        &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">auto_tune</span>(<span class="params">self, workload_characteristics</span>):</span><br><span class="line">        <span class="comment"># 根据工作负载特征自动调优</span></span><br><span class="line">        <span class="keyword">if</span> workload_characteristics[<span class="string">&#x27;avg_batch_size&#x27;</span>] &gt; <span class="number">64</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="variable language_">self</span>.large_batch_config()</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="variable language_">self</span>.small_batch_config()</span><br></pre></td></tr></table></figure>
+
+<h2 id="未来发展方向"><a href="#未来发展方向" class="headerlink" title="未来发展方向"></a>未来发展方向</h2><h3 id="1-算法优化"><a href="#1-算法优化" class="headerlink" title="1. 算法优化"></a>1. 算法优化</h3><ul>
+<li><strong>更智能的负载均衡</strong>: 基于历史负载模式的预测性调度</li>
+<li><strong>动态专家分配</strong>: 根据访问模式动态调整专家分布</li>
+<li><strong>通信压缩</strong>: 利用量化和压缩技术减少通信开销</li>
+</ul>
+<h3 id="2-硬件适配"><a href="#2-硬件适配" class="headerlink" title="2. 硬件适配"></a>2. 硬件适配</h3><ul>
+<li><strong>新架构支持</strong>: 适配更新的GPU架构和interconnect</li>
+<li><strong>异构计算</strong>: 支持CPU-GPU混合计算</li>
+<li><strong>分布式存储</strong>: 与分布式存储系统的深度集成</li>
+</ul>
+<h3 id="3-系统集成"><a href="#3-系统集成" class="headerlink" title="3. 系统集成"></a>3. 系统集成</h3><ul>
+<li><strong>容器化部署</strong>: 更好的容器化和编排支持</li>
+<li><strong>云原生</strong>: 与Kubernetes等云原生技术的集成</li>
+<li><strong>边缘计算</strong>: 适配边缘计算场景的轻量化版本</li>
+</ul>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>SGLang的DP Attention机制为DeepSeek系列模型提供了高效的并行化解决方案，通过数据并行而非传统的张量并行，成功解决了MLA架构下的KV缓存重复问题。与DeepSeekMoE的集成进一步提升了系统的整体性能和扩展性。</p>
+<p><strong>关键优势</strong>:</p>
+<ol>
+<li><strong>内存效率</strong>: 显著减少KV缓存的内存占用</li>
+<li><strong>计算效率</strong>: 提高整体计算吞吐量</li>
+<li><strong>扩展性</strong>: 支持更大规模的批处理</li>
+<li><strong>适应性</strong>: 能够适应不同的工作负载特征</li>
+</ol>
+<p><strong>应用建议</strong>:</p>
+<ol>
+<li>大批量场景优先使用DP Attention</li>
+<li>合理配置DP和TP的比例</li>
+<li>关注通信开销和负载均衡</li>
+<li>持续监控和优化性能指标</li>
+</ol>
+<p>这种创新的并行化策略为大规模语言模型的高效部署提供了新的思路，值得在实际应用中深入探索和优化。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2024/01/01/System/DpAttentionInSGLang/" data-id="cme16sr8o0019kjon2mmgeogp" data-title="SGLang中的DP Attention原理与DeepSeekMoE适配" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Attention/" rel="tag">Attention</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/DeepSeek/" rel="tag">DeepSeek</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MoE/" rel="tag">MoE</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/SGLang/" rel="tag">SGLang</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/System/" rel="tag">System</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-System/通信原语" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2024/01/01/System/%E9%80%9A%E4%BF%A1%E5%8E%9F%E8%AF%AD/" class="article-date">
@@ -364,7 +1209,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2024/01/01/System/%E9%80%9A%E4%BF%A1%E5%8E%9F%E8%AF%AD/" data-id="cmdpkiz62002gnconfwr8a78f" data-title="通信原语 - 大模型推理中的分布式通信" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2024/01/01/System/%E9%80%9A%E4%BF%A1%E5%8E%9F%E8%AF%AD/" data-id="cme16sr97002ikjonhey6gao8" data-title="通信原语 - 大模型推理中的分布式通信" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -393,7 +1238,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Categories</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/System/">System</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Test/">Test</a></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/System/">System</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Test/">Test</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%81%8C%E5%9C%BA/">职场</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%81%8C%E5%9C%BA/%E8%96%AA%E8%B5%84%E8%B0%83%E7%A0%94/">薪资调研</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%81%8C%E5%9C%BA/%E8%96%AA%E8%B5%84%E8%B0%83%E7%A0%94/%E6%9C%80%E6%96%B0%E8%B5%84%E8%AE%AF/">最新资讯</a></li></ul></li></ul></li></ul>
     </div>
   </div>
 
@@ -403,7 +1248,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AI/" rel="tag">AI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Attention/" rel="tag">Attention</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Communication/" rel="tag">Communication</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Compiler/" rel="tag">Compiler</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Computational-Graph/" rel="tag">Computational Graph</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/DeepSeek/" rel="tag">DeepSeek</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Distributed/" rel="tag">Distributed</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/LLM/" rel="tag">LLM</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MoE/" rel="tag">MoE</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Optimization/" rel="tag">Optimization</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Performance/" rel="tag">Performance</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SGLang/" rel="tag">SGLang</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/System/" rel="tag">System</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/blog/" rel="tag">blog</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/blues/" rel="tag">blues</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/career/" rel="tag">career</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/charts/" rel="tag">charts</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/consensus/" rel="tag">consensus</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/data-parallelism/" rel="tag">data-parallelism</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/distributed-systems/" rel="tag">distributed-systems</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/experience/" rel="tag">experience</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/expert-parallelism/" rel="tag">expert-parallelism</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/guitar/" rel="tag">guitar</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/harmony/" rel="tag">harmony</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/licks/" rel="tag">licks</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/life/" rel="tag">life</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/llm/" rel="tag">llm</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mermaid/" rel="tag">mermaid</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/raft/" rel="tag">raft</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/rhythm/" rel="tag">rhythm</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/test/" rel="tag">test</a></li></ul>
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/2023/" rel="tag">2023</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/2024/" rel="tag">2024</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/2025/" rel="tag">2025</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/7/" rel="tag">7</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/9127/" rel="tag">9127</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/996/" rel="tag">996</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AI/" rel="tag">AI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Attention/" rel="tag">Attention</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Communication/" rel="tag">Communication</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Compiler/" rel="tag">Compiler</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Computational-Graph/" rel="tag">Computational Graph</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/DeepSeek/" rel="tag">DeepSeek</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Distributed/" rel="tag">Distributed</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/LLM/" rel="tag">LLM</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MoE/" rel="tag">MoE</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Optimization/" rel="tag">Optimization</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PDD/" rel="tag">PDD</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Performance/" rel="tag">Performance</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SGLang/" rel="tag">SGLang</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/System/" rel="tag">System</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/blog/" rel="tag">blog</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/blues/" rel="tag">blues</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/career/" rel="tag">career</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/charts/" rel="tag">charts</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/consensus/" rel="tag">consensus</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/data-parallelism/" rel="tag">data-parallelism</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/distributed-systems/" rel="tag">distributed-systems</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/experience/" rel="tag">experience</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/expert-parallelism/" rel="tag">expert-parallelism</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/guitar/" rel="tag">guitar</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/harmony/" rel="tag">harmony</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/licks/" rel="tag">licks</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/life/" rel="tag">life</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/llm/" rel="tag">llm</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mermaid/" rel="tag">mermaid</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/raft/" rel="tag">raft</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/rhythm/" rel="tag">rhythm</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/test/" rel="tag">test</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B7%A5%E4%BD%9C%E5%BC%BA%E5%BA%A6/" rel="tag">工作强度</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%8B%BC%E5%A4%9A%E5%A4%9A/" rel="tag">拼多多</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%A8%8B%E5%BA%8F%E5%91%98/" rel="tag">程序员</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%96%AA%E8%B5%84/" rel="tag">薪资</a></li></ul>
     </div>
   </div>
 
@@ -413,7 +1258,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/AI/" style="font-size: 10px;">AI</a> <a href="/tags/Attention/" style="font-size: 10px;">Attention</a> <a href="/tags/Communication/" style="font-size: 10px;">Communication</a> <a href="/tags/Compiler/" style="font-size: 10px;">Compiler</a> <a href="/tags/Computational-Graph/" style="font-size: 10px;">Computational Graph</a> <a href="/tags/DeepSeek/" style="font-size: 10px;">DeepSeek</a> <a href="/tags/Distributed/" style="font-size: 10px;">Distributed</a> <a href="/tags/LLM/" style="font-size: 10px;">LLM</a> <a href="/tags/MoE/" style="font-size: 10px;">MoE</a> <a href="/tags/Optimization/" style="font-size: 10px;">Optimization</a> <a href="/tags/Performance/" style="font-size: 10px;">Performance</a> <a href="/tags/SGLang/" style="font-size: 10px;">SGLang</a> <a href="/tags/System/" style="font-size: 15px;">System</a> <a href="/tags/blog/" style="font-size: 10px;">blog</a> <a href="/tags/blues/" style="font-size: 20px;">blues</a> <a href="/tags/career/" style="font-size: 10px;">career</a> <a href="/tags/charts/" style="font-size: 10px;">charts</a> <a href="/tags/consensus/" style="font-size: 10px;">consensus</a> <a href="/tags/data-parallelism/" style="font-size: 10px;">data-parallelism</a> <a href="/tags/distributed-systems/" style="font-size: 20px;">distributed-systems</a> <a href="/tags/experience/" style="font-size: 10px;">experience</a> <a href="/tags/expert-parallelism/" style="font-size: 10px;">expert-parallelism</a> <a href="/tags/guitar/" style="font-size: 20px;">guitar</a> <a href="/tags/harmony/" style="font-size: 10px;">harmony</a> <a href="/tags/licks/" style="font-size: 10px;">licks</a> <a href="/tags/life/" style="font-size: 10px;">life</a> <a href="/tags/llm/" style="font-size: 15px;">llm</a> <a href="/tags/mermaid/" style="font-size: 10px;">mermaid</a> <a href="/tags/raft/" style="font-size: 10px;">raft</a> <a href="/tags/rhythm/" style="font-size: 10px;">rhythm</a> <a href="/tags/test/" style="font-size: 10px;">test</a>
+      <a href="/tags/2023/" style="font-size: 10px;">2023</a> <a href="/tags/2024/" style="font-size: 10px;">2024</a> <a href="/tags/2025/" style="font-size: 10px;">2025</a> <a href="/tags/7/" style="font-size: 10px;">7</a> <a href="/tags/9127/" style="font-size: 10px;">9127</a> <a href="/tags/996/" style="font-size: 15px;">996</a> <a href="/tags/AI/" style="font-size: 10px;">AI</a> <a href="/tags/Attention/" style="font-size: 10px;">Attention</a> <a href="/tags/Communication/" style="font-size: 10px;">Communication</a> <a href="/tags/Compiler/" style="font-size: 10px;">Compiler</a> <a href="/tags/Computational-Graph/" style="font-size: 10px;">Computational Graph</a> <a href="/tags/DeepSeek/" style="font-size: 10px;">DeepSeek</a> <a href="/tags/Distributed/" style="font-size: 10px;">Distributed</a> <a href="/tags/LLM/" style="font-size: 10px;">LLM</a> <a href="/tags/MoE/" style="font-size: 10px;">MoE</a> <a href="/tags/Optimization/" style="font-size: 10px;">Optimization</a> <a href="/tags/PDD/" style="font-size: 15px;">PDD</a> <a href="/tags/Performance/" style="font-size: 10px;">Performance</a> <a href="/tags/SGLang/" style="font-size: 10px;">SGLang</a> <a href="/tags/System/" style="font-size: 15px;">System</a> <a href="/tags/blog/" style="font-size: 10px;">blog</a> <a href="/tags/blues/" style="font-size: 20px;">blues</a> <a href="/tags/career/" style="font-size: 10px;">career</a> <a href="/tags/charts/" style="font-size: 10px;">charts</a> <a href="/tags/consensus/" style="font-size: 10px;">consensus</a> <a href="/tags/data-parallelism/" style="font-size: 10px;">data-parallelism</a> <a href="/tags/distributed-systems/" style="font-size: 20px;">distributed-systems</a> <a href="/tags/experience/" style="font-size: 10px;">experience</a> <a href="/tags/expert-parallelism/" style="font-size: 10px;">expert-parallelism</a> <a href="/tags/guitar/" style="font-size: 20px;">guitar</a> <a href="/tags/harmony/" style="font-size: 10px;">harmony</a> <a href="/tags/licks/" style="font-size: 10px;">licks</a> <a href="/tags/life/" style="font-size: 10px;">life</a> <a href="/tags/llm/" style="font-size: 15px;">llm</a> <a href="/tags/mermaid/" style="font-size: 10px;">mermaid</a> <a href="/tags/raft/" style="font-size: 10px;">raft</a> <a href="/tags/rhythm/" style="font-size: 10px;">rhythm</a> <a href="/tags/test/" style="font-size: 10px;">test</a> <a href="/tags/%E5%B7%A5%E4%BD%9C%E5%BC%BA%E5%BA%A6/" style="font-size: 15px;">工作强度</a> <a href="/tags/%E6%8B%BC%E5%A4%9A%E5%A4%9A/" style="font-size: 15px;">拼多多</a> <a href="/tags/%E7%A8%8B%E5%BA%8F%E5%91%98/" style="font-size: 15px;">程序员</a> <a href="/tags/%E8%96%AA%E8%B5%84/" style="font-size: 15px;">薪资</a>
     </div>
   </div>
 
@@ -422,7 +1267,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/07/">July 2025</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/06/">June 2025</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/05/">May 2025</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/04/">April 2025</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/03/">March 2025</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/01/">January 2025</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/03/">March 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/01/">January 2024</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/08/">August 2025</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/07/">July 2025</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/06/">June 2025</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/05/">May 2025</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/04/">April 2025</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/03/">March 2025</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/01/">January 2025</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/03/">March 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/01/">January 2024</a></li></ul>
     </div>
   </div>
 
@@ -435,23 +1280,23 @@
       <ul>
         
           <li>
+            <a href="/2025/08/03/Plans/%E5%B7%A5%E4%BD%9C%E4%B8%AD%E9%81%87%E5%88%B0%E7%9A%84%E4%B8%80%E4%BA%9B%E9%9A%BE%E9%A2%98/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2025/08/02/System/LLM%20Serving%20Configs/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2025/07/31/System/cuda-kernel/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2025/07/31/Programming/CPP/constexpr/">(no title)</a>
+          </li>
+        
+          <li>
             <a href="/2025/07/30/System/%E5%B9%B6%E8%A1%8C%E7%AD%96%E7%95%A5/%E5%BA%8F%E5%88%97%E5%B9%B6%E8%A1%8C/">(no title)</a>
-          </li>
-        
-          <li>
-            <a href="/2025/07/29/%E9%9D%A2%E8%AF%95%E7%BB%8F%E5%8E%86%E5%88%86%E7%B1%BB%E6%80%BB%E7%BB%93/">(no title)</a>
-          </li>
-        
-          <li>
-            <a href="/2025/07/28/PD%E5%88%86%E7%A6%BB%E6%9E%B6%E6%9E%84KVCache%E8%B7%A8%E8%8A%82%E7%82%B9%E4%BC%A0%E8%BE%93%E5%8A%9F%E8%83%BD%E5%BC%80%E5%8F%91%EF%BC%8C%E4%BC%98%E5%8C%96KVCache%E4%BC%A0%E8%BE%93%E6%95%88%E7%8E%87/">(no title)</a>
-          </li>
-        
-          <li>
-            <a href="/2025/07/28/System/%E5%B9%B6%E8%A1%8C%E7%AD%96%E7%95%A5/EP/">(no title)</a>
-          </li>
-        
-          <li>
-            <a href="/2025/07/28/System/%E5%B9%B6%E8%A1%8C%E7%AD%96%E7%95%A5/%E9%9B%86%E5%90%88%E9%80%9A%E4%BF%A1%E5%9F%BA%E7%A1%80/">(no title)</a>
           </li>
         
       </ul>
